@@ -7,5 +7,5 @@ export const TABLET_MIN_WIDTH = 491;
 export const TABLET_MAX_WIDTH = 800;
 
 // height
-export const HEADER_HEIGHT = 70;
+export const HEADER_HEIGHT = 56;
 export const NAVBAR_HEIGHT = 64;
