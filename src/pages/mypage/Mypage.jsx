@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { HEADER_HEIGHT, NAVBAR_HEIGHT } from '../constants';
-import profile from '../assets/images/profile.jpg';
-import Posts from '../components/Mypage/Posts';
-import Comments from '../components/Mypage/Comments';
-import Places from '../components/Mypage/Places';
-import Bookmarks from '../components/Mypage/Bookmarks';
-import Profile from '../components/Mypage/Profile';
+import { HEADER_HEIGHT, NAVBAR_HEIGHT } from '../../constants';
+import profile from '../../assets/images/profile.jpg';
+import Posts from '../../components/Mypage/Posts';
+import Comments from '../../components/Mypage/Comments';
+import Places from '../../components/Mypage/Places';
+import Bookmarks from '../../components/Mypage/Bookmarks';
+import Profile from '../../components/Mypage/Profile';
 
 const TABS = [
   {
@@ -34,8 +34,6 @@ export default function Mypage() {
     setCurrentTab(index);
   };
 
-  const claculatedHeight = `calc(100vh - ${HEADER_HEIGHT}px - 230px - 38px - ${NAVBAR_HEIGHT}px)`;
-
   if (editProfileMode) return <Profile setEditProfileMode={setEditProfileMode} />;
   return (
     <>
@@ -43,7 +41,7 @@ export default function Mypage() {
         <div className="h-header px-[23px] flex items-center justify-end text-[14px] text-black">
           <button onClick={() => setEditProfileMode((prev) => !prev)}>프로필 편집</button>
         </div>
-        <div className="flex flex-col items-center justify-center h-[230px] ">
+        <div className="flex flex-col items-center justify-center h-[140px] ">
           <img src={profile} alt="profile" className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]" />
           <span className="text-black text-[20px] font-bold tracking-tight">이다현</span>
         </div>
@@ -70,3 +68,5 @@ export default function Mypage() {
     </>
   );
 }
+
+const claculatedHeight = `calc(100vh - ${HEADER_HEIGHT}px - 140px - 38px - ${NAVBAR_HEIGHT}px)`;
