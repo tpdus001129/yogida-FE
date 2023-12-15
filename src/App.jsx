@@ -4,6 +4,7 @@ import Notfound from './pages/Notfound';
 import Layout from './components/commons/Layout';
 import Mypage from './pages/Mypage';
 import Login from './pages/Login';
+import Search from './pages/Search';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="*" element={<Notfound />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
     </BrowserRouter>
   );
