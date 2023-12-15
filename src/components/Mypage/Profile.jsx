@@ -8,6 +8,7 @@ import { useLayoutEffect } from 'react';
 export default function Profile({ setEditProfileMode }) {
   const { setNavbarHidden } = useOutletContext();
 
+  //이게 가장 빠름..!
   useLayoutEffect(() => {
     setNavbarHidden(true);
 

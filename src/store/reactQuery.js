@@ -3,13 +3,11 @@ import { QueryClient } from 'react-query';
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      useErrorBoundary: true,
-
+      suspense: true,
       retry: 1,
     },
     mutations: {
-      useErrorBoundary: true,
-
+      suspense: true,
       retry: 1,
     },
   },
