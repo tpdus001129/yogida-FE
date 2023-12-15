@@ -16,5 +16,6 @@ export const queryClient = new QueryClient({
 });
 
 export const queryKeys = {
-  //   matchesRecommend: 'MATCHES_RECOMMEND',
+  //   [key]: [name],
+  mypageComment: 'MYPAGE_COMMENT',
 };

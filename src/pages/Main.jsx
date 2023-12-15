@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { IoOptionsOutline } from 'react-icons/io5';
 import { IoSearchOutline } from 'react-icons/io5';
 
-import PostItem from '../components/Main/PostItem';
+import PostItem from '../components/main/PostItem';
 
 export default function Main() {
   const navigate = useNavigate();

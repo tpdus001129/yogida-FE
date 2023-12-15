@@ -2,9 +2,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from './pages/Main';
 import Notfound from './pages/Notfound';
 import Layout from './components/commons/Layout';
-import Mypage from './pages/Mypage';
+import Mypage from './pages/mypage/Mypage';
 import Login from './pages/Login';
 import Search from './pages/Search';
+import Schedule from './components/Mypage/Schedule';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/schedule" element={<Schedule />} />
       </Routes>
     </BrowserRouter>
   );

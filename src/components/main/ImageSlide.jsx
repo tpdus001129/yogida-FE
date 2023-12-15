@@ -95,7 +95,7 @@ export default function ImageSlide({ images }) {
     }
   }
 
-  // ul의 width 길이 동적으로 변환
+  // ul의 width길이 동적으로 변환
   function widthSize(images) {
     return `${images.length * 100}%`;
   }
