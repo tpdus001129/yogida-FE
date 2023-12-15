@@ -11,6 +11,9 @@ export default {
         black: '#111111',
         darkgray: '#606060',
         gray: '#AFAFAF',
+        danger: '#FB6363',
+        input: '#F2F4F8',
+        kakaoyellow: '#F2E42D',
       },
       height: {
         header: HEADER_HEIGHT,
