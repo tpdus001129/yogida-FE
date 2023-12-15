@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { HEADER_HEIGHT, NAVBAR_HEIGHT } from '../constants';
-import profile from '../assets/images/profile.jpg';
-import Posts from '../components/Mypage/Posts';
-import Comments from '../components/Mypage/Comments';
-import Places from '../components/Mypage/Places';
-import Bookmarks from '../components/Mypage/Bookmarks';
-import Profile from '../components/Mypage/Profile';
+import { HEADER_HEIGHT, NAVBAR_HEIGHT } from '../../constants';
+import profile from '../../assets/images/profile.jpg';
+import Posts from '../../components/Mypage/Posts';
+import Comments from '../../components/Mypage/Comments';
+import Places from '../../components/Mypage/Places';
+import Bookmarks from '../../components/Mypage/Bookmarks';
+import Profile from '../../components/Mypage/Profile';
 
 const TABS = [
   {

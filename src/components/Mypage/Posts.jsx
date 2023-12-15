@@ -2,18 +2,19 @@ import { IoAdd } from 'react-icons/io5';
 import { IoEllipsisHorizontalSharp } from 'react-icons/io5';
 import { IoLockClosedOutline } from 'react-icons/io5';
 import sample from '../../assets/images/sample.jpg';
+import { Link } from 'react-router-dom';
 
 export default function Posts() {
   return (
     <>
-      <div className="bg-[#F2F4F8] py-[13px] px-[16px] rounded-[4px] flex gap-[10px] items-center mb-[24px]">
+      <div className="bg-[#F2F4F8] py-[13px] px-[16px] rounded-[4px] flex gap-[10px] items-center mb-[24px] cursor-pointer">
         <button className="w-[36px] h-[36px] bg-primary rounded-full flex items-center justify-center">
           <IoAdd color="#fff" size={23} />
         </button>
-        <div className="w-[80%]">
+        <Link to="/schedule" className="w-[80%]">
           <strong className="text-black text-[12px]">여행 일정 만들기</strong>
           <span className="block text-darkgray text-[10px]">새로운 여행을 떠나보세요.</span>
-        </div>
+        </Link>
       </div>
       {/* Mypage Inner Title Compoenent */}
       <div className="text-center mb-[20px]">
