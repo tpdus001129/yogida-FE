@@ -4,6 +4,7 @@ import Notfound from './pages/Notfound';
 import Layout from './components/commons/Layout';
 import Mypage from './pages/mypage/Mypage';
 import Login from './pages/Login';
+import Search from './pages/Search';
 import Schedule from './components/Mypage/Schedule';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="*" element={<Notfound />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/schedule" element={<Schedule />} />
       </Routes>
     </BrowserRouter>

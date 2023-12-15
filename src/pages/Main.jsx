@@ -1,8 +1,13 @@
+import { useNavigate } from 'react-router-dom';
+
 import { IoOptionsOutline } from 'react-icons/io5';
 import { IoSearchOutline } from 'react-icons/io5';
+
 import PostItem from '../components/main/PostItem';
 
 export default function Main() {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full">
       <div className="mx-[24px]">
@@ -11,7 +16,12 @@ export default function Main() {
           <div className="mb-[22px] flex">
             {/* 검색 */}
             <div className="w-[264px] h-[52px] border rounded-[26px] border-[#EEEEEE] bg-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] mr-[11px] flex items-center">
-              <button className="w-[264px] h-[52px] flex items-center">
+              <button
+                className="w-[264px] h-[52px] flex items-center"
+                onClick={() => {
+                  navigate('/search');
+                }}
+              >
                 <div className="mr-[18px] pl-[20px]">
                   <IoSearchOutline size="20px" />
                 </div>
