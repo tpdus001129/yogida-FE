@@ -3,6 +3,7 @@ import Main from './pages/Main';
 import Notfound from './pages/Notfound';
 import Layout from './components/commons/Layout';
 import Mypage from './pages/Mypage';
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/mypage" element={<Mypage />} />
           <Route path="*" element={<Notfound />} />
         </Route>
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
