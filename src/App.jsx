@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Search from './pages/Search';
 import Schedule from './components/Mypage/Schedule';
 import Signup from './pages/SignUp';
+import FindPassword from './pages/FindPassword';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/find-password" element={<FindPassword />} />
       </Routes>
     </BrowserRouter>
   );

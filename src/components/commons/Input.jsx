@@ -8,6 +8,7 @@ Input.propTypes = {
   padding: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string,
+  maxLength: PropTypes.number,
   placeholder: PropTypes.string,
 };
 
@@ -21,10 +22,11 @@ Input.defaultProps = {
   height: 'h-[44px]',
 };
 
-export default function Input({ bgColor, textColor, type, name, padding, width, height, placeholder }) {
+export default function Input({ bgColor, textColor, type, name, padding, width, height, maxLength, placeholder }) {
   return (
     <input
-      className={`text-sm ${textColor} ${bgColor} ${width} ${height} p-2.5 ${padding} rounded-md mb-2 outline-none focus:border-2 focus:border-primary`}
+      maxLength={maxLength}
+      className={`text-sm ${textColor} ${bgColor} ${width} ${height} p-2.5 ${padding} appearance-none m-0 rounded-md mb-2 outline-none focus:border-2 focus:border-primary`}
       type={type}
       name={name}
       id={name}
