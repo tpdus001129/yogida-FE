@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from './pages/Main';
 import Notfound from './pages/Notfound';
 import Layout from './components/commons/Layout';
-import Login from './pages/Login';
 import Mypage from './pages/Mypage';
+import Login from './pages/Login';
 
 function App() {
   return (
