@@ -1,14 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
+
 import PropTypes from 'prop-types';
 
 import { IoHeartOutline } from 'react-icons/io5';
 import { IoEllipseSharp } from 'react-icons/io5';
 
 export default function ImageSlide({ images }) {
-  ImageSlide.propTypes = {
-    images: PropTypes.array.isRequired,
-  };
-
   // 데스크탑 드래그
   const [mouseDownClientX, setMouseDownClientX] = useState(0);
   const [mouseDownClientY, setMouseDownClientY] = useState(0);
@@ -70,7 +67,8 @@ export default function ImageSlide({ images }) {
     if (mouseDownClientX !== 0 && dragSpaceX > 100 && vector > 2) {
       if (mouseUpClientX < mouseDownClientX) {
         handleNextSlide();
-      } else if (mouseUpClientX > mouseDownClientX) {
+      }
+      if (mouseUpClientX > mouseDownClientX) {
         handlePrevSlide();
       }
     }

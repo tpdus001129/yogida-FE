@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { IoOptionsOutline } from 'react-icons/io5';
 import { IoSearchOutline } from 'react-icons/io5';
 
-import PostItem from '../components/main/PostItem';
+import PostItem from '../components/Main/PostItem';
 
 export default function Main() {
   const navigate = useNavigate();
@@ -33,7 +33,12 @@ export default function Main() {
             </div>
 
             {/* 필터 */}
-            <button className="w-[52px] h-[52px] border rounded-[26px] border-[#AFAFAF] flex justify-center items-center">
+            <button
+              className="w-[52px] h-[52px] border rounded-[26px] border-[#AFAFAF] flex justify-center items-center"
+              onClick={() => {
+                navigate('/filter');
+              }}
+            >
               <IoOptionsOutline />
             </button>
           </div>

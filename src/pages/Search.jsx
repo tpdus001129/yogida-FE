@@ -1,24 +1,12 @@
-import { useNavigate } from 'react-router-dom';
-
-import { IoClose } from 'react-icons/io5';
 import { IoSearchOutline } from 'react-icons/io5';
 
+import Header from '../components/Main/Header';
 import SearchList from '../components/Search/SearchList';
 
 export default function Search() {
-  const navigate = useNavigate();
-
   return (
     <div className="w-full">
-      <div className="w-full h-[56px] flex items-center justify-center px-[24px]">
-        <p className="w-full h-full flex items-center justify-center">검색</p>
-        <IoClose
-          size="24px"
-          onClick={() => {
-            navigate('/');
-          }}
-        />
-      </div>
+      <Header title={'검색'} />
       {/* 검색 */}
       <form className="w-full h-[74px] flex relative items-center px-[24px]">
         <input
