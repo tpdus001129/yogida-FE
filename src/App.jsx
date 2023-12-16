@@ -10,6 +10,7 @@ import Schedule from './components/Mypage/Schedule';
 import Signup from './pages/SignUp';
 import FindPassword from './pages/FindPassword';
 import CommentModal from './components/CommentModal/CommentModal';
+import ChangePassword from './pages/ChangePassword';
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/find-password" element={<FindPassword />} />
-
+        <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/comment-modal" element={<CommentModal />} />
       </Routes>
     </BrowserRouter>
