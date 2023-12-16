@@ -28,3 +28,11 @@ export default function Comment({ reply }) {
 Comment.propTypes = {
   reply: PropTypes.bool.isRequired,
 };
+
+Comment.defaultProps = {
+  reply: false,
+};
+
+ReplyButton.defaultProps = {
+  className: '',
+};
