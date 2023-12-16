@@ -17,8 +17,8 @@ export default function Profile({ setEditProfileMode }) {
   }, [setNavbarHidden]);
 
   return (
-    <div className="flex flex-col pb-[20px] h-screen">
-      <section className="top-0 border-[#E8E8E8] border-b-[1px]">
+    <div className="flex flex-col pb-[20px] h-screen items-center">
+      <section className="w-full top-0 border-[#E8E8E8] border-b-[1px]">
         <header className="w-full h-header bg-white text-center flex items-center">
           <IoChevronBack
             size={32}

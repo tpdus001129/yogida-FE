@@ -1,4 +1,4 @@
-import { HEADER_HEIGHT, NAVBAR_HEIGHT } from './src/constants';
+import { HEADER_HEIGHT, MOBILE_MIN_WIDTH, NAVBAR_HEIGHT } from './src/constants';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -15,6 +15,9 @@ export default {
         danger: '#FB6363',
         input: '#F2F4F8',
         kakaoyellow: '#F2E42D',
+      },
+      width: {
+        mobile: `${MOBILE_MIN_WIDTH}px`,
       },
       height: {
         header: HEADER_HEIGHT,

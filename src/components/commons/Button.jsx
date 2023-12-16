@@ -1,31 +1,44 @@
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
 
 Button.propTypes = {
-  bgColor: PropTypes.string.isRequired,
-  textColor: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
+  bgColor: PropTypes.string,
+  textColor: PropTypes.string,
+  width: PropTypes.string,
+  height: PropTypes.string,
   type: PropTypes.string,
-  children: PropTypes.element.isRequired,
+  fontSize: PropTypes.string,
+  borderColor: PropTypes.string,
+  isDisabled: PropTypes.bool,
+  children: PropTypes.node,
 };
 
-export default function Button({ bgColor, textColor, size, type, children }) {
-  const width = useMemo(() => {
-    if (size === 'full') {
-      return 'w-[328px]';
-    }
-  }, [size]);
+Button.defaultProps = {
+  bgColor: 'bg-primary',
+  textColor: 'text-white',
+  width: 'w-[328px]',
+  height: 'h-[44px]',
+  type: 'button',
+  borderColor: 'border-transparent',
+  fontSize: 'text-base',
+  isDisabled: false,
+};
 
-  const height = useMemo(() => {
-    if (size === 'full') {
-      return 'h-[44px]';
-    }
-  }, [size]);
-
+export default function Button({
+  bgColor,
+  textColor,
+  width,
+  height,
+  type,
+  borderColor,
+  fontSize,
+  isDisabled,
+  children,
+}) {
   return (
     <button
-      className={`${bgColor} ${textColor} ${width} ${height} rounded-md flex justify-center items-center`}
+      className={`${bgColor} ${textColor} ${width} ${height} ${fontSize} ${borderColor} cursor-pointer disabled:cursor-not-allowed border rounded-md flex justify-center items-center disabled:bg-gray disabled:opacity-50 disabled:text-black disabled:border-black`}
       type={type}
+      disabled={isDisabled}
     >
       {children}
     </button>
