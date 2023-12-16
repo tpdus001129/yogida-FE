@@ -6,6 +6,7 @@ import Comments from '../../components/Mypage/Comments';
 import Places from '../../components/Mypage/Places';
 import Bookmarks from '../../components/Mypage/Bookmarks';
 import Profile from '../../components/Mypage/Profile';
+import { IoLogOutOutline } from 'react-icons/io5';
 
 const TABS = [
   {
@@ -39,6 +40,10 @@ export default function Mypage() {
     <>
       <section className="top-0">
         <div className="h-header px-[23px] flex items-center justify-end text-[14px] text-black">
+          <div className="flex gap-[1px] items-center cursor-pointer">
+            <button>로그아웃</button>
+            <IoLogOutOutline size={17} />
+          </div>
           <button onClick={() => setEditProfileMode((prev) => !prev)}>프로필 편집</button>
         </div>
         <div className="flex flex-col items-center justify-center h-[140px] ">
