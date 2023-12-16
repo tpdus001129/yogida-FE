@@ -15,7 +15,6 @@ export default function LoginWithEmailContainer() {
             <Input
               bgColor={'bg-input'}
               textColor={'text-darkgray'}
-              size={'full'}
               type={'email'}
               name={'email'}
               placeholder={'이메일 주소 입력'}
@@ -30,11 +29,10 @@ export default function LoginWithEmailContainer() {
               <Input
                 bgColor={'bg-input'}
                 textColor={'text-darkgray'}
-                size={'full'}
                 type={'password'}
                 name={'password'}
+                padding={'pr-9'}
                 placeholder={'비밀번호 입력'}
-                isPasswordInput={true}
               />
               <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
             </div>
@@ -47,7 +45,7 @@ export default function LoginWithEmailContainer() {
           </div>
         </div>
       </form>
-      <Button bgColor={'bg-primary'} textColor={'text-white'} size={'full'} type={'submit'}>
+      <Button type={'submit'}>
         <>로그인</>
       </Button>
       <p className="flex justify-center mt-4">
