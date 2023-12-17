@@ -2,6 +2,7 @@
   "posts": [
     {
       "id": 1,
+      "userId": "test1@test.com",
       "image": ["이미지1-1", "이미지1-2", "이미지1-3", "이미지1-4", "이미지1-5"],
       "place": "강릉",
       "title": "바다가 너무 예쁜 강릉~",
@@ -9,8 +10,12 @@
       "startDate": "2023년 12월 23일",
       "endDate": "2023년 12월 26일",
       "budget": 100000,
+      "peopleCount": 2,
+      "distances": "1000",
       "comment": 20,
-      "bookmark": true
+      "bookmark": true,
+      "reviewText": "정말 재밌었습니다~ 다른분들도 강릉에 꼭 가보세요!",
+      "isPublic": true
     },
     {
       "id": 2,
