@@ -5,6 +5,7 @@ import Button from '../components/commons/Button';
 import logo from '../assets/logo.png';
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function FindPassword() {
   const [minute] = useState('0');
@@ -53,9 +54,11 @@ export default function FindPassword() {
             </span>
           </div>
         </div>
-        <Button fontSize={'text-sm'} bgColor={'bg-white'} textColor={'text-primary'} borderColor={'border-primary'}>
-          인증번호 확인하기
-        </Button>
+        <Link to="/change-password">
+          <Button fontSize={'text-sm'} bgColor={'bg-white'} textColor={'text-primary'} borderColor={'border-primary'}>
+            인증번호 확인하기
+          </Button>
+        </Link>
       </div>
     </div>
   );
