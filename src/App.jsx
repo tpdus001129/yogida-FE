@@ -10,6 +10,7 @@ import Schedule from './components/Mypage/Schedule';
 import Signup from './pages/SignUp';
 import FindPassword from './pages/FindPassword';
 import CommentModal from './components/CommentModal/CommentModal';
+import Detail from './pages/Detail';
 import ChangePassword from './pages/ChangePassword';
 
 function App() {
@@ -17,18 +18,19 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Main />} />
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="*" element={<Notfound />} />
+          <Route path='/' element={<Main />} />
+          <Route path='/mypage' element={<Mypage />} />
+          <Route path='*' element={<Notfound />} />
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/filter" element={<Filter />} />
-        <Route path="/schedule" element={<Schedule />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/find-password" element={<FindPassword />} />
-        <Route path="/change-password" element={<ChangePassword />} />
-        <Route path="/comment-modal" element={<CommentModal />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/search' element={<Search />} />
+        <Route path='/filter' element={<Filter />} />
+        <Route path='/schedule' element={<Schedule />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/find-password' element={<FindPassword />} />
+        <Route path='/detail' element={<Detail />} />
+        <Route path='/change-password' element={<ChangePassword />} />
+        <Route path='/comment-modal' element={<CommentModal />} />
       </Routes>
     </BrowserRouter>
   );
