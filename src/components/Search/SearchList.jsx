@@ -10,7 +10,7 @@ export default function SearchList() {
             <IoClose />
           </button>
         </div>
-        <hr className="w-full absolute bottom-0 border-[#848484]" />
+        <hr className="w-full absolute bottom-0 border-gray-1" />
       </div>
       <div className="relative">
         <div className="w-full h-[52px] flex justify-between items-center px-[24px]">
@@ -19,7 +19,7 @@ export default function SearchList() {
             <IoClose />
           </button>
         </div>
-        <hr className="w-full absolute bottom-0 border-[#848484]" />
+        <hr className="w-full absolute bottom-0 border-gray-1" />
       </div>
     </div>
   );

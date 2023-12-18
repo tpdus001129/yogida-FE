@@ -35,7 +35,7 @@ export default function Signup() {
             </label>
             <div className="relative">
               <Input type={'password'} placeholder={'비밀번호 입력'} name={'password'} padding={'pr-9'} />
-              <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
+              <IoEye className="text-gray-1 absolute scale-150 right-3 top-3.5" />
             </div>
           </div>
           <div className="flex flex-col">
@@ -44,7 +44,7 @@ export default function Signup() {
             </label>
             <div className="relative">
               <Input type={'password'} placeholder={'확인용 비밀번호 입력'} name={'password-check'} padding={'pr-9'} />
-              <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
+              <IoEye className="text-gray-1 absolute scale-150 right-3 top-3.5" />
             </div>
           </div>
           <div className="flex flex-col">

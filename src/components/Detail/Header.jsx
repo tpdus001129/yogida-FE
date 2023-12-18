@@ -34,11 +34,11 @@ export default function Header() {
           <IconButton iconName={'heart'} />
         </div>
       </div>
-      <div className="mx-[24px] text-[#ffffff]">
+      <div className="mx-[24px] text-white">
         <div className="flex justify-between mb-[6px] items-center">
           <p>ㅇㅇ님의 ㅇㅇ여행 일정입니다.</p>
           <div>
-            <IoLockClosed color="#FFDB5F" size="18" />
+            <IoLockClosed className="text-secondary" size="18" />
           </div>
         </div>
         <p className="text-[22px] font-bold mb-[6px]">여행 일지 공유 제목</p>

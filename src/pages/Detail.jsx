@@ -10,7 +10,7 @@ export default function Detail() {
   return (
     <div>
       <Header />
-      <div className="w-full h-[160px] bg-[#d9d9d9] mb-[22px]">지도지도</div>
+      <div className="w-full h-[160px] bg-gray-3 mb-[22px]">지도지도</div>
       {/* 추후 드래그로 바꿀 예정 : 스크롤로 임시 구현  */}
       <div className="overflow-scroll">
         <DayButton />
@@ -27,7 +27,7 @@ export default function Detail() {
         </p>
       </div>
       <div className="w-full flex justify-center mb-[60px]">
-        <Button bgColor="bg-[#FFDB5F]" textColor="text-[#606060]">
+        <Button bgColor="bg-secondary" textColor="text-gray-1">
           삭제하기
         </Button>
       </div>
