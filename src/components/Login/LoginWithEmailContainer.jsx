@@ -1,48 +1,51 @@
 import { IoEye } from 'react-icons/io5';
 import Input from '../commons/Input';
 import Button from '../commons/Button';
-import ConditionLabel from './ConditionLabel';
+import InputWithLabel from '../Input/InputWithLabel';
+import PasswordValidationContanier from '../commons/PasswordValidationContainer';
+import { useState } from 'react';
 
 export default function LoginWithEmailContainer() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   return (
     <>
       <form method="post">
         <div className="[&>:not(:first-child)]:mt-5">
-          <div className="flex flex-col">
-            <label className="text-sm font-bold mb-3" htmlFor="email">
-              이메일
-            </label>
-            <Input
-              bgColor={'bg-input'}
-              textColor={'text-darkgray'}
-              type={'email'}
-              name={'email'}
-              placeholder={'이메일 주소 입력'}
-            />
-            <span className="text-xs text-danger">이메일 형식에 맞춰서 작성해주세요.</span>
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm font-bold mb-3" htmlFor="password">
-              비밀번호
-            </label>
-            <div className="relative">
+          <InputWithLabel
+            labelText={'이메일'}
+            InputComponent={
               <Input
+                value={email}
                 bgColor={'bg-input'}
                 textColor={'text-darkgray'}
-                type={'password'}
-                name={'password'}
-                padding={'pr-9'}
-                placeholder={'비밀번호 입력'}
+                type={'email'}
+                name={'email'}
+                placeholder={'이메일 주소 입력'}
+                onChangeFunc={setEmail}
               />
-              <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
-            </div>
-            <div className="grid grid-cols-2 mb-5">
-              <ConditionLabel message={'영문자 포함'} isSatisfied={false} />
-              <ConditionLabel message={'숫자 포함'} isSatisfied={false} />
-              <ConditionLabel message={'특수문자 포함'} isSatisfied={false} />
-              <ConditionLabel message={'8자 이상'} isSatisfied={false} />
-            </div>
-          </div>
+            }
+            validateMessage={'이메일 형식에 맞춰서 작성해주세요.'}
+          />
+          <InputWithLabel
+            labelText={'비밀번호'}
+            InputComponent={
+              <div className="relative">
+                <Input
+                  value={password}
+                  bgColor={'bg-input'}
+                  textColor={'text-darkgray'}
+                  type={'password'}
+                  name={'password'}
+                  padding={'pr-9'}
+                  placeholder={'비밀번호 입력'}
+                  onChangeFunc={setPassword}
+                />
+                <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
+              </div>
+            }
+          />
+          <PasswordValidationContanier password={password} />
         </div>
       </form>
       <Button type={'submit'}>

@@ -10,6 +10,8 @@ Input.propTypes = {
   height: PropTypes.string,
   maxLength: PropTypes.number,
   placeholder: PropTypes.string,
+  value: PropTypes.string,
+  onChangeFunc: PropTypes.func,
 };
 
 Input.defaultProps = {
@@ -20,9 +22,22 @@ Input.defaultProps = {
   padding: '',
   width: 'w-[328px]',
   height: 'h-[44px]',
+  value: '',
 };
 
-export default function Input({ bgColor, textColor, type, name, padding, width, height, maxLength, placeholder }) {
+export default function Input({
+  bgColor,
+  textColor,
+  type,
+  name,
+  padding,
+  width,
+  height,
+  maxLength,
+  placeholder,
+  value,
+  onChangeFunc,
+}) {
   return (
     <input
       maxLength={maxLength}
@@ -31,6 +46,8 @@ export default function Input({ bgColor, textColor, type, name, padding, width, 
       name={name}
       id={name}
       placeholder={placeholder}
+      value={value}
+      onChange={(event) => onChangeFunc(event.target.value)}
     ></input>
   );
 }
