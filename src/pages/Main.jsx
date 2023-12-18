@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { IoOptionsOutline } from 'react-icons/io5';
 import { IoSearchOutline } from 'react-icons/io5';
 
+import Header from '../components/Main/Header';
 import PostItem from '../components/Main/PostItem';
 
 export default function Main() {
@@ -10,6 +11,7 @@ export default function Main() {
 
   return (
     <div className="w-full">
+      <Header />
       <div className="mx-[24px]">
         <div className="mx-auto">
           {/* 검색, 필터 */}
@@ -45,6 +47,7 @@ export default function Main() {
           <PostItem />
         </div>
       </div>
+      <div className="w-full h-[64px]"></div>
     </div>
   );
 }
