@@ -1,6 +1,6 @@
 import { IoSearchOutline } from 'react-icons/io5';
 
-import Header from '../components/Main/Header';
+import Header from '../components/Search/Header';
 import SearchList from '../components/Search/SearchList';
 
 export default function Search() {

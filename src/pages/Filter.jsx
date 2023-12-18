@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import Header from '../components/Main/Header';
+import Header from '../components/Search/Header';
 import Title from '../components/Filter/Title';
 import CheckBox from '../components/Filter/CheckBox';
 

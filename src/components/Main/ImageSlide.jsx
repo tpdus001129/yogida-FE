@@ -100,7 +100,7 @@ export default function ImageSlide({ images }) {
 
   return (
     <div className="w-[327px] h-[303px] rounded-[10px] mb-[14px] overflow-hidden relative">
-      <IoHeartOutline size="36" color="#ffffff" />
+      <IoHeartOutline size="36" color="#ffffff" className="absolute z-[15] top-[16px] right-[16px]" />
       <ul
         className={`flex transition-transform duration-300 ease-in-out`}
         onTouchEnd={onTouchEnd}
