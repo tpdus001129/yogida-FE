@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { IoChatbubbleOutline } from 'react-icons/io5';
 
 import { getPosts } from '../../services/posts';
 
 import Tag from '../commons/Tag';
-import ImageSlide from './ImageSlide';
+import ImageSlide from './imageSlide';
 
 export default function PostItem() {
   const [data, setData] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     getPosts()
@@ -25,7 +23,7 @@ export default function PostItem() {
   return (
     <>
       {data.map((item) => (
-        <div key={item.id} onClick={() => navigate('/detail')}>
+        <div key={item.id}>
           <div className="pb-[20px]">
             <ImageSlide images={item.image} />
             <div className="flex justify-between">
