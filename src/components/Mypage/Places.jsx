@@ -20,7 +20,7 @@ export default function Places() {
       <div className="flex items-center justify-between mb-[20px]">
         <div className="w-fit flex items-center gap-[8px]">
           <label htmlFor="delete" className="cursor-pointer">
-            <IoCheckmarkCircle color="#D9D9D9" size={20} />
+            <IoCheckmarkCircle className="text-gray-3" size={20} />
           </label>
           <input type="checkbox" name="delete" id="delete" className="hidden" />
           <label htmlFor="delete" className="text-[14px] cursor-pointer font-medium">
@@ -32,7 +32,7 @@ export default function Places() {
       {/* Delete All Compoenent */}
 
       {/* line */}
-      <div className="border-b border-[#F5F5F5] mb-[20px]"></div>
+      <div className="border-b border-gray-4 mb-[20px]"></div>
       {/* line */}
 
       <div className="flex flex-col gap-[20px]">
@@ -49,7 +49,7 @@ export default function Places() {
               </div>
               <span className="text-darkgray text-[14px] font-medium">관광명소</span>
             </div>
-            <IoTrashOutline size={16} color="#606060" />
+            <IoTrashOutline size={16} className="text-gray-1" />
           </div>
         </label>
 

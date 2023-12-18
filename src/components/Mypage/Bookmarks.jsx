@@ -12,7 +12,7 @@ export default function Bookmarks() {
           <strong className="text-black text-[14px]">내가 찜한 코스</strong>
           <IoHeartOutline size={13} />
         </div>
-        <span className="block text-darkgray text-[12px]">총 20건</span>
+        <span className="block text-gray-1 text-[12px]">총 20건</span>
       </div>
       {/* Mypage Inner Title Compoenent */}
 
@@ -20,7 +20,7 @@ export default function Bookmarks() {
       <div className="flex items-center justify-between mb-[20px]">
         <div className="w-fit flex items-center gap-[8px]">
           <label htmlFor="delete" className="cursor-pointer">
-            <IoCheckmarkCircle color="#D9D9D9" size={20} />
+            <IoCheckmarkCircle className="text-gray-3" size={20} />
           </label>
           <input type="checkbox" name="delete" id="delete" className="hidden" />
           <label htmlFor="delete" className="text-[14px] cursor-pointer font-medium">
@@ -32,7 +32,7 @@ export default function Bookmarks() {
       {/* Delete All Compoenent */}
 
       {/* line */}
-      <div className="border-b border-[#F5F5F5] mb-[20px]"></div>
+      <div className="border-b border-gray-4 mb-[20px]"></div>
       {/* line */}
 
       <div className="flex flex-col gap-[20px]">
@@ -47,9 +47,9 @@ export default function Bookmarks() {
               <div className="flex items-center">
                 <strong className=" block text-black text-[14px] truncate">강릉 여행</strong>
               </div>
-              <span className="text-darkgray text-[14px] font-medium">관광명소</span>
+              <span className="text-gray-1 text-[14px] font-medium">관광명소</span>
             </div>
-            <IoTrashOutline size={16} color="#606060" />
+            <IoTrashOutline size={16} className="text-gray-1" />
           </div>
         </label>
 

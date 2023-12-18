@@ -10,10 +10,10 @@ export default function Input({ className }) {
         <input
           id="commentInput"
           placeholder="댓글을 작성해보세요."
-          className="w-full h-[48px] bg-[#F4F4F4] focus:outline-none rounded-[24px] pl-[20px] pr-[44px]"
+          className="w-full h-[48px] bg-gray-3 bg-opacity-30 focus:outline-none rounded-[24px] pl-[20px] pr-[44px]"
         />
         <button type="submit" className="absolute right-0">
-          <IoArrowUpCircle color="#589BF7" size="40px" />
+          <IoArrowUpCircle className="text-primary" size="40px" />
         </button>
       </form>
     </div>

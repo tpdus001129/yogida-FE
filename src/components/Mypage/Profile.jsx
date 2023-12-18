@@ -18,7 +18,7 @@ export default function Profile({ setEditProfileMode }) {
 
   return (
     <div className="flex flex-col pb-[20px] h-screen items-center">
-      <section className="w-full top-0 border-[#E8E8E8] border-b-[1px]">
+      <section className="w-full top-0 border-gray-4 border-b-[1px]">
         <header className="w-full h-header bg-white text-center flex items-center">
           <IoChevronBack
             size={32}
@@ -39,7 +39,7 @@ export default function Profile({ setEditProfileMode }) {
             type="email"
             name="email"
             id="email"
-            className="w-full border-b border-[#E8E8E8] focus:outline-none p-[5px] text-[14px] font-medium"
+            className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"
           />
         </label>
         <label htmlFor="email" className="text-[14px] font-bold flex items-center">
@@ -48,7 +48,7 @@ export default function Profile({ setEditProfileMode }) {
             type="name"
             name="name"
             id="name"
-            className="w-full border-b border-[#E8E8E8] focus:outline-none p-[5px] text-[14px] font-medium"
+            className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"
           />
         </label>
         <label htmlFor="email" className="text-[14px] font-bold flex items-center">
@@ -57,7 +57,7 @@ export default function Profile({ setEditProfileMode }) {
             type="password"
             name="password"
             id="password"
-            className="w-full border-b border-[#E8E8E8] focus:outline-none p-[5px] text-[14px] font-medium"
+            className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"
           />
         </label>
         <label htmlFor="email" className="text-[14px] font-bold flex items-center">
@@ -66,7 +66,7 @@ export default function Profile({ setEditProfileMode }) {
             type="password-confirm"
             name="password-confirm"
             id="password-confirm"
-            className="w-full border-b border-[#E8E8E8] focus:outline-none p-[5px] text-[14px] font-medium"
+            className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"
           />
         </label>
       </div>
@@ -74,7 +74,7 @@ export default function Profile({ setEditProfileMode }) {
         <Button bgColor={'bg-primary'} textColor={'text-white'} size={'full'}>
           <span className="font-bold text-[14px]">회원 정보 수정</span>
         </Button>
-        <Button bgColor={'bg-[#FFDB5F]'} textColor={'text-darkgray'} size={'full'}>
+        <Button bgColor={'bg-secondary'} textColor={'text-gray-1'} size={'full'}>
           <span className="font-bold text-[14px]">탈퇴하기</span>
         </Button>
       </div>
