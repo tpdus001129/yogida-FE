@@ -1,24 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import logo from '../../assets/logo.png';
 
-import { IoClose } from 'react-icons/io5';
-
-export default function Header({ title }) {
-  const navigate = useNavigate();
-
+export default function Header() {
   return (
-    <div className="w-full h-[56px] flex items-center justify-center px-[24px]">
-      <p className="w-full h-full flex items-center justify-center">{title}</p>
-      <IoClose
-        size="24px"
-        onClick={() => {
-          navigate('/');
-        }}
-      />
+    <div className="w-full h-[64px] flex justify-center items-center">
+      <img src={logo} alt="여기다" className="w-[30px]" />
     </div>
   );
 }
-
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
-};
