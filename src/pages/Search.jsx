@@ -10,7 +10,7 @@ export default function Search() {
       {/* 검색 */}
       <form className="w-full h-[74px] flex relative items-center px-[24px]">
         <input
-          className="w-full h-[48px] pl-[20px] rounded-[24px] focus:outline-none bg-[#F4F4F4]"
+          className="w-full h-[48px] pl-[20px] rounded-[24px] focus:outline-none bg-gray-3 opacity-30"
           type="text"
           placeholder="지역 이름으로 검색해보세요."
         />
@@ -22,10 +22,10 @@ export default function Search() {
       <div className="relative">
         <div className="w-full h-[52px] flex justify-between items-center px-[24px]">
           <p className="font-bold">최근 검색어</p>
-          <button className="text-[14px] text-[#848484]">전체삭제</button>
+          <button className="text-[14px] text-gary-1">전체삭제</button>
         </div>
         <hr className="w-full absolute top-0 border-primary" />
-        <hr className="w-full absolute bottom-0 border-[#848484]" />
+        <hr className="w-full absolute bottom-0 border-gray-1" />
       </div>
       {/* 검색어 목록 */}
       <SearchList />

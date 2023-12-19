@@ -7,13 +7,13 @@ import { Link } from 'react-router-dom';
 export default function Posts() {
   return (
     <>
-      <div className="bg-[#F2F4F8] py-[13px] px-[16px] rounded-[4px] flex gap-[10px] items-center mb-[24px] cursor-pointer">
+      <div className="bg-gray-4 py-[13px] px-[16px] rounded-[4px] flex gap-[10px] items-center mb-[24px] cursor-pointer">
         <button className="w-[36px] h-[36px] bg-primary rounded-full flex items-center justify-center">
-          <IoAdd color="#fff" size={23} />
+          <IoAdd className="text-white" size={23} />
         </button>
         <Link to="/schedule" className="w-[80%]">
           <strong className="text-black text-[12px]">여행 일정 만들기</strong>
-          <span className="block text-darkgray text-[10px]">새로운 여행을 떠나보세요.</span>
+          <span className="block text-gray-1 text-[10px]">새로운 여행을 떠나보세요.</span>
         </Link>
       </div>
       {/* Mypage Inner Title Compoenent */}
@@ -21,7 +21,7 @@ export default function Posts() {
         <div className="flex items-center justify-center gap-[4px]">
           <strong className="text-black text-[14px]">지난 여행</strong>
         </div>
-        <span className="block text-darkgray text-[12px]">총 3건</span>
+        <span className="block text-gray-1 text-[12px]">총 3건</span>
       </div>
       {/* Mypage Inner Title Compoenent */}
 
@@ -34,7 +34,7 @@ export default function Posts() {
               <strong className=" block text-black text-[14px] truncate">제목제목제목제목제목제목제목제목제목</strong>
               <IoLockClosedOutline size={15} />
             </div>
-            <span className="text-darkgray text-[14px] font-medium">2023.05.24 ~ 05.28</span>
+            <span className="text-gray-1 text-[14px] font-medium">2023.05.24 ~ 05.28</span>
           </div>
           <IoEllipsisHorizontalSharp size={25} />
         </div>
@@ -46,7 +46,7 @@ export default function Posts() {
               <strong className=" block text-black text-[14px] truncate">제목제목제목제목제목제목제목제목제목</strong>
               <IoLockClosedOutline size={15} />
             </div>
-            <span className="text-darkgray text-[14px]">2023.05.24 ~ 05.28</span>
+            <span className="text-gray-1 text-[14px]">2023.05.24 ~ 05.28</span>
           </div>
           <IoEllipsisHorizontalSharp size={25} />
         </div>
@@ -57,7 +57,7 @@ export default function Posts() {
               <strong className=" block text-black text-[14px] truncate">제목제목제목제목제목제목제목제목제목</strong>
               <IoLockClosedOutline size={15} />
             </div>
-            <span className="text-darkgray text-[14px]">2023.05.24 ~ 05.28</span>
+            <span className="text-gray-1 text-[14px]">2023.05.24 ~ 05.28</span>
           </div>
           <IoEllipsisHorizontalSharp size={25} />
         </div>
@@ -68,7 +68,7 @@ export default function Posts() {
               <strong className=" block text-black text-[14px] truncate">제목제목제목제목제목제목제목제목제목</strong>
               <IoLockClosedOutline size={15} />
             </div>
-            <span className="text-darkgray text-[14px]">2023.05.24 ~ 05.28</span>
+            <span className="text-gray-1 text-[14px]">2023.05.24 ~ 05.28</span>
           </div>
           <IoEllipsisHorizontalSharp size={25} />
         </div>

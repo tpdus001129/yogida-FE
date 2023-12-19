@@ -15,7 +15,7 @@ export default function DayButton() {
         <button
           key={day}
           className={`w-[74px] h-[36px] rounded-full ${
-            day === selectedDay ? 'bg-primary text-[#ffffff]' : 'bg-[#ffffff] border border-primary'
+            day === selectedDay ? 'bg-primary text-white' : 'bg-white border border-primary'
           } flex-shrink-0 flex justify-center items-center text-[14px] font-bold mr-[9px]`}
           onClick={() => handleButtonClick(day)}
         >

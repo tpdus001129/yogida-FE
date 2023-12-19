@@ -39,10 +39,10 @@ export default function PostItem() {
             <div>
               <Tag tags={item.tag} />
             </div>
-            <span className="text-darkgray mb-[4px]">
+            <span className="text-gray-1 mb-[4px]">
               일정 {item.startDate.slice(6)} ~ {item.endDate.slice(6)}
             </span>
-            <p className="text-darkgray">총 예산 {item.budget}원</p>
+            <p className="text-gray-1">총 예산 {item.budget}원</p>
           </div>
         </div>
       ))}

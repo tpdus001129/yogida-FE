@@ -26,12 +26,12 @@ export default function FindPassword() {
           </label>
           <Input
             bgColor={'bg-input'}
-            textColor={'text-darkgray'}
+            textColor={'text-gray-1'}
             type={'email'}
             name={'email'}
             placeholder={'이메일 주소 입력'}
           />
-          <p className="text-xs text-danger">이메일 형식에 맞춰서 작성해주세요.</p>
+          <p className="text-xs text-red">이메일 형식에 맞춰서 작성해주세요.</p>
         </div>
         <Button fontSize={'text-sm'} bgColor={'bg-white'} textColor={'text-primary'} borderColor={'border-primary'}>
           이메일 인증하기
@@ -44,12 +44,12 @@ export default function FindPassword() {
             <Input
               width={'w-64'}
               bgColor={'bg-input'}
-              textColor={'text-darkgray'}
+              textColor={'text-gray-1'}
               name={'verification-code'}
               placeholder={'인증번호 입력'}
               maxLength={6}
             />
-            <span className=" text-danger inline-block grow self-center text-center">
+            <span className=" text-red inline-block grow self-center text-center">
               {minute}:{second.padStart(2, '0')}
             </span>
           </div>

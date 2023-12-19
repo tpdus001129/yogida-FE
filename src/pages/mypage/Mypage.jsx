@@ -58,7 +58,7 @@ export default function Mypage() {
               key={tab.name}
               className={
                 'border-b flex-1 text-center text-[12px] font-bold pb-[16px] cursor-pointer ' +
-                (currentTab === index ? 'border-primary border-b-4 text-black' : ' text-gray')
+                (currentTab === index ? 'border-primary border-b-4 text-black' : ' text-gray-3')
               }
               onClick={() => handleTabClick(index)}
             >
