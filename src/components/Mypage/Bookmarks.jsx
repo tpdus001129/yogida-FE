@@ -27,7 +27,7 @@ export default function Bookmarks() {
             전체 선택(1/20)
           </label>
         </div>
-        <button className="text-[14px] font-medium">장소 삭제</button>
+        <button className="text-[14px] font-medium">찜 삭제</button>
       </div>
       {/* Delete All Compoenent */}
 

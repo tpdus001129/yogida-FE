@@ -39,7 +39,7 @@ export default function Mypage() {
   return (
     <>
       <section className="top-0">
-        <div className="h-header px-[23px] flex items-center justify-end text-[14px] text-black">
+        <div className="h-header px-[23px] flex items-center justify-between text-[14px] text-black">
           <div className="flex gap-[1px] items-center cursor-pointer">
             <button>로그아웃</button>
             <IoLogOutOutline size={17} />
