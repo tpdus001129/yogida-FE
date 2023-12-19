@@ -11,6 +11,7 @@ import Signup from './pages/SignUp';
 import FindPassword from './pages/FindPassword';
 import CommentModal from './components/CommentModal/CommentModal';
 import ChangePassword from './pages/ChangePassword';
+import Setup from './pages/Setup';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/find-password" element={<FindPassword />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/comment-modal" element={<CommentModal />} />
+        <Route path="/setup" element={<Setup />} />
       </Routes>
     </BrowserRouter>
   );
