@@ -3,16 +3,15 @@ import { PASSWORD_VALIDATION_CONDITION } from '../../constants/passwordValidatio
 
 import PropTypes from 'prop-types';
 
-PasswordValidationContanier.propTypes = {
+PasswordValidationContainer.propTypes = {
   password: PropTypes.string.isRequired,
 };
 
-PasswordValidationContanier.defaultProps = {
+PasswordValidationContainer.defaultProps = {
   password: '',
 };
 
-export default function PasswordValidationContanier({ password }) {
-  console.log(`password is ${password}`);
+export default function PasswordValidationContainer({ password }) {
   return (
     <div className="grid grid-cols-2 mb-5">
       {PASSWORD_VALIDATION_CONDITION.map((condition) => {

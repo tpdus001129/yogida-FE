@@ -18,7 +18,7 @@ export default function IconButton({ iconName }) {
       case 'prev':
         return <IoChevronBackOutline size="25" />;
       case 'heart':
-        return isHeartClicked ? <IoHeartSharp size="25" color="#FB6363" /> : <IoHeartOutline size="25" />;
+        return isHeartClicked ? <IoHeartSharp size="25" className="text-red" /> : <IoHeartOutline size="25" />;
       case 'comment':
         return <IoChatbubbleOutline size="22" />;
       case 'share':
@@ -54,7 +54,7 @@ export default function IconButton({ iconName }) {
 
   return (
     <button
-      className="w-[36px] h-[36px] rounded-full bg-[#ffffff] flex justify-center items-center"
+      className="w-[36px] h-[36px] rounded-full bg-white flex justify-center items-center"
       onClick={onClickHandler}
     >
       {selectedIcon}

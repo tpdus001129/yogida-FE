@@ -100,7 +100,7 @@ export default function ImageSlide({ images }) {
 
   return (
     <div className="w-[327px] h-[303px] rounded-[10px] mb-[14px] overflow-hidden relative">
-      <IoHeartOutline size="36" color="#ffffff" className="absolute z-[15] top-[16px] right-[16px]" />
+      <IoHeartOutline size="36" color="#ffffff" className="absolute z-[10] top-[16px] right-[16px]" />
       <ul
         className={`flex transition-transform duration-300 ease-in-out`}
         onTouchEnd={onTouchEnd}
@@ -110,7 +110,7 @@ export default function ImageSlide({ images }) {
         style={{ transform: `translateX(${transformValue}px)`, width: widthSize(images) }}
       >
         {images.map((image, index) => (
-          <li key={index} className="w-[327px] h-[303px] bg-[#D9D9D9]">
+          <li key={index} className="w-[327px] h-[303px] bg-gray-3">
             {image}
           </li>
         ))}
@@ -120,8 +120,7 @@ export default function ImageSlide({ images }) {
           <IoEllipseSharp
             key={index}
             size="8"
-            color={currentPage === index ? '#589BF7' : '#ffffff'}
-            className="inline mx-1"
+            className={` ${currentPage === index ? 'text-primary' : 'text-white'} inline mx-1`}
           />
         ))}
       </div>

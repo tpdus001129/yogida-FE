@@ -12,7 +12,7 @@ export default function CheckBox({ tag, checked, setChecked }) {
         <span
           key={index}
           className={`${
-            checked ? 'bg-[#CDE1FD] text-primary' : 'bg-[#F4F4F4] text-[#D9D9D9]'
+            checked ? 'bg-primary bg-opacity-30 text-primary' : 'bg-gray-3 bg-opacity-30 text-gray-3'
           } rounded-[20px] cursor-pointer px-[16px] text-[14px] font-bold mr-[8px] leading-[46px] py-[10px]`}
           onClick={onClickHandler}
         >

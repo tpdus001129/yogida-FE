@@ -2,7 +2,7 @@ import { IoEye } from 'react-icons/io5';
 import Input from '../commons/Input';
 import Button from '../commons/Button';
 import InputWithLabel from '../Input/InputWithLabel';
-import PasswordValidationContanier from '../commons/PasswordValidationContainer';
+import PasswordValidationContainer from '../commons/PasswordValidationContainer';
 import { useState } from 'react';
 
 export default function LoginWithEmailContainer() {
@@ -45,7 +45,7 @@ export default function LoginWithEmailContainer() {
               </div>
             }
           />
-          <PasswordValidationContanier password={password} />
+          <PasswordValidationContainer password={password} />
         </div>
       </form>
       <Button type={'submit'}>

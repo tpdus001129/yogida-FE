@@ -23,7 +23,7 @@ const TABS = [
 
 export default function Navbar() {
   return (
-    <nav className="border-t-[1px] border-solid border-gray w-full fixed bottom-0 left-0 h-navbar bg-white">
+    <nav className="border-t-[1px] border-solid border-gray w-full fixed bottom-0 left-0 h-navbar bg-white z-10">
       <ul className="flex items-center h-full w-full px-[20px] py-[12px]">
         {TABS.map((tab) => (
           <li key={tab.name} className="flex-1 h-full">

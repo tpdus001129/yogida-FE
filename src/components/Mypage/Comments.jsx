@@ -14,7 +14,7 @@ export default function Comments() {
       {/* Mypage Inner Title Compoenent */}
 
       {/* line */}
-      <div className="border-b border-[#F5F5F5] mb-[20px]"></div>
+      <div className="border-b border-gray-4 mb-[20px]"></div>
       {/* line */}
 
       <div className="flex flex-col gap-[20px]">
@@ -26,7 +26,7 @@ export default function Comments() {
               <span className="block text-black text-[14px] truncate w-[90%]">
                 안목해변이 너무 예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요!!!!
               </span>
-              <IoTrashOutline size={16} color="#606060" />
+              <IoTrashOutline size={16} className="text-gray-1" />
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@ export default function Comments() {
               <span className="block text-black text-[14px] truncate w-[90%]">
                 안목해변이 너무 예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요!!!!
               </span>
-              <IoTrashOutline size={16} color="#606060" />
+              <IoTrashOutline size={16} className="text-gray-1" />
             </div>
           </div>
         </div>
@@ -49,7 +49,7 @@ export default function Comments() {
               <span className="block text-black text-[14px] truncate w-[90%]">
                 안목해변이 너무 예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요!!!!
               </span>
-              <IoTrashOutline size={16} color="#606060" />
+              <IoTrashOutline size={16} className="text-gray-1" />
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@ export default function Comments() {
               <span className="block text-black text-[14px] truncate w-[90%]">
                 안목해변이 너무 예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요예쁘네요!!!!
               </span>
-              <IoTrashOutline size={16} color="#606060" />
+              <IoTrashOutline size={16} className="text-gray-1" />
             </div>
           </div>
         </div>
