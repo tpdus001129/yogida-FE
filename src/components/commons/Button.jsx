@@ -36,7 +36,7 @@ export default function Button({
 }) {
   return (
     <button
-      className={`${bgColor} ${textColor} ${width} ${height} ${fontSize} ${borderColor} cursor-pointer disabled:cursor-not-allowed border rounded-md flex justify-center items-center disabled:bg-gray disabled:opacity-50 disabled:text-black disabled:border-black`}
+      className={`${bgColor} ${textColor} ${width} ${height} ${fontSize} ${borderColor} cursor-pointer disabled:cursor-not-allowed border rounded-md flex justify-center items-center disabled:bg-gray-2 disabled:opacity-50 disabled:text-black disabled:border-black`}
       type={type}
       disabled={isDisabled}
     >

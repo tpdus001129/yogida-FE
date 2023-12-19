@@ -35,9 +35,9 @@ export default function ChangePassword() {
             </label>
             <div className="relative">
               <Input type={'password'} placeholder={'확인용 비밀번호 입력'} name={'password-check'} padding={'pr-9'} />
-              <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
+              <IoEye className="text-gray-1 absolute scale-150 right-3 top-3.5" />
             </div>
-            <p className="text-xs text-danger">비밀번호가 일치하지 않습니다.</p>
+            <p className="text-xs text-red">비밀번호가 일치하지 않습니다.</p>
           </div>
         </div>
         <Button>비밀번호 변경</Button>

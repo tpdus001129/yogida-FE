@@ -14,12 +14,12 @@ export default function LoginWithEmailContainer() {
             </label>
             <Input
               bgColor={'bg-input'}
-              textColor={'text-darkgray'}
+              textColor={'text-gray-1'}
               type={'email'}
               name={'email'}
               placeholder={'이메일 주소 입력'}
             />
-            <span className="text-xs text-danger">이메일 형식에 맞춰서 작성해주세요.</span>
+            <span className="text-xs text-red">이메일 형식에 맞춰서 작성해주세요.</span>
           </div>
           <div className="flex flex-col">
             <label className="text-sm font-bold mb-3" htmlFor="password">
@@ -28,13 +28,13 @@ export default function LoginWithEmailContainer() {
             <div className="relative">
               <Input
                 bgColor={'bg-input'}
-                textColor={'text-darkgray'}
+                textColor={'text-gray-1'}
                 type={'password'}
                 name={'password'}
                 padding={'pr-9'}
                 placeholder={'비밀번호 입력'}
               />
-              <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
+              <IoEye className="text-gray-1 absolute scale-150 right-3 top-3.5" />
             </div>
             <div className="grid grid-cols-2 mb-5">
               <ConditionLabel message={'영문자 포함'} isSatisfied={false} />
