@@ -10,6 +10,7 @@ import { IoReloadOutline } from 'react-icons/io5';
 
 export default function Filter() {
   const [data, setData] = useState([]);
+  const close = true;
 
   const [checked, setChecked] = useState(false);
 
@@ -29,7 +30,7 @@ export default function Filter() {
 
   return (
     <div>
-      <Header title={'필터'} />
+      <Header title={'필터'} close={close} />
       {/* 필터초기화 */}
       <div className="mx-[24px]">
         <div className="flex justify-end">
