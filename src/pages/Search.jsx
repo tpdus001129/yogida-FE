@@ -4,9 +4,11 @@ import Header from '../components/Search/Header';
 import SearchList from '../components/Search/SearchList';
 
 export default function Search() {
+  const close = true;
+
   return (
     <div className="w-full">
-      <Header title={'검색'} />
+      <Header title={'검색'} close={close} />
       {/* 검색 */}
       <form className="w-full h-[74px] flex relative items-center px-[24px]">
         <input

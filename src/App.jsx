@@ -12,6 +12,7 @@ import FindPassword from './pages/FindPassword';
 import CommentModal from './components/CommentModal/CommentModal';
 import Detail from './pages/Detail';
 import ChangePassword from './pages/ChangePassword';
+import Notification from './pages/Notification';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="*" element={<Notfound />} />
+          <Route path="/notification" element={<Notification />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/search" element={<Search />} />
