@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
 
-import { IoHeartOutline } from 'react-icons/io5';
-import { IoEllipseSharp } from 'react-icons/io5';
+import { IoEllipseSharp, IoHeartOutline, IoHeartSharp } from 'react-icons/io5';
 
 export default function ImageSlide({ images }) {
   // 데스크탑 드래그
@@ -98,9 +97,21 @@ export default function ImageSlide({ images }) {
     return `${images.length * 100}%`;
   }
 
+  const [isHeartClicked, setIsHeartClicked] = useState(false);
+  function onClickHandler(e) {
+    e.stopPropagation();
+    setIsHeartClicked((prev) => !prev);
+  }
+
   return (
     <div className="w-[327px] h-[303px] rounded-[10px] mb-[14px] overflow-hidden relative">
-      <IoHeartOutline size="36" color="#ffffff" className="absolute z-[10] top-[16px] right-[16px]" />
+      <button onClick={onClickHandler} className="absolute z-[10] top-[16px] right-[16px]">
+        {isHeartClicked ? (
+          <IoHeartSharp size="36" className="text-red" />
+        ) : (
+          <IoHeartOutline size="36" color="#ffffff" />
+        )}
+      </button>
       <ul
         className={`flex transition-transform duration-300 ease-in-out`}
         onTouchEnd={onTouchEnd}
