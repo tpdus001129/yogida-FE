@@ -124,7 +124,7 @@ export default function Schedule() {
         <ScheduleItem icon={<IoMap color="#589BF7" size={20} />} title="코스 등록" id="map"></ScheduleItem>
       </ul>
 
-      <div className="overflow-scroll mb-[30px]">
+      <div className="overflow-scroll mb-[30px] scrollbar-hide">
         <DayButton />
       </div>
 

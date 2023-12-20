@@ -6,14 +6,14 @@ export default function CheckBox({ tag, checked, setChecked }) {
   }
 
   return (
-    <div className="items-center">
+    <div className="items-center flex flex-wrap gap-2">
       {/* 기본상태 */}
       {tag.map((item, index) => (
         <span
           key={index}
           className={`${
             checked ? 'bg-primary bg-opacity-30 text-primary' : 'bg-gray-3 bg-opacity-30 text-gray-3'
-          } rounded-[20px] cursor-pointer px-[16px] text-[14px] font-bold mr-[8px] leading-[46px] py-[10px]`}
+          } rounded-[20px] cursor-pointer px-[16px] text-[14px] font-bold py-[10px] inline-block`}
           onClick={onClickHandler}
         >
           <input type="checkbox" className="hidden" />

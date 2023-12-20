@@ -12,7 +12,7 @@ export default function Detail() {
       <Header />
       <div className="w-full h-[160px] bg-gray-3 mb-[22px]">지도지도</div>
       {/* 추후 드래그로 바꿀 예정 : 스크롤로 임시 구현  */}
-      <div className="overflow-scroll">
+      <div className="overflow-scroll scrollbar-hide">
         <DayButton />
       </div>
       <p className="text-center text-[14px] font-bold my-[26px]">day1 날짜</p>

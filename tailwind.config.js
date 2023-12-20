@@ -1,4 +1,5 @@
 import { HEADER_HEIGHT, MOBILE_MIN_WIDTH, NAVBAR_HEIGHT } from './src/constants';
+import scrollbar from 'tailwind-scrollbar-hide';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -33,5 +34,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [scrollbar],
 };
