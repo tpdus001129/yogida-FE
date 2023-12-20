@@ -27,7 +27,7 @@ const typeStyle = {
 const sizeStyle = {
   large: 'w-full',
   'large-medium': 'w-4/5',
-  medium: 'w-3/5',
+  medium: 'w-[64%]',
   'medium-small': 'w-2/5',
   small: 'w-1/5',
 };

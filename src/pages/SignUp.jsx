@@ -1,12 +1,12 @@
 import Header from '../components/Login/Header';
 import Button from '../components/commons/Button';
-import Input from '../components/commons/Input';
 import InputWithLabel from '../components/Input/InputWithLabel';
 
 import { useState, useMemo } from 'react';
 
 import { PASSWORD_VALIDATION_CONDITION } from '../constants/passwordValidationConditions';
 import InputPassword from '../components/Input/InputPassword';
+import InputWithCheckButton from '../components/Input/InputWithCheckButton';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
@@ -46,20 +46,16 @@ export default function Signup() {
           <InputWithLabel
             labelText={'이메일'}
             InputComponent={
-              <div className="flex flex-row justify-between">
-                <Input
-                  value={email}
-                  type={'default'}
-                  size={'medium'}
-                  inputType={'email'}
-                  name={'email'}
-                  placeholder={'이메일 주소 입력'}
-                  onChangeFunc={setEmail}
-                />
-                <Button type={'default'} size={'small'} text={'description'} isDisabled={email === ''}>
-                  인증번호 전송
-                </Button>
-              </div>
+              <InputWithCheckButton
+                value={email}
+                inputType={'email'}
+                name={'email'}
+                placeholder={'이메일 주소 입력'}
+                onChangeFunc={setEmail}
+                buttonType={'default'}
+                buttonChildren={'인증번호 전송'}
+                isButtonDisabled={email === ''}
+              />
             }
             validateMessage={'이메일 형식에 맞춰서 작성해주세요.'}
           />
@@ -78,24 +74,15 @@ export default function Signup() {
           <InputWithLabel
             labelText={'닉네임'}
             InputComponent={
-              <div className="flex flex-row justify-between">
-                <Input
-                  value={nickname}
-                  type={'default'}
-                  size={'medium'}
-                  placeholder={'닉네임 입력'}
-                  name={'nickname'}
-                  onChangeFunc={setNickname}
-                />
-                <Button
-                  type={'default'}
-                  size={'small'}
-                  text={'description'}
-                  isDisabled={checkNicknameMessage !== '' ? true : false}
-                >
-                  중복 확인
-                </Button>
-              </div>
+              <InputWithCheckButton
+                value={nickname}
+                name={'nickname'}
+                placeholder={'닉네임 입력'}
+                onChangeFunc={setNickname}
+                buttonType={'default'}
+                buttonChildren={'중복 확인'}
+                isButtonDisabled={checkNicknameMessage !== '' ? true : false}
+              />
             }
             validateMessage={checkNicknameMessage}
           />
