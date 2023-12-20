@@ -1,4 +1,3 @@
-import { IoEye } from 'react-icons/io5';
 import Header from '../components/Login/Header';
 import Button from '../components/commons/Button';
 import Input from '../components/commons/Input';
@@ -7,6 +6,7 @@ import InputWithLabel from '../components/Input/InputWithLabel';
 import { useState, useMemo } from 'react';
 
 import { PASSWORD_VALIDATION_CONDITION } from '../constants/passwordValidationConditions';
+import InputPassword from '../components/Input/InputPassword';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
@@ -57,14 +57,7 @@ export default function Signup() {
                   placeholder={'이메일 주소 입력'}
                   onChangeFunc={setEmail}
                 />
-                <Button
-                  width={'w-[100px]'}
-                  fontSize={'text-sm'}
-                  bgColor={'bg-white'}
-                  textColor={'text-primary'}
-                  borderColor={'border-primary'}
-                  isDisabled={true}
-                >
+                <Button type={'default'} size={'small'} text={'description'} isDisabled={email === ''}>
                   인증번호 전송
                 </Button>
               </div>
@@ -73,39 +66,13 @@ export default function Signup() {
           />
           <InputWithLabel
             labelText={'비밀번호'}
-            InputComponent={
-              <div className="relative">
-                <Input
-                  value={password}
-                  bgColor={'bg-input'}
-                  textColor={'text-darkgray'}
-                  type={'password'}
-                  name={'password'}
-                  padding={'pr-9'}
-                  placeholder={'비밀번호 입력'}
-                  onChangeFunc={setPassword}
-                />
-                <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
-              </div>
-            }
+            InputComponent={<InputPassword value={password} onChangeFunc={setPassword} placeholder={'비밀번호 입력'} />}
             validateMessage={passwordValidationMessage === '' ? '' : `필수 조건: ${passwordValidationMessage}`}
           />
           <InputWithLabel
             labelText={'비밀번호 확인'}
             InputComponent={
-              <div className="relative">
-                <Input
-                  value={checkPassword}
-                  bgColor={'bg-input'}
-                  textColor={'text-darkgray'}
-                  type={'password'}
-                  name={'check-password'}
-                  padding={'pr-9'}
-                  placeholder={'비밀번호 재입력'}
-                  onChangeFunc={setCheckPassword}
-                />
-                <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
-              </div>
+              <InputPassword value={checkPassword} onChangeFunc={setCheckPassword} placeholder={'비밀번호 재입력'} />
             }
             validateMessage={checkPasswordValidationMessage}
           />
@@ -121,11 +88,9 @@ export default function Signup() {
                   onChangeFunc={setNickname}
                 />
                 <Button
-                  width={'w-[100px]'}
-                  fontSize={'text-sm'}
-                  bgColor={'bg-white'}
-                  textColor={'text-primary'}
-                  borderColor={'border-primary'}
+                  type={'default'}
+                  size={'small'}
+                  text={'description'}
                   isDisabled={checkNicknameMessage !== '' ? true : false}
                 >
                   중복 확인
@@ -136,7 +101,9 @@ export default function Signup() {
           />
         </div>
         <div className="h-20 flex items-center">
-          <Button isDisabled={!isPasswordSatisfied}>회원가입</Button>
+          <Button type={'primary'} size={'large'} text={'bold'} isDisabled={!isPasswordSatisfied}>
+            회원가입
+          </Button>
         </div>
       </div>
     </div>

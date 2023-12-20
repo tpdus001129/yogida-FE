@@ -1,13 +1,12 @@
 import Header from '../components/Login/Header';
-import Input from '../components/commons/Input';
 import Button from '../components/commons/Button';
 import InputWithLabel from '../components/Input/InputWithLabel';
-import { IoEye } from 'react-icons/io5';
 
 import { useState, useMemo } from 'react';
 
 import logo from '../assets/logo.png';
 import { PASSWORD_VALIDATION_CONDITION } from '../constants/passwordValidationConditions';
+import InputPassword from '../components/Input/InputPassword';
 
 export default function ChangePassword() {
   const [password, setPassword] = useState('');
@@ -37,44 +36,20 @@ export default function ChangePassword() {
         <div className="py-10 [&>:not(:first-child)]:mt-5 flex flex-1 flex-col">
           <InputWithLabel
             labelText={'비밀번호'}
-            InputComponent={
-              <div className="relative">
-                <Input
-                  value={password}
-                  bgColor={'bg-input'}
-                  textColor={'text-darkgray'}
-                  type={'password'}
-                  name={'password'}
-                  padding={'pr-9'}
-                  placeholder={'비밀번호 입력'}
-                  onChangeFunc={setPassword}
-                />
-                <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
-              </div>
-            }
+            InputComponent={<InputPassword value={password} onChangeFunc={setPassword} placeholder={'비밀번호 입력'} />}
             validateMessage={passwordValidationMessage === '' ? '' : `필수 조건: ${passwordValidationMessage}`}
           />
           <InputWithLabel
             labelText={'비밀번호 확인'}
             InputComponent={
-              <div className="relative">
-                <Input
-                  value={checkPassword}
-                  bgColor={'bg-input'}
-                  textColor={'text-darkgray'}
-                  type={'password'}
-                  name={'check-password'}
-                  padding={'pr-9'}
-                  placeholder={'비밀번호 재입력'}
-                  onChangeFunc={setCheckPassword}
-                />
-                <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
-              </div>
+              <InputPassword value={checkPassword} onChangeFunc={setCheckPassword} placeholder={'비밀번호 재입력'} />
             }
             validateMessage={checkPasswordValidationMessage}
           />
         </div>
-        <Button>비밀번호 변경</Button>
+        <Button type={'default'} text={'bold'}>
+          비밀번호 변경
+        </Button>
       </div>
     </div>
   );

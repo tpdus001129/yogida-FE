@@ -21,21 +21,16 @@ export default function Setup() {
             </label>
             <div className="flex flex-row justify-between">
               <Input width={'w-[220px]'} type={'email'} name={'email'} placeholder={'이메일 주소 입력'} />
-              <Button
-                width={'w-[100px]'}
-                fontSize={'text-sm'}
-                bgColor={'bg-white'}
-                textColor={'text-primary'}
-                borderColor={'border-primary'}
-                isDisabled={true}
-              >
+              <Button type={'default'} size={'small'} text={'description'} isDisabled={true}>
                 인증번호 전송
               </Button>
             </div>
           </div>
         </div>
         <div>
-          <Button>프로필 설정 완료</Button>
+          <Button type={'primary'} text={'bold'}>
+            프로필 설정 완료
+          </Button>
         </div>
       </div>
     </div>

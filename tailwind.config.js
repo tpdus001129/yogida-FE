@@ -1,4 +1,4 @@
-import { HEADER_HEIGHT, MOBILE_MIN_WIDTH, NAVBAR_HEIGHT } from './src/constants';
+import { HEADER_HEIGHT, MOBILE_MIN_WIDTH, NAVBAR_HEIGHT, INPUT_HEIGHT, BUTTON_HEIGHT } from './src/constants';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -27,6 +27,8 @@ export default {
       height: {
         header: HEADER_HEIGHT,
         navbar: NAVBAR_HEIGHT,
+        input: INPUT_HEIGHT,
+        button: BUTTON_HEIGHT,
       },
       margin: {
         header: HEADER_HEIGHT,

@@ -17,7 +17,7 @@ export default function LoginWithEmailContainer() {
       .join(', ')}`;
   }, [password]);
   return (
-    <>
+    <div className="w-mobile p-6">
       <form method="post" className="py-10">
         <div className="[&>:not(:first-child)]:mt-5">
           <InputWithLabel
@@ -56,12 +56,12 @@ export default function LoginWithEmailContainer() {
           />
         </div>
       </form>
-      <Button type={'submit'}>
-        <>로그인</>
+      <Button type={'primary'} text={'bold'}>
+        로그인
       </Button>
       <p className="flex justify-center mt-4">
         <span className="text-xs text-black cursor-pointer">비밀번호가 생각나지 않나요?</span>
       </p>
-    </>
+    </div>
   );
 }

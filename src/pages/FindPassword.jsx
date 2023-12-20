@@ -35,7 +35,7 @@ export default function FindPassword() {
             }
             validateMessage={'이메일 형식에 맞춰서 작성해주세요.'}
           />
-          <Button fontSize={'text-sm'} bgColor={'bg-white'} textColor={'text-primary'} borderColor={'border-primary'}>
+          <Button type={'default'} text={'bold'}>
             이메일 인증하기
           </Button>
           <InputWithLabel
@@ -57,8 +57,8 @@ export default function FindPassword() {
             }
           />
         </div>
-        <Link to="/change-password">
-          <Button fontSize={'text-sm'} bgColor={'bg-white'} textColor={'text-primary'} borderColor={'border-primary'}>
+        <Link to="/change-password" className="w-full">
+          <Button type={'default'} text={'bold'}>
             인증번호 확인하기
           </Button>
         </Link>
