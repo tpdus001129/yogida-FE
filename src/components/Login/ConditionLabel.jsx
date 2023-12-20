@@ -6,10 +6,5 @@ ConditionLabel.propTypes = {
 };
 
 export default function ConditionLabel({ message, isSatisfied }) {
-  return (
-    <div className="flex flex-row items-center">
-      <span className={`w-2 h-2 rounded-full ${isSatisfied ? 'bg-primary' : 'bg-red'} mr-2`}></span>
-      <span className={`text-xs ${isSatisfied ? 'text-primary' : 'text-red'}`}>{message}</span>
-    </div>
-  );
+  return <span className={isSatisfied && 'hidden'}>{message}</span>;
 }

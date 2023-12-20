@@ -14,6 +14,7 @@ import Detail from './pages/Detail';
 import ChangePassword from './pages/ChangePassword';
 import Notification from './pages/Notification';
 import Map from './pages/Map';
+import Setup from './pages/Setup';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/comment-modal" element={<CommentModal />} />
         <Route path="/map" element={<Map />} />
+        <Route path="/setup" element={<Setup />} />
       </Routes>
     </BrowserRouter>
   );

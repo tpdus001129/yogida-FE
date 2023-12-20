@@ -1,43 +1,43 @@
 import PropTypes from 'prop-types';
 
 Button.propTypes = {
-  bgColor: PropTypes.string,
-  textColor: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string,
   type: PropTypes.string,
-  fontSize: PropTypes.string,
-  borderColor: PropTypes.string,
+  size: PropTypes.string,
+  text: PropTypes.string,
   isDisabled: PropTypes.bool,
   children: PropTypes.node,
 };
 
 Button.defaultProps = {
-  bgColor: 'bg-primary',
-  textColor: 'text-white',
-  width: 'w-[328px]',
-  height: 'h-[44px]',
-  type: 'button',
-  borderColor: 'border-transparent',
-  fontSize: 'text-base',
   isDisabled: false,
 };
 
-export default function Button({
-  bgColor,
-  textColor,
-  width,
-  height,
-  type,
-  borderColor,
-  fontSize,
-  isDisabled,
-  children,
-}) {
+const typeStyle = {
+  primary: 'bg-primary text-white border-transparent',
+  default: 'bg-white text-primary border-primary',
+  kakao: 'bg-kakaoyellow text-kakaoblack border-transparent',
+};
+
+const sizeStyle = {
+  large: 'w-full',
+  medium: 'w-2/3',
+  small: 'w-1/3',
+};
+
+const fontStyle = {
+  bold: 'text-base font-bold',
+  normal: 'text-base',
+  description: 'text-sm',
+};
+
+export default function Button({ type, size, text, isDisabled, children }) {
   return (
     <button
-      className={`${bgColor} ${textColor} ${width} ${height} ${fontSize} ${borderColor} cursor-pointer disabled:cursor-not-allowed border rounded-md flex justify-center items-center disabled:bg-gray-2 disabled:opacity-50 disabled:text-black disabled:border-black`}
-      type={type}
+      className={`${typeStyle[type] !== undefined ? typeStyle[type] : typeStyle['default']} ${
+        sizeStyle[size] !== undefined ? sizeStyle[size] : sizeStyle['large']
+      } ${
+        fontStyle[text] !== undefined ? fontStyle[text] : fontStyle['normal']
+      } h-button cursor-pointer disabled:cursor-not-allowed border rounded-md flex justify-center items-center disabled:bg-gray-2 disabled:opacity-50 disabled:text-black disabled:border-black`}
       disabled={isDisabled}
     >
       {children}
