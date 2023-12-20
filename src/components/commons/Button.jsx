@@ -16,6 +16,7 @@ const typeStyle = {
   primary: 'bg-primary text-white border-transparent',
   default: 'bg-white text-primary border-primary',
   kakao: 'bg-kakaoyellow text-kakaoblack border-transparent',
+  secondary: 'bg-secondary text-gray-1 border-transparent',
 };
 
 const sizeStyle = {
@@ -28,6 +29,7 @@ const fontStyle = {
   bold: 'text-base font-bold',
   normal: 'text-base',
   description: 'text-sm',
+  boldDescription: 'font-bold text-sm',
 };
 
 export default function Button({ type, size, text, isDisabled, children }) {

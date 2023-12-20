@@ -29,8 +29,8 @@ export default function Detail() {
           강릉 바다가 너무 예쁘네요~ 다음에 또 방문할 예정이랍니다. 특히 맛집은 꼭 가세요!!!!
         </p>
       </div>
-      <div className="w-full flex justify-center mb-[60px]">
-        <Button bgColor="bg-secondary" textColor="text-gray-1">
+      <div className="w-full flex justify-center mb-[60px] px-[24px]">
+        <Button type={'secondary'} text={'boldDescription'}>
           삭제하기
         </Button>
       </div>
