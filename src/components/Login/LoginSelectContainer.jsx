@@ -7,23 +7,25 @@ import { Link } from 'react-router-dom';
 
 export default function LoginSelectContainer() {
   return (
-    <div className="[&>:not(:first-child)]:mt-5 flex flex-col items-center">
-      <Link to="/setup">
-        <Button bgColor={'bg-kakaoyellow'} textColor={'text-kakaoblack'}>
+    <div className="w-mobile [&>:not(:first-child)]:mt-5 flex flex-col items-center py-10 px-6">
+      <Link to="/setup" className="w-full">
+        <Button type={'kakao'} size={'large'} text={'bold'}>
           <img src={kakao} className="box-content w-4 pr-2"></img>
           <span className="font-bold">카카오</span>로 로그인
         </Button>
       </Link>
-      <Link to="?type=email">
-        <Button>
+      <Link to="?type=email" className="w-full">
+        <Button type={'default'} size={'large'} text={'bold'}>
           <IoMail className="box-content pr-2" />
           <span className="font-bold">이메일</span>로 로그인
         </Button>
       </Link>
-      <Button>
-        <IoMail className="box-content pr-2" />
-        <span className="font-bold">이메일</span>로 회원가입
-      </Button>
+      <Link to="/signup" className="w-full">
+        <Button type={'default'} size={'large'} text={'bold'}>
+          <IoMail className="box-content pr-2" />
+          <span className="font-bold">이메일</span>로 회원가입
+        </Button>
+      </Link>
     </div>
   );
 }
