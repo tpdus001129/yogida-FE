@@ -2,6 +2,7 @@ import Header from '../components/Detail/Header';
 import DayButton from '../components/Detail/DayButton';
 import ContentItem from '../components/Detail/ContentItem';
 import Button from '../components/commons/Button';
+import CourseMap from '../components/KakaoMaps/CourseMap';
 
 export default function Detail() {
   const firstPlace = true;
@@ -10,15 +11,17 @@ export default function Detail() {
   return (
     <div>
       <Header />
-      <div className="w-full h-[160px] bg-gray-3 mb-[22px]">지도지도</div>
+      <div className="w-full h-[160px] mb-[22px]">
+        <CourseMap />
+      </div>
       {/* 추후 드래그로 바꿀 예정 : 스크롤로 임시 구현  */}
       <div className="overflow-scroll scrollbar-hide">
         <DayButton />
       </div>
       <p className="text-center text-[14px] font-bold my-[26px]">day1 날짜</p>
-      <ContentItem firstPlace={firstPlace} />
-      <ContentItem />
-      <ContentItem lastPlace={lastPlace} />
+      <ContentItem firstPlace={firstPlace} index={1} />
+      <ContentItem index={2} />
+      <ContentItem lastPlace={lastPlace} index={3} />
 
       <div className="mx-[24px] mb-[80px]">
         <p className="text-center text-[14px] font-bold mt-[60px] mb-[30px]">여행 한마디</p>

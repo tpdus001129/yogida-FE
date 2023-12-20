@@ -39,7 +39,7 @@ export default function IconButton({ iconName }) {
   function onClickHandler() {
     switch (iconName) {
       case 'prev':
-        navigate('/');
+        navigate(-1);
         break;
       case 'comment':
         navigate('/comment-modal');

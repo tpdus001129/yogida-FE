@@ -1,7 +1,6 @@
 import { IoSearchOutline } from 'react-icons/io5';
-
 import Header from '../components/Search/Header';
-import SearchList from '../components/Search/SearchList';
+import SearchItem from '../components/Search/SearchItem';
 
 export default function Search() {
   const close = true;
@@ -26,11 +25,10 @@ export default function Search() {
           <p className="font-bold">최근 검색어</p>
           <button className="text-[14px] text-gary-1">전체삭제</button>
         </div>
-        <hr className="w-full absolute top-0 border-primary" />
         <hr className="w-full absolute bottom-0 border-gray-1" />
+        {/* 최근 검색어 목록 */}
+        <SearchItem />
       </div>
-      {/* 검색어 목록 */}
-      <SearchList />
     </div>
   );
 }
