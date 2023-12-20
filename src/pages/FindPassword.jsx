@@ -25,13 +25,7 @@ export default function FindPassword() {
           <InputWithLabel
             labelText={'이메일'}
             InputComponent={
-              <Input
-                bgColor={'bg-input'}
-                textColor={'text-gray-1'}
-                type={'email'}
-                name={'email'}
-                placeholder={'이메일 주소 입력'}
-              />
+              <Input type={'default'} inputType={'email'} name={'email'} placeholder={'이메일 주소 입력'} />
             }
             validateMessage={'이메일 형식에 맞춰서 작성해주세요.'}
           />
@@ -42,14 +36,7 @@ export default function FindPassword() {
             labelText={'인증번호 입력'}
             InputComponent={
               <div className="flex flex-row justify-between">
-                <Input
-                  width={'w-64'}
-                  bgColor={'bg-input'}
-                  textColor={'text-gray-1'}
-                  name={'verification-code'}
-                  placeholder={'인증번호 입력'}
-                  maxLength={6}
-                />
+                <Input type={'default'} name={'verification-code'} placeholder={'인증번호 입력'} maxLength={6} />
                 <span className=" text-red inline-block grow self-center text-center">
                   {minute}:{second.padStart(2, '0')}
                 </span>

@@ -48,11 +48,10 @@ export default function Signup() {
             InputComponent={
               <div className="flex flex-row justify-between">
                 <Input
-                  width={'w-[220px]'}
                   value={email}
-                  bgColor={'bg-input'}
-                  textColor={'text-darkgray'}
-                  type={'email'}
+                  type={'default'}
+                  size={'medium'}
+                  inputType={'email'}
                   name={'email'}
                   placeholder={'이메일 주소 입력'}
                   onChangeFunc={setEmail}
@@ -82,7 +81,8 @@ export default function Signup() {
               <div className="flex flex-row justify-between">
                 <Input
                   value={nickname}
-                  width={'w-[220px]'}
+                  type={'default'}
+                  size={'medium'}
                   placeholder={'닉네임 입력'}
                   name={'nickname'}
                   onChangeFunc={setNickname}

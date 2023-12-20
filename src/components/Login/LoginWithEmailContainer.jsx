@@ -1,10 +1,10 @@
-import { IoEye } from 'react-icons/io5';
 import Input from '../commons/Input';
 import Button from '../commons/Button';
 import InputWithLabel from '../Input/InputWithLabel';
 import { useMemo, useState } from 'react';
 
 import { PASSWORD_VALIDATION_CONDITION } from '../../constants/passwordValidationConditions';
+import InputPassword from '../Input/InputPassword';
 
 export default function LoginWithEmailContainer() {
   const [email, setEmail] = useState('');
@@ -24,10 +24,9 @@ export default function LoginWithEmailContainer() {
             labelText={'이메일'}
             InputComponent={
               <Input
+                type={'default'}
                 value={email}
-                bgColor={'bg-input'}
-                textColor={'text-darkgray'}
-                type={'email'}
+                inputType={'email'}
                 name={'email'}
                 placeholder={'이메일 주소 입력'}
                 onChangeFunc={setEmail}
@@ -37,21 +36,7 @@ export default function LoginWithEmailContainer() {
           />
           <InputWithLabel
             labelText={'비밀번호'}
-            InputComponent={
-              <div className="relative">
-                <Input
-                  value={password}
-                  bgColor={'bg-input'}
-                  textColor={'text-darkgray'}
-                  type={'password'}
-                  name={'password'}
-                  padding={'pr-9'}
-                  placeholder={'비밀번호 입력'}
-                  onChangeFunc={setPassword}
-                />
-                <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
-              </div>
-            }
+            InputComponent={<InputPassword value={password} onChangeFunc={setPassword} placeholder={'비밀번호 입력'} />}
             validateMessage={passwordValidationMessage === '' ? '' : `필수 조건: ${passwordValidationMessage}`}
           />
         </div>

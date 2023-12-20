@@ -18,12 +18,10 @@ export default function InputPassword({ value, onChangeFunc, placeholder }) {
   return (
     <div className="relative">
       <Input
-        value={value}
-        bgColor={'bg-input'}
-        textColor={'text-darkgray'}
         type={'password'}
+        value={value}
+        inputType={'password'}
         name={'check-password'}
-        padding={'pr-9'}
         placeholder={placeholder}
         onChangeFunc={onChangeFunc}
       />

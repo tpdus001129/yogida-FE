@@ -20,7 +20,13 @@ export default function Setup() {
               이메일
             </label>
             <div className="flex flex-row justify-between">
-              <Input width={'w-[220px]'} type={'email'} name={'email'} placeholder={'이메일 주소 입력'} />
+              <Input
+                type={'default'}
+                size={'medium'}
+                inputType={'email'}
+                name={'email'}
+                placeholder={'이메일 주소 입력'}
+              />
               <Button type={'default'} size={'small'} text={'description'} isDisabled={true}>
                 인증번호 전송
               </Button>
