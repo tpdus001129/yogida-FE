@@ -2,15 +2,23 @@ import { IoEye } from 'react-icons/io5';
 import Input from '../commons/Input';
 import Button from '../commons/Button';
 import InputWithLabel from '../Input/InputWithLabel';
-import PasswordValidationContainer from '../commons/PasswordValidationContainer';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+
+import { PASSWORD_VALIDATION_CONDITION } from '../../constants/passwordValidationConditions';
 
 export default function LoginWithEmailContainer() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const passwordValidationMessage = useMemo(() => {
+    return `${PASSWORD_VALIDATION_CONDITION.filter((condition) => {
+      return !condition.validateFunction(password);
+    })
+      .map((condition) => condition.name)
+      .join(', ')}`;
+  }, [password]);
   return (
     <>
-      <form method="post">
+      <form method="post" className="py-10">
         <div className="[&>:not(:first-child)]:mt-5">
           <InputWithLabel
             labelText={'이메일'}
@@ -44,8 +52,8 @@ export default function LoginWithEmailContainer() {
                 <IoEye className="text-darkgray absolute scale-150 right-3 top-3.5" />
               </div>
             }
+            validateMessage={passwordValidationMessage === '' ? '' : `필수 조건: ${passwordValidationMessage}`}
           />
-          <PasswordValidationContainer password={password} />
         </div>
       </form>
       <Button type={'submit'}>

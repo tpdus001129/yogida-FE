@@ -18,7 +18,7 @@ export default function InputWithLabel({ labelText, InputComponent, validateMess
         {labelText}
       </label>
       {InputComponent}
-      <span className="text-xs text-danger">{validateMessage}</span>
+      <span className="text-xs text-red">{validateMessage}</span>
     </div>
   );
 }

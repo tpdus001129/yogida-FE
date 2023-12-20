@@ -17,7 +17,7 @@ export default function Login() {
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center p-6">
       <Header />
-      <img className="mb-16 min-w-[149px] min-h-[91px]" src={logoTitleImage} alt="logo title"></img>
+      <img className="min-w-[149px] min-h-[91px]" src={logoTitleImage} alt="logo title"></img>
       {(type === undefined || type === null) && <LoginSelectContainer />}
       {type === 'email' && <LoginWithEmailContainer />}
     </div>

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 export default function LoginSelectContainer() {
   return (
-    <div className="[&>:not(:first-child)]:mt-5 flex flex-col items-center">
+    <div className="[&>:not(:first-child)]:mt-5 flex flex-col items-center py-10">
       <Link to="/setup">
         <Button bgColor={'bg-kakaoyellow'} textColor={'text-kakaoblack'}>
           <img src={kakao} className="box-content w-4 pr-2"></img>
