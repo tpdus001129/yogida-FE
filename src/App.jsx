@@ -13,6 +13,7 @@ import CommentModal from './components/CommentModal/CommentModal';
 import Detail from './pages/Detail';
 import ChangePassword from './pages/ChangePassword';
 import Notification from './pages/Notification';
+import Map from './pages/Map';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/detail" element={<Detail />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/comment-modal" element={<CommentModal />} />
+        <Route path="/map" element={<Map />} />
       </Routes>
     </BrowserRouter>
   );
