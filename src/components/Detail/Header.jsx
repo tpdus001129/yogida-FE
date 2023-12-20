@@ -21,7 +21,7 @@ export default function Header() {
       });
   }, []);
 
-  const headerHeight = data.length > 0 && data[0].tag.length >= 5 ? 'h-[304px]' : 'h-[274px]';
+  const headerHeight = data.length > 0 && data[0].tag.length >= 5 ? 'h-[324px]' : 'h-[274px]';
 
   return (
     <div className={`w-full ${headerHeight} bg-primary`}>
