@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useImageSlide } from './useImageSlide';
+import { useImageSlide } from '../../hooks/useImageSlide';
 
 import PropTypes from 'prop-types';
 
