@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+axios.defaults.withCredentials = true;
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL, //데이터를 요청할 기본 주소
   timeout: 1000, // 요청이 timeout보다 오래 걸리면 요청이 중단된다.
@@ -17,8 +17,8 @@ api.interceptors.request.use(
   function (config) {
     // 요청 성공 직전 호출됩니다.
     // axios 설정값을 넣습니다. (사용자 정의 설정도 추가 가능)
-    config.headers['Content-Type'] = 'application/json; charset=utf-8';
-    config.headers['Authorization'] = ' 토큰 값';
+    // config.headers['Content-Type'] = 'application/json; charset=utf-8';
+    // config.headers['Authorization'] = ' 토큰 값';
     console.log('Request Interceptor:', config);
     return config;
   },
@@ -39,9 +39,6 @@ api.interceptors.response.use(
         http status가 200인 경우
         응답 성공 직전 호출됩니다. 
     */
-    if (response.status === 404) {
-      console.log('404 페이지로 넘어가야 함!');
-    }
 
     console.log('Response Interceptor:', response);
     return response;

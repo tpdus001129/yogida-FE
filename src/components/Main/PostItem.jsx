@@ -3,36 +3,36 @@ import { useNavigate } from 'react-router-dom';
 
 import { IoChatbubbleOutline } from 'react-icons/io5';
 
-import { getPosts } from '../../services/posts';
+import { getPostsAllList } from '../../services/posts';
 
 import Tag from '../commons/Tag';
 import ImageSlide from './ImageSlide';
 
 export default function PostItem() {
   const [data, setData] = useState([]);
+
   const navigate = useNavigate();
 
+  // API
   useEffect(() => {
-    getPosts()
-      .then((posts) => {
-        setData(posts);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    getPostsAllList().then((posts) => {
+      setData(posts);
+    });
   }, []);
 
   return (
     <>
       {data.map((item) => (
-        <div key={item.id} onClick={() => navigate('/detail')}>
+        <div key={item._id} onClick={() => navigate('/detail')}>
           <div className="pb-[20px]">
-            <ImageSlide images={item.image} />
+            <ImageSlide
+              images={item.schedules.flatMap((schedule) => schedule.flatMap((place) => place.placeImageSrc))}
+            />
             <div className="flex justify-between">
-              <p className="mb-[6px]">{item.place}</p>
+              <p className="mb-[6px]">{item.destination}</p>
               <div className="flex items-center">
                 <IoChatbubbleOutline size="16" className="mr-[4px]" />
-                <span>{item.comment}</span>
+                <span>댓글수</span>
               </div>
             </div>
             <p className="text-[22px] font-bold mb-[10px]">{item.title}</p>
@@ -40,9 +40,10 @@ export default function PostItem() {
               <Tag tags={item.tag} />
             </div>
             <span className="text-gray-1 mb-[4px]">
-              일정 {item.startDate.slice(6)} ~ {item.endDate.slice(6)}
+              일정 {new Date(item.startDate).getMonth() + 1}월 {new Date(item.startDate).getDate()}일 ~{' '}
+              {new Date(item.endDate).getMonth() + 1}월 {new Date(item.endDate).getDate()}일
             </span>
-            <p className="text-gray-1">총 예산 {item.budget}원</p>
+            <p className="text-gray-1">총 예산 {item.cost}원</p>
           </div>
         </div>
       ))}
