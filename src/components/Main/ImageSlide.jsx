@@ -59,5 +59,5 @@ export default function ImageSlide({ images }) {
 }
 
 ImageSlide.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.string).isRequired,
+  images: PropTypes.array.isRequired,
 };
