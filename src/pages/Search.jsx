@@ -2,6 +2,7 @@ import { IoSearchOutline } from 'react-icons/io5';
 import { useState, useEffect } from 'react';
 import Header from '../components/Search/Header';
 import SearchItem from '../components/Search/SearchItem';
+import SearchInput from '../components/commons/SearchInput';
 
 export default function Search() {
   const close = true;
@@ -11,6 +12,13 @@ export default function Search() {
 
   // 로컬스토리지에 배열로 담을 변수
   const [keywords, setKeywords] = useState([]);
+
+  useEffect(() => {
+    const result = localStorage.getItem('keywords');
+    if (result.length !== 0) {
+      setKeywords(result);
+    }
+  }, []);
 
   // 검색어를 최근 검색어 목록에 추가(중복 안됨)
   function handleAddKeyword(e) {
@@ -33,11 +41,6 @@ export default function Search() {
     }
   }, []);
 
-  // 최근 검색어가 변경될 때마다 로컬 스토리지에 저장
-  useEffect(() => {
-    localStorage.setItem('keywords', JSON.stringify(keywords));
-  }, [keywords]);
-
   // 모든 검색어 삭제
   function handleRemoveAllKeywords() {
     setKeywords([]);
@@ -47,9 +50,19 @@ export default function Search() {
 
   // 단일 검색어 삭제
   function handleRemoveKeywords(selectedKeyword) {
+    console.log('선택된 키워드:', selectedKeyword);
+    console.log('현재 키워드:', keywords);
+
     const updatedKeywords = keywords.filter((keyword) => keyword !== selectedKeyword);
+
+    console.log('업데이트된 키워드:', updatedKeywords);
+
     setKeywords(updatedKeywords);
     localStorage.setItem('keywords', JSON.stringify(updatedKeywords));
+  }
+
+  function onChangeHandler(e) {
+    setNewKeyword(e.target.value);
   }
 
   return (
@@ -57,13 +70,7 @@ export default function Search() {
       <Header title={'검색'} close={close} />
       {/* 검색 */}
       <form className="w-full h-[74px] flex relative items-center px-[24px]" onSubmit={handleAddKeyword}>
-        <input
-          className="w-full h-[48px] pl-[20px] rounded-[24px] focus:outline-none bg-gray-3 opacity-30"
-          type="text"
-          placeholder="지역 이름으로 검색해보세요."
-          value={newKeyword}
-          onChange={(e) => setNewKeyword(e.target.value)}
-        />
+        <SearchInput newKeyword={newKeyword} onChangeHandler={onChangeHandler} />
         <button className="absolute right-[40px] top-[35%]" type="submit">
           <IoSearchOutline size="22" />
         </button>
@@ -71,7 +78,7 @@ export default function Search() {
       {/* 최근검색어 */}
       <div className="relative">
         <div className="w-full h-[52px] flex justify-between items-center px-[24px]">
-          <p className="font-bold">최근 검색어</p>
+          <p className="font-bold text-[14px]">최근 검색어</p>
           <button className="text-[14px] text-gary-1" onClick={handleRemoveAllKeywords}>
             전체삭제
           </button>
