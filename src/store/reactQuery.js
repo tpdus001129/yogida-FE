@@ -18,4 +18,5 @@ export const queryClient = new QueryClient({
 export const queryKeys = {
   //   [key]: [name],
   mypageComment: 'MYPAGE_COMMENT',
+  kakaoUser: 'KAKAO_USER',
 };
