@@ -1,25 +1,22 @@
-import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { IoClose } from 'react-icons/io5';
 import NoProfile from '../commons/NoProfile';
 
 export default function NotificationItem({ type, nickname, message, time }) {
-  const [commentType, setCommentType] = useState('');
   let messageSlice = '';
 
-  useEffect(() => {
-    if (type === 'comment') {
-      setCommentType('님이 댓글을 남겼습니다: ');
-    } else if (type === 'heart') {
-      setCommentType('님이 회원님의 코스를 찜하였습니다.');
-    } else {
-      setCommentType('님이 채팅을 남겼습니다: ');
-    }
-  }, [type]);
+  // 메시지 타입
+  const mapTypeToMessage = {
+    comment: '님이 댓글을 남겼습니다: ',
+    heart: '님이 회원님의 코스를 찜하였습니다.',
+    chat: '님이 채팅을 남겼습니다: ',
+  };
+
+  const messageType = mapTypeToMessage[type] || '';
 
   // 메시지 길이 조절
   if (message) {
-    messageSlice = message.slice(0, 19) + '...';
+    messageSlice = message.slice(0, 17) + '...';
   }
 
   return (
@@ -31,7 +28,7 @@ export default function NotificationItem({ type, nickname, message, time }) {
       <div className="w-[70%] flex">
         <p className="text-[14px]">
           <span className="font-bold">{nickname}</span>
-          <span>{commentType}</span>
+          <span>{messageType}</span>
           {message && <span>{messageSlice}</span>}
           <span className="text-gray-2 ml-[4px]">{time}분 전</span>
         </p>
