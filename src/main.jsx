@@ -6,6 +6,7 @@ import './index.css';
 import { QueryClientProvider } from 'react-query';
 // import { ReactQueryDevtools } from 'react-query/devtools';
 import { queryClient } from './store/reactQuery.js';
+import { Toaster } from 'react-hot-toast';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -13,6 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Suspense fallback={<div>loading...</div>}>
         <QueryClientProvider client={queryClient}>
           <App />
+          <Toaster />
           {/* 옵션: 개발 도구 사용 */}
           {/* <ReactQueryDevtools />  */}
         </QueryClientProvider>

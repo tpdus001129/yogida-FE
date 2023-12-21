@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 import IconButton from './IconButton';
 import Tag from '../commons/Tag';
@@ -7,6 +8,10 @@ import { getPosts } from '../../services/posts';
 
 import { IoLockClosed } from 'react-icons/io5';
 
+const share = () => {
+  const href = document.location.href;
+  navigator.clipboard.writeText(href).then(() => toast.success('링크가 복사되었습니다.'));
+};
 export default function Header() {
   const [data, setData] = useState([]);
   const white = true;
@@ -29,7 +34,9 @@ export default function Header() {
       <div className="flex justify-between mx-[24px] pt-[30px] mb-[26px]">
         <IconButton iconName={'prev'} />
         <div className="flex space-x-[6px]">
-          <IconButton iconName={'share'} />
+          <span onClick={share}>
+            <IconButton iconName={'share'} />
+          </span>
           <IconButton iconName={'comment'} />
           <IconButton iconName={'heart'} />
         </div>
