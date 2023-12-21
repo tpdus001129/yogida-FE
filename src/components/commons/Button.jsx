@@ -6,6 +6,7 @@ Button.propTypes = {
   text: PropTypes.string,
   isDisabled: PropTypes.bool,
   children: PropTypes.node,
+  onClick: PropTypes.func,
 };
 
 Button.defaultProps = {
@@ -32,9 +33,10 @@ const fontStyle = {
   boldDescription: 'font-bold text-sm',
 };
 
-export default function Button({ type, size, text, isDisabled, children }) {
+export default function Button({ type, size, text, isDisabled, children, onClick }) {
   return (
     <button
+      onClick={onClick}
       className={`${typeStyle[type] !== undefined ? typeStyle[type] : typeStyle['default']} ${
         sizeStyle[size] !== undefined ? sizeStyle[size] : sizeStyle['large']
       } ${
