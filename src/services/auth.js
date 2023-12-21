@@ -23,6 +23,10 @@ const authAPI = {
   async checkEmailVerifyCode({ email, authCode }) {
     return await api.post(API_URL + '/signup/check-mail', { email, authCode });
   },
+
+  async getKakaoUserInfo() {
+    return await api.get(API_URL + '/kakao/me');
+  },
 };
 
 export default authAPI;
