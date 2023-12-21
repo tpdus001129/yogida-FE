@@ -33,21 +33,39 @@ export default function ChangePassword() {
           <h2 className="text-xl font-bold text-center ">비밀번호 변경</h2>
           <p className="text-xs">비밀번호를 변경해주세요.</p>
         </div>
-        <div className="py-10 [&>:not(:first-child)]:mt-5 flex flex-1 flex-col">
+        <div className="w-full py-10 [&>:not(:first-child)]:mt-5 flex flex-1 flex-col">
           <InputWithLabel
             labelText={'비밀번호'}
-            InputComponent={<InputPassword value={password} onChangeFunc={setPassword} placeholder={'비밀번호 입력'} />}
+            InputComponent={
+              <InputPassword
+                value={password}
+                name={'password'}
+                onChangeFunc={setPassword}
+                placeholder={'비밀번호 입력'}
+                isValid={passwordValidationMessage === ''}
+              />
+            }
             validateMessage={passwordValidationMessage === '' ? '' : `필수 조건: ${passwordValidationMessage}`}
           />
           <InputWithLabel
             labelText={'비밀번호 확인'}
             InputComponent={
-              <InputPassword value={checkPassword} onChangeFunc={setCheckPassword} placeholder={'비밀번호 재입력'} />
+              <InputPassword
+                value={checkPassword}
+                name={'check-password'}
+                onChangeFunc={setCheckPassword}
+                placeholder={'비밀번호 재입력'}
+                isValid={checkPasswordValidationMessage === '' && checkPassword !== ''}
+              />
             }
             validateMessage={checkPasswordValidationMessage}
           />
         </div>
-        <Button type={'default'} text={'bold'}>
+        <Button
+          type={'default'}
+          text={'bold'}
+          isDisabled={passwordValidationMessage !== '' || checkPasswordValidationMessage !== ''}
+        >
           비밀번호 변경
         </Button>
       </div>

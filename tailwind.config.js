@@ -34,6 +34,9 @@ export default {
       margin: {
         header: HEADER_HEIGHT,
       },
+      boxShadow: {
+        disabled: '0 0 0px 1000px #AFAFAF inset',
+      },
     },
     keyframes: {
       'bottom-sheet-up': {
