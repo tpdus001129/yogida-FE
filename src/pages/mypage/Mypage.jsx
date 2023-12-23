@@ -1,12 +1,17 @@
 import { useState } from 'react';
+
 import { HEADER_HEIGHT, NAVBAR_HEIGHT } from '../../constants';
-import profile from '../../assets/images/profile.jpg';
 import Posts from '../../components/Mypage/Posts';
 import Comments from '../../components/Mypage/Comments';
 import Places from '../../components/Mypage/Places';
 import Bookmarks from '../../components/Mypage/Bookmarks';
 import Profile from '../../components/Mypage/Profile';
 import { IoLogOutOutline } from 'react-icons/io5';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoils/userAtom';
+import { useMutation } from 'react-query';
+import authAPI from '../../services/auth';
+import { useResetAuth } from '../../hooks/useResetAuth';
 
 const TABS = [
   {
@@ -30,6 +35,11 @@ const TABS = [
 export default function Mypage() {
   const [editProfileMode, setEditProfileMode] = useState(false);
   const [currentTab, setCurrentTab] = useState(0);
+  const user = useRecoilValue(userState);
+
+  const { mutate: logout } = useMutation(authAPI.logout, {
+    onSuccess: useResetAuth(),
+  });
 
   const handleTabClick = (index) => {
     setCurrentTab(index);
@@ -41,14 +51,18 @@ export default function Mypage() {
       <section className="top-0">
         <div className="h-header px-[23px] flex items-center justify-between text-[14px] text-black">
           <div className="flex gap-[1px] items-center cursor-pointer">
-            <button>로그아웃</button>
+            <button onClick={logout}>로그아웃</button>
             <IoLogOutOutline size={17} />
           </div>
           <button onClick={() => setEditProfileMode((prev) => !prev)}>프로필 편집</button>
         </div>
         <div className="flex flex-col items-center justify-center h-[140px] ">
-          <img src={profile} alt="profile" className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]" />
-          <span className="text-black text-[20px] font-bold tracking-tight">이다현</span>
+          <img
+            src={user.profileImageSrc}
+            alt="profile"
+            className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]"
+          />
+          <span className="text-black text-[20px] font-bold tracking-tight">{user.nickname}</span>
         </div>
       </section>
       <section>
