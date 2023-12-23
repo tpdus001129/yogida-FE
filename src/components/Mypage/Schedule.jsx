@@ -1,40 +1,40 @@
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import logo from '/logo.svg';
-import { IoChevronBack } from 'react-icons/io5';
-import { IoCalendarClear } from 'react-icons/io5';
-import { IoDocumentText } from 'react-icons/io5';
-import { IoLocationSharp } from 'react-icons/io5';
-import { IoAccessibility } from 'react-icons/io5';
-import { IoWallet } from 'react-icons/io5';
-import { IoBagRemove } from 'react-icons/io5';
-import { IoMap } from 'react-icons/io5';
-import { IoStar } from 'react-icons/io5';
-import { IoStarOutline } from 'react-icons/io5';
-import { IoPricetag } from 'react-icons/io5';
-import ScheduleItem from './ScheduleItem';
+
 import DayButton from '../Detail/DayButton';
 import Button from '../commons/Button';
-import { IoCamera } from 'react-icons/io5';
-import { useEffect, useState } from 'react';
-import { getTags } from '../../services/tags';
-import Title from '../Filter/Title';
-import CheckBox from '../Filter/CheckBox';
+import Tag from '../commons/Tag';
+import logo from '/logo.svg';
+
+import {
+  IoChevronBack,
+  IoCalendarClear,
+  IoDocumentText,
+  IoLocationSharp,
+  IoAccessibility,
+  IoWallet,
+  IoBagRemove,
+  IoMap,
+  IoStar,
+  IoStarOutline,
+  IoPricetag,
+  IoCamera,
+} from 'react-icons/io5';
+import { SearchPlace, SearchTravelDestination, SelectTag } from './Search';
 
 export default function Schedule() {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
-  const [checked, setChecked] = useState(false);
+  const [addTravelDestination, setAddTravelDestination] = useState(false); //여행지 설정
+  const [addPlan, setAddPlan] = useState(false); //장소 추가
+  const [addTag, setAddTag] = useState(false); //태그 선택
 
-  useEffect(() => {
-    getTags()
-      .then((tags) => {
-        setData(tags);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  }, []);
-
+  //여행지 검색
+  if (addTravelDestination) return <SearchTravelDestination onClose={() => setAddTravelDestination(false)} />;
+  //장소 검색
+  if (addPlan) return <SearchPlace onClose={() => setAddPlan(false)} />;
+  //태그 선택
+  if (addTag) return <SelectTag onClose={() => setAddTag(false)} />;
   return (
     <>
       <section className="w-full top-0 border-[#E8E8E8] border-b-[1px]">
@@ -77,12 +77,18 @@ export default function Schedule() {
             className="w-full focus:outline-none text-[14px] font-medium placeholder:text-[14px]"
           ></textarea>
         </ScheduleItem>
-        <ScheduleItem icon={<IoLocationSharp color="#589BF7" size={20} />} title="여행지" id="place">
-          <input
+        <ScheduleItem
+          icon={<IoLocationSharp color="#589BF7" size={20} />}
+          title="여행지"
+          id="place"
+          onClick={() => setAddTravelDestination(true)}
+        >
+          <button
             type="text"
             name="place"
             id="place"
             className="w-full focus:outline-none text-[14px] font-medium placeholder:text-[14px]"
+            disabled
           />
         </ScheduleItem>
         <ScheduleItem icon={<IoAccessibility color="#589BF7" size={20} />} title="인원수" id="count">
@@ -129,31 +135,11 @@ export default function Schedule() {
       </div>
 
       <section className="px-[26px] pb-[16px]">
-        <Button
-          width={'w-full'}
-          textColor={'text-black'}
-          bgColor={'bg-white'}
-          borderColor={'border-primary'}
-          fontSize={'text-[14px]'}
-        >
-          장소 추가
-        </Button>
+        <Button onClick={() => setAddPlan(true)}>장소 추가</Button>
 
         <ul className="mt-5 flex flex-col gap-5">
           <li>
-            <div className="w-full bg-[#ffffff] rounded-[20px] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-              <div className="h-[43px] flex justify-between items-center mx-[16px] rounded-t-[20px]">
-                <div className="flex">
-                  <p className="text-[14px] mr-[4px] font-bold">안목해변</p>
-                  <p className="text-[12px] mt-[2px] line-height-[14px]">관광명소</p>
-                </div>
-              </div>
-              <div className="h-[120px] rounded-b-[20px] bg-[#d9d9d9] overflow-hidden flex items-center justify-center">
-                <button className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center">
-                  <IoCamera size={24} color="white" />
-                </button>
-              </div>
-            </div>
+            <Card />
           </li>
         </ul>
       </section>
@@ -172,18 +158,57 @@ export default function Schedule() {
 
       {/* 필터 */}
       <section className="px-[26px] pb-[16px]">
-        <div className="mb-7">
-          {data.map((item, index) => (
-            <div key={index}>
-              <Title title={item.title} />
-              <CheckBox tag={item.name} checked={checked} setChecked={setChecked} />
-            </div>
-          ))}
+        <Button onClick={() => setAddTag(true)}>태그 선택하기</Button>
+        <div className="mb-7 mt-4">
+          <Tag tags={['태그', '선택된 태그 나오게 하기']} />
         </div>
-        <Button type={'submit'} width={'w-full'}>
-          작성완료
-        </Button>
+
+        <Button type={'primary'}>작성완료</Button>
       </section>
     </>
   );
 }
+
+function ScheduleItem({ icon, title, id, width, children, onClick }) {
+  const getWidth = width ? width : 'w-[40%]';
+
+  return (
+    <li
+      className="border-[#E8E8E8] border-b-[1px] px-[26px] py-[16px] flex items-center justify-between last:border-b-0"
+      onClick={onClick}
+    >
+      <label htmlFor={id} className={`flex items-center gap-[10px] ${getWidth}`}>
+        {icon}
+        <strong className="text-[12px] font-semibold">{title}</strong>
+      </label>
+      <div className="flex items-center w-full gap-[2px]">{children}</div>
+    </li>
+  );
+}
+
+function Card() {
+  return (
+    <div className="w-full bg-[#ffffff] rounded-[20px] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+      <div className="h-[43px] flex justify-between items-center mx-[16px] rounded-t-[20px]">
+        <div className="flex">
+          <p className="text-[14px] mr-[4px] font-bold">안목해변</p>
+          <p className="text-[12px] mt-[2px] line-height-[14px]">관광명소</p>
+        </div>
+      </div>
+      <div className="h-[120px] rounded-b-[20px] bg-[#d9d9d9] overflow-hidden flex items-center justify-center">
+        <button className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center">
+          <IoCamera size={24} color="white" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+ScheduleItem.propTypes = {
+  icon: PropTypes.element,
+  title: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  width: PropTypes.string,
+  children: PropTypes.element,
+  onClick: PropTypes.func,
+};
