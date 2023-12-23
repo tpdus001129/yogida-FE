@@ -23,9 +23,9 @@ function App() {
       <Route element={<Layout />}>
         <Route path={PATH.root} element={<Main />} />
         <Route path={PATH.mypage} element={<Mypage />} />
-        <Route path={PATH.notfound} element={<Notfound />} />
         <Route path={PATH.notification} element={<Notification />} />
       </Route>
+      <Route path={PATH.notfound} element={<Notfound />} />
       <Route path={PATH.login} element={<Login />} />
       <Route path={PATH.search} element={<Search />} />
       <Route path={PATH.filter} element={<Filter />} />
