@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useImageSlide } from './useImageSlide';
+import { useImageSlide } from '../../hooks/useImageSlide';
 
 import PropTypes from 'prop-types';
 
@@ -59,5 +59,5 @@ export default function ImageSlide({ images }) {
 }
 
 ImageSlide.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.string).isRequired,
+  images: PropTypes.array.isRequired,
 };

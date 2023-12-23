@@ -33,16 +33,16 @@ const fontStyle = {
   boldDescription: 'font-bold text-sm',
 };
 
-export default function Button({ type, size, text, isDisabled, children, onClick }) {
+export default function Button({ type, size, text, isDisabled, onClick, children }) {
   return (
     <button
-      onClick={onClick}
       className={`${typeStyle[type] !== undefined ? typeStyle[type] : typeStyle['default']} ${
         sizeStyle[size] !== undefined ? sizeStyle[size] : sizeStyle['large']
       } ${
         fontStyle[text] !== undefined ? fontStyle[text] : fontStyle['normal']
       } h-button cursor-pointer disabled:cursor-not-allowed border rounded-md flex justify-center items-center disabled:bg-gray-2 disabled:opacity-50 disabled:text-black disabled:border-black`}
       disabled={isDisabled}
+      onClick={onClick}
     >
       {children}
     </button>

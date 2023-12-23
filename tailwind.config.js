@@ -34,6 +34,19 @@ export default {
       margin: {
         header: HEADER_HEIGHT,
       },
+      boxShadow: {
+        disabled: '0 0 0px 1000px #AFAFAF inset',
+      },
+    },
+    keyframes: {
+      'bottom-sheet-up': {
+        '0%': { transform: 'translateY(420px)' },
+        '100%': { transform: 'translateY(0)' },
+      },
+      'bottom-sheet-down': {
+        '0%': { transform: 'translateY(0)' },
+        '100%': { transform: 'translateY(420px)' },
+      },
     },
   },
   plugins: [scrollbar],

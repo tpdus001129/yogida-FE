@@ -12,6 +12,9 @@ InputWithCheckButton.propTypes = {
   buttonType: PropTypes.string,
   buttonChildren: PropTypes.node,
   isButtonDisabled: PropTypes.bool,
+  isValid: PropTypes.bool,
+  onClick: PropTypes.func,
+  isInputDisabled: PropTypes.bool,
 };
 
 InputWithCheckButton.defaultProps = {
@@ -19,7 +22,9 @@ InputWithCheckButton.defaultProps = {
   inputType: 'text',
   placeholder: '',
   buttonType: 'default',
-  isButtonDisabled: true,
+  isButtonDisabled: false,
+  isValid: true,
+  isInputDisabled: false,
 };
 
 export default function InputWithCheckButton({
@@ -31,6 +36,9 @@ export default function InputWithCheckButton({
   buttonType,
   buttonChildren,
   isButtonDisabled,
+  isValid,
+  onClick,
+  isInputDisabled,
 }) {
   return (
     <div className="flex flex-row justify-between">
@@ -42,8 +50,10 @@ export default function InputWithCheckButton({
         name={name}
         placeholder={placeholder}
         onChangeFunc={onChangeFunc}
+        isValid={isValid}
+        isDisabled={isInputDisabled}
       />
-      <Button type={buttonType} size={'small'} text={'description'} isDisabled={isButtonDisabled}>
+      <Button type={buttonType} size={'small'} text={'description'} isDisabled={isButtonDisabled} onClick={onClick}>
         {buttonChildren}
       </Button>
     </div>
