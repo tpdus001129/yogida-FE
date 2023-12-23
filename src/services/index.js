@@ -1,5 +1,5 @@
 import axios from 'axios';
-axios.defaults.withCredentials = true;
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL, //데이터를 요청할 기본 주소
   timeout: 5000, // 요청이 timeout보다 오래 걸리면 요청이 중단된다.
@@ -16,12 +16,13 @@ const api = axios.create({
 api.interceptors.request.use(
   function (config) {
     // 요청 성공 직전 호출됩니다.
-    // axios 설정값을 넣습니다. (사용자 정의 설정도 추가 가능)
+    config.headers = config.headers ?? {};
+    if (config.data instanceof FormData) {
+      config.headers['Content-Type'] = 'multipart/form-data';
+    } else {
+      config.headers['Content-Type'] = 'application/json';
+    }
 
-    config.headers['Content-Type'] = 'application/json; charset=utf-8';
-    // config.headers['Authorization'] = ' 토큰 값';
-
-    console.log('Request Interceptor:', config);
     return config;
   },
   function (error) {
@@ -41,7 +42,6 @@ api.interceptors.response.use(
         http status가 200인 경우
         응답 성공 직전 호출됩니다. 
     */
-
     console.log('Response Interceptor:', response);
     return response;
   },
@@ -52,11 +52,8 @@ api.interceptors.response.use(
         응답 에러 직전 호출됩니다.
     */
 
-    //이곳에서 토큰 만료시
-    // 1. 토큰 갱신
-    // 2. 갱신된 토큰으로 중단된 요청(에러난 요청)을 재요청하는 로직 작성
     console.error('Response Interceptor Error:', error);
-    return Promise.reject(error);
+    // return Promise.reject(error);
   },
 );
 export default api;

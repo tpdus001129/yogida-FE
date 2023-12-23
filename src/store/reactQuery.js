@@ -3,20 +3,18 @@ import { QueryClient } from 'react-query';
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      useErrorBoundary: true,
-
+      suspense: true,
       retry: 1,
     },
     mutations: {
-      useErrorBoundary: true,
-
+      suspense: true,
       retry: 1,
     },
   },
 });
 
 export const queryKeys = {
-  //   [key]: [name],
   mypageComment: 'MYPAGE_COMMENT',
   kakaoUser: 'KAKAO_USER',
+  loginStatus: 'LOGiN_STATUS',
 };

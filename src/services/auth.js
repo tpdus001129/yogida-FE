@@ -27,6 +27,10 @@ const authAPI = {
   async getKakaoUserInfo() {
     return await api.get(API_URL + '/kakao/me');
   },
+
+  async verify() {
+    return await api.get(API_URL + '/me');
+  },
 };
 
 export default authAPI;
