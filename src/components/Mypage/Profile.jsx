@@ -70,11 +70,11 @@ export default function Profile({ setEditProfileMode }) {
           />
         </label>
       </div>
-      <div className="mt-auto flex flex-col gap-[11px] px-[24px]">
-        <Button bgColor={'bg-primary'} textColor={'text-white'} size={'full'}>
+      <div className="mt-auto flex flex-col gap-[11px] px-[24px] w-full">
+        <Button type="primary" size={'large'} text={'bold'}>
           <span className="font-bold text-[14px]">회원 정보 수정</span>
         </Button>
-        <Button bgColor={'bg-secondary'} textColor={'text-gray-1'} size={'full'}>
+        <Button type={'kakao'} size={'large'} text={'bold'}>
           <span className="font-bold text-[14px]">탈퇴하기</span>
         </Button>
       </div>

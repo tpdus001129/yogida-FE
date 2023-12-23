@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import { ModalContext } from '../../pages/Detail';
 
+import toast from 'react-hot-toast';
+
 import {
   IoChevronBackOutline,
   IoShareOutline,
@@ -17,6 +19,11 @@ import {
   IoPeopleOutline,
 } from 'react-icons/io5';
 
+const share = () => {
+  const href = document.location.href;
+  navigator.clipboard.writeText(href).then(() => toast.success('링크가 복사되었습니다.'));
+};
+
 export default function IconButton({ iconName, buttonType }) {
   const { setCommentModalMode } = useContext(ModalContext);
 
@@ -29,7 +36,7 @@ export default function IconButton({ iconName, buttonType }) {
       case 'comment':
         return <IoChatbubbleOutline size="22" />;
       case 'share':
-        return <IoShareOutline size="24" />;
+        return <IoShareOutline size="24" onClick={share} />;
       case 'edit':
         return <IoCreateOutline size="24" />;
       case 'wallet':

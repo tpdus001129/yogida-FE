@@ -14,7 +14,7 @@ import Detail from './pages/Detail';
 import ChangePassword from './pages/ChangePassword';
 import Notification from './pages/Notification';
 import Map from './pages/Map';
-import Setup from './pages/Setup';
+import Setup from './pages/setup/Setup';
 
 function App() {
   return (
