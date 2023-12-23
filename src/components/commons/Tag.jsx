@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 
-export default function Tag({ tags, white }) {
+export default function Tag({ tags, whiteMode }) {
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap text-[14px]">
       {tags.map((tag, index) => (
         <span
           key={index}
           className={`${
-            white ? 'text-primary bg-white' : 'text-white bg-primary'
+            whiteMode ? 'text-primary bg-white' : 'text-white bg-primary'
           } rounded px-[6px] py-[1px] mb-[10px] mr-[5px]`}
         >
           #{tag}
@@ -19,5 +19,5 @@ export default function Tag({ tags, white }) {
 
 Tag.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-  white: PropTypes.bool,
+  whiteMode: PropTypes.bool,
 };
