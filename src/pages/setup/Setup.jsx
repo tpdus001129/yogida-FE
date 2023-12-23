@@ -27,7 +27,13 @@ export default function Setup() {
 
   const handleSignUp = async () => {
     await authAPI
-      .signup({ email: user.data.email, nickname, type: 'kakao' })
+      .signup({
+        snsId: user.data.snsId,
+        email: user.data.email,
+        nickname,
+        profileImageUrl: user.data.profileImageUrl,
+        type: 'kakao',
+      })
       .then(() => {
         openModal({ message: `회원가입이 완료되었습니다.`, callback: () => navigate('/') });
       })

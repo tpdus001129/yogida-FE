@@ -3,8 +3,8 @@ import api from '.';
 const API_URL = '/api/v1/auth';
 
 const authAPI = {
-  async signup({ email, password, nickname, type }) {
-    return await api.post(API_URL + '/signup', { email, password, nickname, type });
+  async signup({ snsId, email, password, nickname, profileImageUrl, type }) {
+    return await api.post(API_URL + '/signup', { snsId, email, password, nickname, profileImageUrl, type });
   },
 
   async login({ email, password }) {
