@@ -5,7 +5,7 @@ import { IoChatbubbleOutline } from 'react-icons/io5';
 
 import { getPostsAllList } from '../../services/posts';
 
-// import Tag from '../commons/Tag';
+import Tag from '../commons/Tag';
 import ImageSlide from './ImageSlide';
 
 export default function PostItem() {
@@ -35,7 +35,9 @@ export default function PostItem() {
                 </div>
               </div>
               <p className="text-[22px] font-bold mb-[10px]">{item.title}</p>
-              <div>{/* <Tag tags={item.tag} /> */}</div>
+              <div>
+                <Tag tags={item.tag} />
+              </div>
               <span className="text-gray-1 mb-[4px]">
                 일정 {new Date(item.startDate).getMonth() + 1}월 {new Date(item.startDate).getDate()}일 ~{' '}
                 {new Date(item.endDate).getMonth() + 1}월 {new Date(item.endDate).getDate()}일

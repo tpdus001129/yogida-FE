@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 export default function DayButton({ startDate, dayCount, dayTitle, setIndex }) {
   // 클릭한 날짜 데이터 저장
@@ -8,34 +8,39 @@ export default function DayButton({ startDate, dayCount, dayTitle, setIndex }) {
   // 클릭시 클릭한 날짜 데이터에 저장
   function handleOnClick(day) {
     setSelectedDay(day);
-    setIndex(day);
   }
 
   // 시작 날짜
-  const newStartDate = new Date(startDate);
-  // const startDateMonth = newStartDate.getMonth();
+  const newStartDate = useMemo(() => new Date(startDate), [startDate]);
   const startDateDate = newStartDate.getDate();
 
   // 요일 계산기
-  function getTodayLabel() {
+  function getTodayLabel(selectedNewDate) {
     const day = new Array('일', '월', '화', '수', '목', '금', '토');
-    const startDateDay = newStartDate.getDay();
+    const startDateDay = selectedNewDate.getDay();
     const todayLabel = day[startDateDay];
 
     return todayLabel;
   }
 
-  // 선택한 day 날짜 계산
-  const selectedDateObj = new Date(newStartDate);
-  selectedDateObj.setDate(startDateDate + selectedDay);
+  useEffect(() => {
+    // 선택한 day 날짜 계산
+    const selectedNewDate = new Date(newStartDate);
+    selectedNewDate.setDate(startDateDate + selectedDay);
 
-  const selectedDateMonth = selectedDateObj.getMonth();
-  const selectedDateDate = selectedDateObj.getDate();
-  const selectedDateLabel = getTodayLabel(selectedDateObj);
+    const selectedDateMonth = selectedNewDate.getMonth();
+    const selectedDateDate = selectedNewDate.getDate();
+    const selectedDateLabel = getTodayLabel(selectedNewDate);
 
-  const selectedDayTitle = `${selectedDateMonth + 1}월 ${selectedDateDate}일 ${selectedDateLabel}요일`;
+    const selectedDayTitle = `${selectedDateMonth + 1}월 ${selectedDateDate}일 ${selectedDateLabel}요일`;
 
-  dayTitle(selectedDayTitle);
+    if (dayTitle) {
+      dayTitle(selectedDayTitle);
+    }
+    if (setIndex) {
+      setIndex(selectedDay);
+    }
+  }, [selectedDay, newStartDate, startDateDate, dayTitle, setIndex]);
 
   // day 버튼을 생성할 변수 길이
   const mapDayCount = Array.from({ length: dayCount + 1 });

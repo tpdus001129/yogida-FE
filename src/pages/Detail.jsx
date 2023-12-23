@@ -22,12 +22,6 @@ export default function Detail() {
   // 나의 글 유무
   // const myPost = true;
 
-  //  첫번째 장소
-  // const firstPlace = true;
-
-  // 마지막 장소
-  // const lastPlace = true;
-
   // 댓글 모드
   const [commentModalMode, setCommentModalMode] = useState(false);
 
@@ -101,7 +95,13 @@ export default function Detail() {
     }
   }
 
-  console.log('여기여기', dayClickedSchedulesData());
+  // day 버튼 클릭시 day에 맞는 스케줄
+  function distancesData() {
+    if (data.distances && data.distances.length > 0) {
+      const distancesData = data.distances;
+      return distancesData;
+    }
+  }
 
   if (!data) return <p>loading...</p>;
   return (
@@ -124,12 +124,15 @@ export default function Detail() {
         </div>
         <p className="text-center text-[14px] font-bold my-[26px]">{dayTitle}</p>
         <div className="mb-[60px]">
-          {dayClickedSchedulesData() &&
-            dayClickedSchedulesData().map((schedule, index) => (
-              <ContentItem key={index} data={dayClickedSchedulesData()} />
-            ))}
+          {dayClickedSchedulesData() && (
+            <ContentItem
+              key={index}
+              schedulesData={dayClickedSchedulesData()}
+              distancesData={distancesData()}
+              distanceIndex={index}
+            />
+          )}
         </div>
-        {/* 여행한마디 */}
         <div className="mx-[24px] mb-[60px]">
           <div className="flex gap-[6px] mb-[16px]">
             {/* 프로필 사진 넣는곳 */}

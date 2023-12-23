@@ -1,37 +1,21 @@
 import PropTypes from 'prop-types';
 
-import { useState, useEffect } from 'react';
-
 import IconButton from './IconButton';
-// import Tag from '../commons/Tag';
+import Tag from '../commons/Tag';
 import useDayCalculation from '../../hooks/useDayCalculation';
-
-import { getPostByPostId } from '../../services/posts';
 
 import { IoLockClosed } from 'react-icons/io5';
 // import { IoCreateOutline } from "react-icons/io5";
 
 export default function Header({ headerData }) {
-  const [data, setData] = useState('');
-
   // 헤더 아이콘 버튼 타입
   const buttonType = true;
 
   //태그 화이트 모드
-  // const whiteMode = true;
+  const whiteMode = true;
 
   // 날짜 계산기 커스텀 훅 사용
   const dayCalculation = useDayCalculation(headerData.startDate, headerData.endDate);
-
-  useEffect(() => {
-    getPostByPostId()
-      .then((posts) => {
-        setData(posts);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  }, []);
 
   // 비용 포맷
   const costFormat = (+headerData.cost).toLocaleString();
@@ -78,8 +62,6 @@ export default function Header({ headerData }) {
     '.' +
     endDate.date;
 
-  console.log(data);
-
   if (!headerData) return <p>loading...</p>;
   return (
     <div className={`w-full h-[290px] bg-primary`}>
@@ -99,7 +81,9 @@ export default function Header({ headerData }) {
           </div>
           {headerData.isPublic && <IoLockClosed className="text-secondary" size="18" />}
         </div>
-        <div className="pt-[14px]">{/* <Tag tags={headerData.tag} whiteMode={whiteMode} /> */}</div>
+        <div className="pt-[14px]">
+          {headerData && headerData.tag && <Tag tags={headerData.tag} whiteMode={whiteMode} />}
+        </div>
         <div className="flex justify-between mt-[20px]">
           {infoData.map((info) => (
             <div
@@ -119,13 +103,5 @@ export default function Header({ headerData }) {
 }
 
 Header.propTypes = {
-  headerData: PropTypes.shape({
-    title: PropTypes.string,
-    isPublic: PropTypes.bool,
-    startDate: PropTypes.string,
-    endDate: PropTypes.string,
-    peopleCount: PropTypes.number,
-    cost: PropTypes.number,
-    destination: PropTypes.string,
-  }),
+  headerData: PropTypes.any.isRequired,
 };

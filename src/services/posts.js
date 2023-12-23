@@ -15,7 +15,6 @@ export async function getPostsAllList() {
 export async function getPostByPostId(postId) {
   try {
     const res = await axios.get(`http://localhost:5500/api/v1/posts/${postId}`);
-    console.log('api', res.data);
     return res.data;
   } catch (error) {
     console.error('Error: ', error);
