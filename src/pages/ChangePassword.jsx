@@ -2,27 +2,19 @@ import Header from '../components/Login/Header';
 import Button from '../components/commons/Button';
 import InputWithLabel from '../components/Input/InputWithLabel';
 
-import { useState, useMemo } from 'react';
-
 import logo from '../assets/logo.png';
-import { PASSWORD_VALIDATION_CONDITION } from '../constants/passwordValidationConditions';
 import InputPassword from '../components/Input/InputPassword';
+import usePassword from '../hooks/usePassword';
 
 export default function ChangePassword() {
-  const [password, setPassword] = useState('');
-  const [checkPassword, setCheckPassword] = useState('');
-
-  const passwordValidationMessage = useMemo(() => {
-    return `${PASSWORD_VALIDATION_CONDITION.filter((condition) => {
-      return !condition.validateFunction(password);
-    })
-      .map((condition) => condition.name)
-      .join(', ')}`;
-  }, [password]);
-
-  const checkPasswordValidationMessage = useMemo(() => {
-    return password === checkPassword ? '' : '비밀번호가 일치하지 않습니다';
-  }, [password, checkPassword]);
+  const {
+    password,
+    setPassword,
+    checkPassword,
+    setCheckPassword,
+    passwordValidationMessage,
+    checkPasswordValidationMessage,
+  } = usePassword();
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center ">
