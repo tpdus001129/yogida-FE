@@ -1,7 +1,8 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 
 const handleAxiosError = (error) => {
-  throw new Error(`${error.response.status} :: ${error.message}`);
+  console.log(`${error.status} :: ${error.data.message}`);
+  throw error.status;
 };
 
 const api = axios.create({
@@ -68,7 +69,7 @@ api.interceptors.response.use(
       if (error.response.status === HttpStatusCode.Forbidden) {
         console.log('403');
       }
-      handleAxiosError(error);
+      handleAxiosError(error.response);
     }
 
     return Promise.reject(error);
