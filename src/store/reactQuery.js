@@ -10,12 +10,12 @@ export const queryClient = new QueryClient({
     queries: {
       suspense: true,
       onError: queryErrorHandler,
-      retry: 1,
+      retry: 0,
     },
     mutations: {
       suspense: true,
       onError: queryErrorHandler,
-      retry: 1,
+      retry: 0,
     },
   },
 });

@@ -64,6 +64,7 @@ api.interceptors.response.use(
         console.log('404');
       }
       if (error.response.status === HttpStatusCode.Unauthorized) {
+        localStorage.removeItem('user');
         console.log('401');
       }
       if (error.response.status === HttpStatusCode.Forbidden) {

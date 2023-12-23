@@ -10,6 +10,7 @@ import { userState } from '../../recoils/userAtom';
 import { PATH } from '../../constants/path';
 
 export default function Navbar() {
+  //recoil에 저장된 user정보 가져오기
   const user = useRecoilValue(userState);
   return (
     <nav className="border-t-[1px] border-solid border-gray w-full fixed bottom-0 left-0 h-navbar bg-white z-10">
@@ -37,7 +38,7 @@ function Tab({ path, icon }) {
 }
 
 function Profile({ img }) {
-  return <img src={img} alt="profile-img" className="rounded-full flex items-center w-fit m-auto h-full pd-[5px]" />;
+  return <img src={img} alt="profile-img" className="rounded-full flex items-center w-fit m-auto h-full p-[5px]" />;
 }
 
 Tab.propTypes = {

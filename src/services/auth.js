@@ -13,7 +13,7 @@ const authAPI = {
   },
 
   async logout() {
-    return await api.get('/logout');
+    return await api.post(API_URL + '/logout');
   },
 
   async getEmailVerifyCode({ email }) {
