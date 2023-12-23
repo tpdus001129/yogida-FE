@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { IoHomeOutline } from 'react-icons/io5';
 // import { IoHomeSharp } from 'react-icons/io5';
 import { IoNotificationsOutline } from 'react-icons/io5';
-// import { IoNotificationsSharp } from 'react-icons/io5';
+// import { IoNotificationsSharp } from 'react-icons햣 ㅁㅇㅇ/io5';
 import { IoPersonCircleOutline } from 'react-icons/io5';
 import { PiNotePencil } from 'react-icons/pi';
 
