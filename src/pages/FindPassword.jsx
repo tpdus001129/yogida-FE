@@ -3,81 +3,33 @@ import Button from '../components/commons/Button';
 import InputWithCheckButton from '../components/Input/InputWithCheckButton';
 import InputWithLabel from '../components/Input/InputWithLabel';
 import InputWithVerifyCode from '../components/Input/InputWithVerifyCode';
-import ModalWithOk from '../components/Modal/ModalWithOk';
 
 import logo from '../assets/logo.png';
 
-import authAPI from '../services/auth';
-
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import useEmail from '../hooks/useEmail';
 
 export default function FindPassword() {
-  const navigate = useNavigate();
+  const {
+    email,
+    setEmail,
+    emailValidationMessage,
+    verificationCode,
+    setVerificationCode,
+    isAvailableEmailInput,
+    isVerificationVisible,
+    isEmailCertificated,
+    handleExpire,
+    handleSendValidationCode,
+    handleCheckValidationCode,
+  } = useEmail();
 
-  const [email, setEmail] = useState('');
-  const [modalMessage, setModalMessage] = useState('');
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isAvailableEmailInput, setIsAvailableEmailInput] = useState(true);
-  const [verificationCode, setVerificationCode] = useState('');
-  const [isVerificationVisible, setIsVerificationVisible] = useState(false);
-
-  const emailValidationMessage = useMemo(() => {
-    if (email.length === 0) return '이메일을 작성해주세요.';
-    return /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/.exec(email) === null ? '이메일 형식에 맞춰서 작성해주세요.' : '';
-  }, [email]);
-
-  const handleSendValidationCode = async () => {
-    await authAPI
-      .getEmailVerifyCode({ email })
-      .then(() => {
-        setModalMessage(`메일이 전송되었습니다.\n5분 안에 인증번호를 입력해주세요.`);
-        setIsAvailableEmailInput(false);
-        setIsVerificationVisible(true);
-      })
-      .catch((error) => {
-        switch (error.response.status) {
-          case 400: {
-            setModalMessage(`${error.response.data.error}`);
-            break;
-          }
-          case 500: {
-            setModalMessage(`메일 전송에 실패했습니다.\n메일 주소가 유효한지 확인해주세요.`);
-            break;
-          }
-        }
-      });
-    setIsModalVisible(true);
-  };
-
-  const handleCheckValidationCode = async () => {
-    await authAPI
-      .checkEmailVerifyCode({ email, authCode: verificationCode })
-      .then(() => {
-        setModalMessage(`인증번호가 일치합니다.`);
-        setIsVerificationVisible(false);
-        navigate('/change-password');
-      })
-      .catch((error) => {
-        console.log(error);
-        switch (error.response.status) {
-          case 400: {
-            setModalMessage(`${error.response.data.error}`);
-            break;
-          }
-          case 500: {
-            setModalMessage(`인증번호 확인 중 오류가 발생했습니다.`);
-            break;
-          }
-        }
-      });
-    setIsModalVisible(true);
+  const handleLink = (event) => {
+    if (!isEmailCertificated) event.preventDefault();
   };
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center ">
-      {isModalVisible && <ModalWithOk message={modalMessage} onClick={() => setIsModalVisible(false)} />}
       <div className="w-mobile p-6 flex flex-col items-center">
         <Header />
         <img src={logo} alt={logo} className="max-w-[63px] max-h-[77px] mb-5" />
@@ -110,14 +62,16 @@ export default function FindPassword() {
               time={300}
               value={verificationCode}
               onChangeFunc={setVerificationCode}
-              onExpire={() => {}}
+              onExpire={handleExpire}
             />
           )}
         </div>
         {isVerificationVisible && (
-          <Button type={'default'} text={'bold'} onClick={handleCheckValidationCode}>
-            인증번호 확인하기
-          </Button>
+          <Link to="/change-password" onClick={handleLink}>
+            <Button type={'default'} text={'bold'} onClick={handleCheckValidationCode}>
+              인증번호 확인하기
+            </Button>
+          </Link>
         )}
       </div>
     </div>
