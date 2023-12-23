@@ -3,8 +3,10 @@ import profile from '../../assets/images/profile.jpg';
 import { IoTrashOutline } from 'react-icons/io5';
 import { IoChatbubbleSharp } from 'react-icons/io5';
 import Title from './Title';
+import { useMypageCommentQuery } from '../../pages/mypage/queries';
 
 export default function Comments() {
+  const { commentList } = useMypageCommentQuery();
   return (
     <>
       <Title title="내가 쓴 댓글" count="10" icon={<IoChatbubbleSharp color="#589BF7" size="13" />} />
@@ -12,7 +14,8 @@ export default function Comments() {
       <div className="border-b border-gray-4 mb-[20px]"></div>
 
       <div className="flex flex-col gap-[20px]">
-        <Comment img={profile} title=" 안목해변이 너무 예쁘네요." />
+        {commentList?.length !== 0 &&
+          commentList?.map((list) => <Comment key={list._id} img={profile} title=" 안목해변이 너무 예쁘네요." />)}
       </div>
     </>
   );

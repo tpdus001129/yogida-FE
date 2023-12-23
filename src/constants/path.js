@@ -1,0 +1,17 @@
+export const PATH = {
+  root: '/',
+  mypage: '/mypage',
+  notification: '/notification',
+  login: '/login',
+  search: '/search',
+  filter: '/filter',
+  schedule: '/schedule',
+  signup: '/signup',
+  findPassword: 'find-password',
+  detail: '/detail',
+  changePassword: '/change-password',
+  commentModal: '/comment-modal',
+  map: '/map',
+  setup: '/setup',
+  notfound: '*',
+};
