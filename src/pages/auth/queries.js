@@ -3,18 +3,12 @@ import { queryKeys } from '../../store/reactQuery';
 import authAPI from '../../services/auth';
 
 export const useCheckLoginQuery = () => {
-  const {
-    data: authStatus,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-    refetch,
-  } = useQuery({
+  const { data: loginUserInfo, refetch } = useQuery({
     queryKey: [queryKeys.loginStatus],
     queryFn: authAPI.verify,
     enabled: false,
+    select: (data) => data.data.user,
   });
 
-  return { authStatus, refetch, isLoading, isSuccess, isError, error };
+  return { loginUserInfo, refetch };
 };

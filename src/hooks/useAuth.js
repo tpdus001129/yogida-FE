@@ -7,7 +7,7 @@ const PRIVATE_PATHS = [PATH.mypage, PATH.notification, PATH.schedule];
 
 export function useAuth() {
   const { pathname } = useLocation();
-  const { authStatus, refetch } = useCheckLoginQuery();
+  const { loginUserInfo, refetch } = useCheckLoginQuery();
 
   const isPrivate = useMemo(() => {
     return PRIVATE_PATHS.includes(pathname);
@@ -23,10 +23,5 @@ export function useAuth() {
     getUserAuth();
   }, [getUserAuth, pathname]);
 
-  console.log('authStatus :', authStatus);
-  console.log('pathname :', pathname);
-  console.log('PRIVATE_PATHS.includes(pathname) :', PRIVATE_PATHS.includes(pathname));
-  console.log('isPrivate :', isPrivate);
-
-  return { authStatus };
+  return { loginUserInfo };
 }
