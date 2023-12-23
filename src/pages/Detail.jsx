@@ -15,7 +15,7 @@ export const ModalContext = createContext();
 
 export default function Detail() {
   const [data, setData] = useState([]);
-  const { postId } = useParams();
+  const { id: postId } = useParams();
   const [dayTitle, setDayTitle] = useState('');
   const [index, setIndex] = useState(0);
 

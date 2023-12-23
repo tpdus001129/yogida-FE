@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Main from './pages/Main';
 import Notfound from './pages/Notfound';
 import Layout from './components/commons/Layout';
@@ -16,29 +16,46 @@ import Notification from './pages/Notification';
 import Map from './pages/Map';
 import Setup from './pages/setup/Setup';
 
+import { PATH } from './constants/path';
+import { useAuth } from './hooks/useAuth';
+import { useSetRecoilState } from 'recoil';
+import { userState } from './recoils/userAtom';
+import { useEffect } from 'react';
+
 function App() {
+  // 로그인이 필요한 페이지인지 check
+  // 해당 페이지일 경우 로그인 한 유저 정보 가져오기
+  const { loginUserInfo } = useAuth();
+  const setUser = useSetRecoilState(userState);
+
+  // 로그인 유저정보 recoil에 저장
+  useEffect(() => {
+    if (loginUserInfo) {
+      setUser(loginUserInfo);
+    }
+  }, [loginUserInfo, setUser]);
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Main />} />
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="*" element={<Notfound />} />
-          <Route path="/notification" element={<Notification />} />
-        </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/filter" element={<Filter />} />
-        <Route path="/schedule" element={<Schedule />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/find-password" element={<FindPassword />} />
-        <Route path="/posts/:postId" element={<Detail />} />
-        <Route path="/change-password" element={<ChangePassword />} />
-        <Route path="/comment-modal" element={<CommentModal />} />
-        <Route path="/map" element={<Map />} />
-        <Route path="/setup" element={<Setup />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path={PATH.root} element={<Main />} />
+        <Route path={PATH.mypage} element={<Mypage />} />
+        <Route path={PATH.notification} element={<Notification />} />
+        <Route path={PATH.post} element={<Detail />} />
+      </Route>
+      <Route path={PATH.notfound} element={<Notfound />} />
+      <Route path={PATH.login} element={<Login />} />
+      <Route path={PATH.search} element={<Search />} />
+      <Route path={PATH.filter} element={<Filter />} />
+      <Route path={PATH.schedule} element={<Schedule />} />
+      <Route path={PATH.signup} element={<Signup />} />
+      <Route path={PATH.findPassword} element={<FindPassword />} />
+      <Route path={PATH.detail} element={<Detail />} />
+      <Route path={PATH.changePassword} element={<ChangePassword />} />
+      <Route path={PATH.commentModal} element={<CommentModal />} />
+      <Route path={PATH.map} element={<Map />} />
+      <Route path={PATH.setup} element={<Setup />} />
+    </Routes>
   );
 }
 

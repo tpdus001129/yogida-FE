@@ -52,7 +52,7 @@ export default function DayButton({ startDate, dayCount, dayTitle, setIndex }) {
           <button
             key={index}
             className={`w-[74px] h-[36px] rounded-full flex-shrink-0 flex justify-center items-center text-[14px] mr-[9px] ${
-              index === selectedDay ? 'bg-primary text-white font-bold' : 'bg-white border border-gray-2 text-gray-2'
+              index === selectedDay ? 'bg-primary text-white font-bold' : 'bg-white border border-gray-3 text-gray-3'
             }`}
             onClick={() => handleOnClick(index)}
           >
