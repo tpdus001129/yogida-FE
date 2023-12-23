@@ -2,37 +2,20 @@ import Input from '../commons/Input';
 import Button from '../commons/Button';
 import InputWithLabel from '../Input/InputWithLabel';
 import InputPassword from '../Input/InputPassword';
-import ModalWithOk from '../Modal/ModalWithOk';
 
 import authAPI from '../../services/auth';
 
-import { PASSWORD_VALIDATION_CONDITION } from '../../constants/passwordValidationConditions';
-
-import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import usePassword from '../../hooks/usePassword';
+import useEmail from '../../hooks/useEmail';
+import useModal from '../../hooks/useModal';
 
 export default function LoginWithEmailContainer() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const [modalMessage, setModalMessage] = useState('');
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const emailValidationMessage = useMemo(() => {
-    if (email.length === 0) return '이메일을 작성해주세요.';
-    return /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/.exec(email) === null ? '이메일 형식에 맞춰서 작성해주세요.' : '';
-  }, [email]);
-
-  const passwordValidationMessage = useMemo(() => {
-    return `${PASSWORD_VALIDATION_CONDITION.filter((condition) => {
-      return !condition.validateFunction(password);
-    })
-      .map((condition) => condition.name)
-      .join(', ')}`;
-  }, [password]);
+  const { email, setEmail, emailValidationMessage } = useEmail();
+  const { password, setPassword, passwordValidationMessage } = usePassword();
+  const { openModal } = useModal();
 
   const handleLogin = async () => {
     await authAPI
@@ -43,8 +26,7 @@ export default function LoginWithEmailContainer() {
       .catch((error) => {
         switch (error.response?.status) {
           case 400: {
-            setModalMessage(`이메일 또는 비밀번호가 일치하지 않습니다.`);
-            setIsModalVisible(true);
+            openModal({ message: `이메일 또는 비밀번호가 일치하지 않습니다.` });
             break;
           }
         }
@@ -53,7 +35,6 @@ export default function LoginWithEmailContainer() {
 
   return (
     <div className="w-mobile p-6">
-      {isModalVisible && <ModalWithOk message={modalMessage} onClick={() => setIsModalVisible(false)} />}
       <form method="post" className="py-10">
         <div className="[&>:not(:first-child)]:mt-5">
           <InputWithLabel
