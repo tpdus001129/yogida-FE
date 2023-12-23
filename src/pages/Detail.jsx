@@ -1,4 +1,7 @@
 import { useState, createContext, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { getPostByPostId } from '../services/posts';
 
 import Header from '../components/Detail/Header';
 import DayButton from '../components/Detail/DayButton';
@@ -6,12 +9,24 @@ import ContentItem from '../components/Detail/ContentItem';
 import Button from '../components/commons/Button';
 import CourseMap from '../components/KakaoMaps/CourseMap';
 import Modal from '../components/CommentModal/Modal';
+import useDayCalculation from '../hooks/useDayCalculation';
 
 export const ModalContext = createContext();
 
 export default function Detail() {
-  const firstPlace = true;
-  const lastPlace = true;
+  const [data, setData] = useState([]);
+  const { postId } = useParams();
+  const [dayTitle, setDayTitle] = useState('');
+  const [index, setIndex] = useState(0);
+
+  // 나의 글 유무
+  // const myPost = true;
+
+  //  첫번째 장소
+  // const firstPlace = true;
+
+  // 마지막 장소
+  // const lastPlace = true;
 
   // 댓글 모드
   const [commentModalMode, setCommentModalMode] = useState(false);
@@ -19,6 +34,19 @@ export default function Detail() {
   // 시작점과 종료점의 Y 좌표를 저장하는 state
   const [mouseDownClientY, setMouseDownClientY] = useState(0);
   const [mouseUpClientY, setMouseUpClientY] = useState(0);
+
+  // API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const posts = await getPostByPostId(postId);
+        setData(posts);
+      } catch (error) {
+        console.error('Error: ', error);
+      }
+    };
+    fetchData();
+  }, [postId]);
 
   // 드래그 종료 시 처리
   useEffect(() => {
@@ -41,11 +69,6 @@ export default function Detail() {
     setMouseDownClientY(e.clientY);
   }
 
-  // 데스크탑 드래그 종료 시 마우스의 y 좌표 저장
-  // function onMouseUp(e) {
-  //   setMouseUpClientY(e.clientY);
-  // }
-
   // // 터치 시작 시 처리
   // function onTouchStart(e) {
   //   setStartY(e.touches[0].clientY);
@@ -56,30 +79,73 @@ export default function Detail() {
   //   setEndY(e.changedTouches[0].clientY);
   // }
 
+  // 날짜 계산기 커스텀 훅 사용
+  const dayCalculation = useDayCalculation(data.startDate, data.endDate);
+
+  // 작성 날짜 포맷
+  const createData = String(data.createdAt).slice(0, 10);
+
+  // 닉네임 가져오기
+  function nicknameData() {
+    if (data && data.authorId && data.authorId.nickname.length > 0) {
+      const nicknameData = data.authorId.nickname;
+      return nicknameData;
+    }
+  }
+
+  // day 버튼 클릭시 day에 맞는 스케줄
+  function dayClickedSchedulesData() {
+    if (data.schedules && data.schedules.length > 0) {
+      const schedulesData = data.schedules;
+      return schedulesData[index];
+    }
+  }
+
+  console.log('여기여기', dayClickedSchedulesData());
+
+  if (!data) return <p>loading...</p>;
   return (
     <ModalContext.Provider value={{ commentModalMode, setCommentModalMode }}>
       {commentModalMode && <Modal onMouseDown={onMouseDown} onMouseUp={onMouseUp} />}
       <div className={commentModalMode ? 'w-full h-screen overflow-hidden' : ''}>
-        <Header />
+        <Header headerData={data} />
         <div className="w-full h-[160px] mb-[22px]">
           <CourseMap />
         </div>
         <div className="overflow-scroll scrollbar-hide">
-          <DayButton />
+          {data.startDate && (
+            <DayButton
+              startDate={data.startDate}
+              dayCount={dayCalculation}
+              dayTitle={setDayTitle}
+              setIndex={setIndex}
+            />
+          )}
         </div>
-        <p className="text-center text-[14px] font-bold my-[26px]">day1 날짜</p>
-        <ContentItem firstPlace={firstPlace} index={1} />
-        <ContentItem index={2} />
-        <ContentItem lastPlace={lastPlace} index={3} />
-
-        <div className="mx-[24px] mb-[80px]">
-          <p className="text-center text-[14px] font-bold mt-[60px] mb-[30px]">여행 한마디</p>
-          <p className="text-[14px]">
-            강릉 바다가 너무 예쁘네요~ 다음에 또 방문할 예정이랍니다. 특히 맛집은 꼭 가세요!!!!
-          </p>
+        <p className="text-center text-[14px] font-bold my-[26px]">{dayTitle}</p>
+        <div className="mb-[60px]">
+          {dayClickedSchedulesData() &&
+            dayClickedSchedulesData().map((schedule, index) => (
+              <ContentItem key={index} data={dayClickedSchedulesData()} />
+            ))}
         </div>
-        <div className="w-full flex justify-center mb-[60px] px-[24px]">
-          <Button type={'secondary'} text={'boldDescription'}>
+        {/* 여행한마디 */}
+        <div className="mx-[24px] mb-[60px]">
+          <div className="flex gap-[6px] mb-[16px]">
+            {/* 프로필 사진 넣는곳 */}
+            <div className="w-[40px] h-[40px] rounded-full border border-gray-4"></div>
+            <div className="flex flex-col">
+              <p className="text-[12px] text-gray-2">{createData}</p>
+              <p className="text-[14px] font-bold">{nicknameData()}님의 여행 한마디</p>
+            </div>
+          </div>
+          <div className="w-full bg-input rounded-[4px] text-[14px] p-[8px] break-all">{data.reviewText}</div>
+        </div>
+        <div className="w-full flex flex-col gap-[6px] justify-center pb-[120px] px-[24px]">
+          <Button type={'default'} text={'description'}>
+            수정하기
+          </Button>
+          <Button type={'red'} text={'description'}>
             삭제하기
           </Button>
         </div>

@@ -32,7 +32,7 @@ function App() {
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/find-password" element={<FindPassword />} />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/posts/:postId" element={<Detail />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/comment-modal" element={<CommentModal />} />
         <Route path="/map" element={<Map />} />

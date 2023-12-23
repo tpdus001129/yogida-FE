@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// 전체 포스트 데이터 가져오기(목데이터)
-export async function getPosts() {
+// 메인 페이지 GET
+export async function getPostsAllList() {
   try {
-    const res = await axios.get('mock/posts.json');
+    const res = await axios.get('http://localhost:5500/api/v1/posts');
     return res.data.posts;
   } catch (error) {
     console.error('Error: ', error);
@@ -11,11 +11,12 @@ export async function getPosts() {
   }
 }
 
-// 메인페이지 데이터 가져오기
-export async function getPostsAllList() {
+// 상세 페이지 GET
+export async function getPostByPostId(postId) {
   try {
-    const res = await axios.get('http://localhost:5500/api/v1/posts');
-    return res.data.posts;
+    const res = await axios.get(`http://localhost:5500/api/v1/posts/${postId}`);
+    console.log('api', res.data);
+    return res.data;
   } catch (error) {
     console.error('Error: ', error);
     throw error;

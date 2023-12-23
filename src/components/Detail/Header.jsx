@@ -1,18 +1,30 @@
+import PropTypes from 'prop-types';
+
 import { useState, useEffect } from 'react';
 
 import IconButton from './IconButton';
-import Tag from '../commons/Tag';
+// import Tag from '../commons/Tag';
+import useDayCalculation from '../../hooks/useDayCalculation';
 
-import { getPosts } from '../../services/posts';
+import { getPostByPostId } from '../../services/posts';
 
 import { IoLockClosed } from 'react-icons/io5';
+// import { IoCreateOutline } from "react-icons/io5";
 
-export default function Header() {
-  const [data, setData] = useState([]);
-  const white = true;
+export default function Header({ headerData }) {
+  const [data, setData] = useState('');
+
+  // 헤더 아이콘 버튼 타입
+  const buttonType = true;
+
+  //태그 화이트 모드
+  // const whiteMode = true;
+
+  // 날짜 계산기 커스텀 훅 사용
+  const dayCalculation = useDayCalculation(headerData.startDate, headerData.endDate);
 
   useEffect(() => {
-    getPosts()
+    getPostByPostId()
       .then((posts) => {
         setData(posts);
       })
@@ -21,32 +33,99 @@ export default function Header() {
       });
   }, []);
 
-  const headerHeight = data.length > 0 && data[0].tag.length >= 5 ? 'h-[324px]' : 'h-[274px]';
+  // 비용 포맷
+  const costFormat = (+headerData.cost).toLocaleString();
 
+  // O박 O일 날짜 포맷
+  const dateFormat = dayCalculation + '박 ' + (dayCalculation + 1) + '일';
+
+  // 헤더 아이콘
+  const headerIcon = ['share', 'comment', 'heart'];
+
+  // 정보 아이콘
+  const infoData = [
+    ['people', headerData.peopleCount + '명'],
+    ['wallet', costFormat + '원'],
+    ['calendar', dateFormat],
+    ['destination', headerData.destination],
+  ];
+
+  // 시작 날짜
+  const startDate = {
+    year: new Date(headerData.startDate).getFullYear(),
+    month: new Date(headerData.startDate).getMonth(),
+    date: new Date(headerData.startDate).getDate(),
+  };
+
+  // 끝 날짜
+  const endDate = {
+    year: new Date(headerData.endDate).getFullYear(),
+    month: new Date(headerData.endDate).getMonth(),
+    date: new Date(headerData.endDate).getDate(),
+  };
+
+  // 여행 기간
+  const period =
+    startDate.year +
+    '.' +
+    startDate.month +
+    '.' +
+    startDate.date +
+    ' ~ ' +
+    endDate.year +
+    '.' +
+    endDate.month +
+    '.' +
+    endDate.date;
+
+  console.log(data);
+
+  if (!headerData) return <p>loading...</p>;
   return (
-    <div className={`w-full ${headerHeight} bg-primary`}>
-      {/* 아이콘 */}
-      <div className="flex justify-between mx-[24px] pt-[30px] mb-[26px]">
-        <IconButton iconName={'prev'} />
-        <div className="flex space-x-[6px]">
-          <IconButton iconName={'share'} />
-          <IconButton iconName={'comment'} />
-          <IconButton iconName={'heart'} />
+    <div className={`w-full h-[290px] bg-primary`}>
+      <div className="flex justify-between items-center h-[74px] mx-[24px]">
+        <IconButton iconName={'prev'} buttonType={buttonType} />
+        <div className="flex gap-[16px] space-x-[6px]">
+          {headerIcon.map((icon) => (
+            <IconButton iconName={icon} buttonType={buttonType} key={icon} />
+          ))}
         </div>
       </div>
       <div className="mx-[24px] text-white">
+        <p className="text-[14px]">{period}</p>
         <div className="flex justify-between mb-[6px] items-center">
-          <p>ㅇㅇ님의 ㅇㅇ여행 일정입니다.</p>
           <div>
-            <IoLockClosed className="text-secondary" size="18" />
+            <p className="text-[22px] font-bold">{headerData.title}</p>
           </div>
+          {headerData.isPublic && <IoLockClosed className="text-secondary" size="18" />}
         </div>
-        <p className="text-[22px] font-bold mb-[6px]">여행 일지 공유 제목</p>
-        {data.length > 0 && <Tag tags={data[0].tag} white={white} />}
-        <p>날짜</p>
-        <p>총 예산 100,000원</p>
-        <p>인원수 2명</p>
+        <div className="pt-[14px]">{/* <Tag tags={headerData.tag} whiteMode={whiteMode} /> */}</div>
+        <div className="flex justify-between mt-[20px]">
+          {infoData.map((info) => (
+            <div
+              className="flex flex-col items-center gap-[6px] drop-shadow-[0_2px_0px_rgba(0,0,0,0.25)]"
+              key={info[0]}
+            >
+              <div className="w-[38px] h-[38px] bg-white rounded-full flex items-center justify-center">
+                <IconButton iconName={info[0]} />
+              </div>
+              <p className="text-[12px]">{info[1]}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
+
+Header.propTypes = {
+  headerData: PropTypes.shape({
+    title: PropTypes.string,
+    isPublic: PropTypes.bool,
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,
+    peopleCount: PropTypes.number,
+    cost: PropTypes.number,
+    destination: PropTypes.string,
+  }),
+};

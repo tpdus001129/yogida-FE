@@ -18,7 +18,7 @@ export default function ImageSlide({ images }) {
 
   // 버블링 방지
   function onClickHandler(e) {
-    e.stopPropagation();
+    e.preventDefault();
     setIsHeartClicked((prev) => !prev);
   }
 

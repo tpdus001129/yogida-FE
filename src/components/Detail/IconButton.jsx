@@ -6,14 +6,18 @@ import { ModalContext } from '../../pages/Detail';
 
 import {
   IoChevronBackOutline,
-  IoShareSocialOutline,
+  IoShareOutline,
   IoChatbubbleOutline,
   IoHeartOutline,
   IoHeartSharp,
   IoCreateOutline,
+  IoWalletOutline,
+  IoCalendarClearOutline,
+  IoLocationOutline,
+  IoPeopleOutline,
 } from 'react-icons/io5';
 
-export default function IconButton({ iconName }) {
+export default function IconButton({ iconName, buttonType }) {
   const { setCommentModalMode } = useContext(ModalContext);
 
   function iconSelect(name) {
@@ -25,9 +29,17 @@ export default function IconButton({ iconName }) {
       case 'comment':
         return <IoChatbubbleOutline size="22" />;
       case 'share':
-        return <IoShareSocialOutline size="22" />;
+        return <IoShareOutline size="24" />;
       case 'edit':
         return <IoCreateOutline size="24" />;
+      case 'wallet':
+        return <IoWalletOutline size="24" />;
+      case 'calendar':
+        return <IoCalendarClearOutline size="22" />;
+      case 'destination':
+        return <IoLocationOutline size="24" />;
+      case 'people':
+        return <IoPeopleOutline size="24" />;
       default:
         return null;
     }
@@ -45,7 +57,6 @@ export default function IconButton({ iconName }) {
         navigate(-1);
         break;
       case 'comment':
-        // navigate('/comment-modal');
         setCommentModalMode(true);
         break;
       case 'heart':
@@ -57,15 +68,19 @@ export default function IconButton({ iconName }) {
   }
 
   return (
-    <button
-      className="w-[36px] h-[36px] rounded-full bg-white flex justify-center items-center"
-      onClick={onClickHandler}
-    >
-      {selectedIcon}
-    </button>
+    <div>
+      {buttonType ? (
+        <button className=" flex justify-center items-center text-white" onClick={onClickHandler}>
+          {selectedIcon}
+        </button>
+      ) : (
+        <div className="text-black">{selectedIcon}</div>
+      )}
+    </div>
   );
 }
 
 IconButton.propTypes = {
   iconName: PropTypes.string.isRequired,
+  buttonType: PropTypes.bool,
 };
