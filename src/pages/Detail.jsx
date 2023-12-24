@@ -14,8 +14,8 @@ import useDayCalculation from '../hooks/useDayCalculation';
 export const ModalContext = createContext();
 
 export default function Detail() {
-  const [data, setData] = useState([]);
   const { id: postId } = useParams();
+  const [data, setData] = useState([]);
   const [dayTitle, setDayTitle] = useState('');
   const [index, setIndex] = useState(0);
 
@@ -110,7 +110,7 @@ export default function Detail() {
       <div className={commentModalMode ? 'w-full h-screen overflow-hidden' : ''}>
         <Header headerData={data} />
         <div className="w-full h-[160px] mb-[22px]">
-          <CourseMap />
+          {data.schedules && <CourseMap data={data.schedules.map((schedule) => schedule)} />}
         </div>
         <div className="overflow-scroll scrollbar-hide">
           {data.startDate && (
@@ -122,7 +122,7 @@ export default function Detail() {
             />
           )}
         </div>
-        <p className="text-center text-[14px] font-bold my-[26px]">{dayTitle}</p>
+        <p className="text-center text-[14px] font-bold mb-[26px]">{dayTitle}</p>
         <div className="mb-[60px]">
           {dayClickedSchedulesData() && (
             <ContentItem
@@ -144,7 +144,7 @@ export default function Detail() {
           </div>
           <div className="w-full bg-input rounded-[4px] text-[14px] p-[8px] break-all">{data.reviewText}</div>
         </div>
-        <div className="w-full flex flex-col gap-[6px] justify-center pb-[120px] px-[24px]">
+        <div className="w-full flex flex-col gap-[6px] justify-center pb-[60px] px-[24px]">
           <Button type={'default'} text={'description'}>
             수정하기
           </Button>

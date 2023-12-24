@@ -1,25 +1,15 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { IoChatbubbleOutline } from 'react-icons/io5';
+import PropTypes from 'prop-types';
 
-import { getPostsAllList } from '../../services/posts';
+import { IoChatbubbleOutline } from 'react-icons/io5';
 
 import Tag from '../commons/Tag';
 import ImageSlide from './ImageSlide';
 
-export default function PostItem() {
-  const [data, setData] = useState([]);
-
-  // API
-  useEffect(() => {
-    getPostsAllList().then((posts) => {
-      setData(posts);
-    });
-  }, []);
-
+export default function PostItem({ data }) {
   return (
-    <>
+    <div>
       {data.map((item) => (
         <Link to={`/posts/${item._id}`} key={item._id}>
           <div>
@@ -47,6 +37,11 @@ export default function PostItem() {
           </div>
         </Link>
       ))}
-    </>
+    </div>
   );
 }
+
+PostItem.propTypes = {
+  data: PropTypes.array,
+  searchModeOff: PropTypes.func,
+};

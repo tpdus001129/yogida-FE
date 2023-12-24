@@ -45,12 +45,11 @@ export default function ImageSlide({ images }) {
           </li>
         ))}
       </ul>
-      <div className="absolute bottom-[14px] flex justify-center inset-x-0">
+      <div className="absolute bottom-[14px] flex justify-center inset-x-0 items-center">
         {Array.from({ length: images.length }, (_, index) => (
           <IoEllipseSharp
             key={index}
-            size="8"
-            className={` ${currentPage === index ? 'text-primary' : 'text-white'} inline mx-1`}
+            className={` ${currentPage === index ? 'text-primary text-[12px]' : 'text-white text-[8px]'} inline mx-1`}
           />
         ))}
       </div>

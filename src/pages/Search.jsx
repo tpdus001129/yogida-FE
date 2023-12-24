@@ -1,11 +1,16 @@
-import { IoSearchOutline } from 'react-icons/io5';
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import { IoSearchOutline } from 'react-icons/io5';
+
 import Header from '../components/Search/Header';
 import SearchItem from '../components/Search/SearchItem';
 import SearchInput from '../components/commons/SearchInput';
 
-export default function Search() {
+export default function Search({ searchModeOff }) {
   const close = true;
+  const [, setSearchParams] = useSearchParams();
 
   // 검색 데이터
   const [newKeyword, setNewKeyword] = useState('');
@@ -16,7 +21,7 @@ export default function Search() {
   useEffect(() => {
     const result = localStorage.getItem('keywords');
     if (result.length !== 0) {
-      setKeywords(result);
+      setKeywords(JSON.parse(result));
     }
   }, []);
 
@@ -50,32 +55,52 @@ export default function Search() {
 
   // 단일 검색어 삭제
   function handleRemoveKeywords(selectedKeyword) {
-    console.log('선택된 키워드:', selectedKeyword);
-    console.log('현재 키워드:', keywords);
-
     const updatedKeywords = keywords.filter((keyword) => keyword !== selectedKeyword);
-
-    console.log('업데이트된 키워드:', updatedKeywords);
 
     setKeywords(updatedKeywords);
     localStorage.setItem('keywords', JSON.stringify(updatedKeywords));
   }
 
+  // 현재 입력 검색어 저장
   function onChangeHandler(e) {
     setNewKeyword(e.target.value);
   }
 
+  // 검색
+  function searchHandler() {
+    if (newKeyword) {
+      setSearchParams({
+        city: newKeyword,
+      });
+      searchModeOff();
+    } else if (newKeyword === '' || newKeyword === null) {
+      return;
+    } else {
+      searchModeOff();
+      alert('존재하지 않는 게시물');
+    }
+  }
+
+  function handleRefresh() {
+    window.location.reload();
+  }
+
   return (
     <div className="w-full">
-      <Header title={'검색'} close={close} />
-      {/* 검색 */}
-      <form className="w-full h-[74px] flex relative items-center px-[24px]" onSubmit={handleAddKeyword}>
+      <Header title={'검색'} close={close} searchModeOff={searchModeOff} />
+      <form
+        className="w-full h-[74px] flex relative items-center px-[24px]"
+        onSubmit={(e) => {
+          handleAddKeyword(e);
+          searchHandler();
+          handleRefresh();
+        }}
+      >
         <SearchInput newKeyword={newKeyword} onChangeHandler={onChangeHandler} />
         <button className="absolute right-[40px] top-[35%]" type="submit">
           <IoSearchOutline size="22" />
         </button>
       </form>
-      {/* 최근검색어 */}
       <div className="relative">
         <div className="w-full h-[52px] flex justify-between items-center px-[24px]">
           <p className="font-bold text-[14px]">최근 검색어</p>
@@ -83,7 +108,6 @@ export default function Search() {
             전체삭제
           </button>
         </div>
-        {/* 최근 검색어 목록 */}
         {keywords.map((keyword) => (
           <SearchItem key={keyword} keyword={keyword} onRemove={handleRemoveKeywords} />
         ))}
@@ -94,3 +118,7 @@ export default function Search() {
     </div>
   );
 }
+
+Search.propTypes = {
+  searchModeOff: PropTypes.func,
+};
