@@ -1,4 +1,7 @@
 import axios from 'axios';
+import api from '.';
+
+const API_URL = '/api/v1/posts';
 
 // 메인 페이지 GET
 export async function getPostsAllList() {
@@ -34,6 +37,22 @@ export async function getPostSearchCity(city) {
 }
 
 // api.get(`products/?page=${page}&search=${data}`)}
+
+const postsAPI = {
+  async getAllPostsByMe() {
+    return await api.get(API_URL + '/my-page');
+  },
+
+  async removeOne(id) {
+    return await api.delete(API_URL + `/${id}`);
+  },
+
+  async updateOne({ id, payload }) {
+    return await api.put(API_URL + `/${id}`, payload);
+  },
+};
+
+export default postsAPI;
 
 // import api from '.';
 

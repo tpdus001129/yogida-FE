@@ -1,12 +1,20 @@
 import PropTypes from 'prop-types';
-import profile from '../../assets/images/profile.jpg';
 import { IoChevronBack } from 'react-icons/io5';
 import Button from '../commons/Button';
 import { useOutletContext } from 'react-router';
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { userState } from '../../recoils/userAtom';
+import { useRecoilValue } from 'recoil';
 
 export default function Profile({ setEditProfileMode }) {
   const { setNavbarHidden } = useOutletContext();
+  const { email, nickname, profileImageSrc } = useRecoilValue(userState);
+
+  const [profileImg, setProfileImg] = useState();
+  const imgRef = useRef(null);
+  const emailRef = useRef(null);
+  const nicknameRef = useRef(null);
+  const passwordRef = useRef(null);
 
   useLayoutEffect(() => {
     setNavbarHidden(true);
@@ -15,6 +23,23 @@ export default function Profile({ setEditProfileMode }) {
       setNavbarHidden(false);
     };
   }, [setNavbarHidden]);
+
+  useEffect(() => {
+    if (email && nickname && profileImageSrc) {
+      setProfileImg(profileImageSrc);
+      emailRef.current.value = email;
+      nicknameRef.current.value = nickname;
+    }
+  }, [email, nickname, profileImageSrc]);
+
+  const handleChangeImage = async (e) => {
+    if (!e.target.files) {
+      return;
+    }
+    const fileInput = e.target.files[0];
+    const url = URL.createObjectURL(fileInput);
+    setProfileImg(url);
+  };
 
   return (
     <div className="flex flex-col pb-[20px] h-screen items-center">
@@ -27,8 +52,11 @@ export default function Profile({ setEditProfileMode }) {
           />
         </header>
         <div className="flex flex-col items-center justify-center h-[140px] ">
-          <img src={profile} alt="profile" className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]" />
-          <button className="text-primary text-[14px] font-medium tracking-tight">사진 수정</button>
+          <input type="file" name="profile" id="profile" className="hidden" ref={imgRef} onChange={handleChangeImage} />
+          <img src={profileImg} alt="profile" className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]" />
+          <label htmlFor="profile" className="text-primary text-[14px] font-medium tracking-tight">
+            사진 수정
+          </label>
         </div>
       </section>
 
@@ -40,15 +68,17 @@ export default function Profile({ setEditProfileMode }) {
             name="email"
             id="email"
             className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"
+            ref={emailRef}
           />
         </label>
-        <label htmlFor="email" className="text-[14px] font-bold flex items-center">
+        <label htmlFor="nickname" className="text-[14px] font-bold flex items-center">
           <span className="w-[175px]">이름</span>
           <input
-            type="name"
-            name="name"
-            id="name"
+            type="nickname"
+            name="nickname"
+            id="nickname"
             className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"
+            ref={nicknameRef}
           />
         </label>
         <label htmlFor="email" className="text-[14px] font-bold flex items-center">
@@ -58,12 +88,13 @@ export default function Profile({ setEditProfileMode }) {
             name="password"
             id="password"
             className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"
+            ref={passwordRef}
           />
         </label>
         <label htmlFor="email" className="text-[14px] font-bold flex items-center">
           <span className="w-[175px]">비밀번호 확인</span>
           <input
-            type="password-confirm"
+            type="password"
             name="password-confirm"
             id="password-confirm"
             className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"

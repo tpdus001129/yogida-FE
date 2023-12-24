@@ -1,12 +1,23 @@
 import PropTypes from 'prop-types';
 import { IoAdd } from 'react-icons/io5';
-import { IoEllipsisHorizontalSharp } from 'react-icons/io5';
-import { IoLockClosedOutline } from 'react-icons/io5';
+import { IoEllipsisHorizontalSharp, IoLockClosedOutline } from 'react-icons/io5';
 import sample from '../../assets/images/sample.jpg';
 import { Link } from 'react-router-dom';
 import Title from './Title';
+import { useMypagePostsQuery } from '../../pages/mypage/queries';
+import { convertSimpleDate } from '../../utils/convertSimpleDate';
+import useModal from '../../hooks/useModal';
+// import ModalWithOption from '../Modal/ModalWithOption';
 
 export default function Posts() {
+  const { postsList } = useMypagePostsQuery();
+  const { list, totalCount } = postsList;
+  const { openModal } = useModal();
+
+  const modal = () => {
+    openModal({ message: '?' });
+  };
+
   return (
     <>
       <Link
@@ -22,16 +33,28 @@ export default function Posts() {
         </div>
       </Link>
 
-      <Title title={'지난 여행'} count={'10'} />
+      <Title title={'지난 여행'} count={totalCount} />
 
       <div className="flex flex-col gap-[20px]">
-        <Post img={sample} title="최고의 강릉여행" date="2023.05.24 ~ 05.28" isPublic={false} />
+        {list !== 0 &&
+          list?.map((item) => (
+            <Post
+              key={item._id}
+              img={item?.schedules[0][0].placeImageSrc || sample}
+              title={item?.title}
+              date={`${convertSimpleDate(item?.startDate)} ~ ${convertSimpleDate(item?.endDate)}`}
+              isPublic={item?.isPublic}
+              onClick={modal}
+            />
+          ))}
       </div>
+
+      {/* <ModalWithOption /> */}
     </>
   );
 }
 
-function Post({ img, title, date, isPublic }) {
+function Post({ img, title, date, isPublic, onClick }) {
   return (
     <div className="flex gap-[16px] items-center">
       <img src={img} alt="card-thumbnail" className="w-[60px] h-[60px] rounded-full object-cover" />
@@ -42,7 +65,7 @@ function Post({ img, title, date, isPublic }) {
         </div>
         <span className="text-gray-1 text-[14px] font-medium">{date}</span>
       </div>
-      <IoEllipsisHorizontalSharp size={25} />
+      <IoEllipsisHorizontalSharp size={25} onClick={onClick} />
     </div>
   );
 }
@@ -52,4 +75,5 @@ Post.propTypes = {
   title: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   isPublic: PropTypes.bool.isRequired,
+  onClick: PropTypes.func,
 };

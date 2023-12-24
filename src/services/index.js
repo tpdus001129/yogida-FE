@@ -2,7 +2,7 @@ import axios, { HttpStatusCode, isAxiosError } from 'axios';
 
 const handleAxiosError = (error) => {
   console.log(`${error.status} :: ${error.data.message}`);
-  throw error.status;
+  throw { status: error.status, message: error.data.message };
 };
 
 const api = axios.create({
@@ -64,6 +64,7 @@ api.interceptors.response.use(
         console.log('404');
       }
       if (error.response.status === HttpStatusCode.Unauthorized) {
+        localStorage.removeItem('user');
         console.log('401');
       }
       if (error.response.status === HttpStatusCode.Forbidden) {
