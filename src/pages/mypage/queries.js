@@ -7,6 +7,7 @@ export const useMypageCommentQuery = () => {
     queryKey: [queryKeys.mypageComment], //쿼리키를 기반으로 데이터 캐싱 관리
     queryFn: commentAPI.getAllCommentsByMe,
     useErrorBoundary: false,
+    select: (data) => ({ list: data.data, totalCount: data.data.length }),
   });
 
   const invalidateMatchQuery = () =>

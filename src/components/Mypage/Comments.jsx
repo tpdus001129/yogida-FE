@@ -1,21 +1,24 @@
 import PropTypes from 'prop-types';
-import profile from '../../assets/images/profile.jpg';
-import { IoTrashOutline } from 'react-icons/io5';
-import { IoChatbubbleSharp } from 'react-icons/io5';
-import Title from './Title';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoils/userAtom';
 import { useMypageCommentQuery } from '../../pages/mypage/queries';
+import Title from './Title';
+import { IoTrashOutline, IoChatbubbleSharp } from 'react-icons/io5';
 
 export default function Comments() {
+  const { profileImageSrc } = useRecoilValue(userState);
   const { commentList } = useMypageCommentQuery();
+  const { list, totalCount } = commentList;
+
   return (
     <>
-      <Title title="내가 쓴 댓글" count="10" icon={<IoChatbubbleSharp color="#589BF7" size="13" />} />
+      <Title title="내가 쓴 댓글" count={totalCount} icon={<IoChatbubbleSharp color="#589BF7" size="13" />} />
 
       <div className="border-b border-gray-4 mb-[20px]"></div>
 
       <div className="flex flex-col gap-[20px]">
-        {commentList?.length !== 0 &&
-          commentList?.map((list) => <Comment key={list._id} img={profile} title=" 안목해변이 너무 예쁘네요." />)}
+        {totalCount !== 0 &&
+          list?.map((item) => <Comment key={item._id} img={profileImageSrc} title={item?.content} />)}
       </div>
     </>
   );

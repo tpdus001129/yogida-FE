@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export default function Title({ title, icon, count = '0' }) {
+export default function Title({ title, icon, count = 0 }) {
   return (
     <>
       <div className="text-center mb-[20px]">
@@ -17,5 +17,5 @@ export default function Title({ title, icon, count = '0' }) {
 Title.propTypes = {
   title: PropTypes.string.isRequired,
   icon: PropTypes.element,
-  count: PropTypes.string.isRequired,
+  count: PropTypes.number.isRequired,
 };
