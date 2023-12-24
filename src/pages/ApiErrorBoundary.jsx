@@ -6,7 +6,7 @@ export default function ApiErrorBoundary({ error }) {
   //   if(서버 에러) return ...
 
   //토큰 에러
-  if (error === HttpStatusCode.Unauthorized) {
+  if (error.status === HttpStatusCode.Unauthorized) {
     return <Login />;
   }
 
