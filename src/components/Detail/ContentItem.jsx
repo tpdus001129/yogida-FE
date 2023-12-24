@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 
 import { IoBookmarkOutline, IoBookmark, IoStar, IoCar, IoWalkOutline } from 'react-icons/io5';
@@ -6,9 +8,11 @@ import { IoBookmarkOutline, IoBookmark, IoStar, IoCar, IoWalkOutline } from 'rea
 import NoImage from './NoImage';
 
 export default function ContentItem({ distanceIndex, schedulesData, distancesData }) {
+  const navigate = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
 
-  function handleClick() {
+  // 북마크
+  function bookmarkHandleClick() {
     setIsClicked(!isClicked);
   }
 
@@ -19,6 +23,10 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
     } else {
       return <IoCar className="text-gray-1 h-[28px]" size="20" />;
     }
+  }
+
+  function mapHandleClick() {
+    navigate('/map');
   }
 
   if (!schedulesData) return <div>Loading...</div>;
@@ -59,7 +67,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                   <p className="text-[14px] mr-[4px] font-bold">{places.placeName}</p>
                   <p className="text-[12px] mt-[2px] line-height-[14px]">{places.category}</p>
                 </div>
-                <button onClick={handleClick} className="absolute right-[14px]">
+                <button onClick={bookmarkHandleClick} className="absolute right-[14px]">
                   {isClicked ? (
                     <IoBookmark className="text-secondary" size="22" />
                   ) : (
@@ -68,7 +76,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                 </button>
               </div>
               <div className="h-[87px] rounded-b-[20px] bg-gray-3 relative overflow-hidden">
-                <div>{places.placeImageSrc ? places.placeImageSrc : <NoImage />}</div>
+                <div onClick={mapHandleClick}>{places.placeImageSrc ? places.placeImageSrc : <NoImage />}</div>
                 <div className="absolute bottom-[9px] right-[16px] flex">
                   {Array.from({ length: places.star }, (_, index) => (
                     <IoStar key={index} className="text-secondary" />

@@ -17,8 +17,8 @@ export default function Comment({ reply, nickname, content, date }) {
           {content}
         </p>
         <div>
-          {reply ? '' : <ReplyButton text={'답글 열기'} textColor={'text-blue-500'} className={'mr-[8px]'} />}
-          <ReplyButton text={'답글 달기'} textColor={'text-gray-500'} />
+          {reply ? '' : <ReplyButton text={'댓글 열기'} textColor={'text-blue-500'} className={'mr-[8px]'} />}
+          <ReplyButton text={'댓글 달기'} textColor={'text-gray-500'} />
         </div>
       </div>
     </div>

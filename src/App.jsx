@@ -3,7 +3,6 @@ import Main from './pages/Main';
 import Notfound from './pages/Notfound';
 import Layout from './components/commons/Layout';
 import Mypage from './pages/mypage/Mypage';
-import Search from './pages/Search';
 import Filter from './pages/Filter';
 import Login from './pages/Login';
 import Schedule from './components/Mypage/Schedule';
@@ -40,11 +39,10 @@ function App() {
         <Route path={PATH.root} element={<Main />} />
         <Route path={PATH.mypage} element={<Mypage />} />
         <Route path={PATH.notification} element={<Notification />} />
-        <Route path={PATH.post} element={<Detail />} />
       </Route>
+      <Route path={PATH.post} element={<Detail />} />
       <Route path={PATH.notfound} element={<Notfound />} />
       <Route path={PATH.login} element={<Login />} />
-      <Route path={PATH.search} element={<Search />} />
       <Route path={PATH.filter} element={<Filter />} />
       <Route path={PATH.schedule} element={<Schedule />} />
       <Route path={PATH.signup} element={<Signup />} />

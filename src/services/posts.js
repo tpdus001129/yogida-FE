@@ -6,8 +6,8 @@ const API_URL = '/api/v1/posts';
 // 메인 페이지 GET
 export async function getPostsAllList() {
   try {
-    const res = await axios.get('http://localhost:5500/api/v1/posts');
-    return res.data.posts;
+    const result = await axios.get('http://localhost:5500/api/v1/posts');
+    return result.data.posts;
   } catch (error) {
     console.error('Error: ', error);
     throw error;
@@ -17,13 +17,26 @@ export async function getPostsAllList() {
 // 상세 페이지 GET
 export async function getPostByPostId(postId) {
   try {
-    const res = await axios.get(`http://localhost:5500/api/v1/posts/${postId}`);
-    return res.data;
+    const result = await axios.get(`http://localhost:5500/api/v1/posts/${postId}`);
+    return result.data;
   } catch (error) {
     console.error('Error: ', error);
     throw error;
   }
 }
+
+// 검색 페이지 GET
+export async function getPostSearchCity(city) {
+  try {
+    const result = await axios.get(`http://localhost:5500/api/v1/posts/search?city=${city}`);
+    return result.data.posts;
+  } catch (error) {
+    console.error('Error: ', error);
+    throw error;
+  }
+}
+
+// api.get(`products/?page=${page}&search=${data}`)}
 
 const postsAPI = {
   async getAllPostsByMe() {

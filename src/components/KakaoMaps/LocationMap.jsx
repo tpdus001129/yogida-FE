@@ -1,6 +1,17 @@
 import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 
 export default function LocationMap() {
+  // function handleClick(mouseEvent) {
+  //   const latlng = mouseEvent.latLng;
+  //   const getLat = 37.54699;
+  //   const getLng = 127.09598;
+
+  //   // Kakao Map 검색 URL
+  //   // const searchURL = `https://map.kakao.com/link/search/${latitude},${longitude}`;
+
+  //   window.open(searchURL, '_blank');
+  // }
+
   return (
     <>
       <Map
@@ -31,7 +42,7 @@ export default function LocationMap() {
         />
         <CustomOverlayMap position={{ lat: 37.54699, lng: 127.09598 }} yAnchor={1} className="relative">
           <div>
-            <a href="https://map.kakao.com/link/map/11394059" target="_blank" rel="noreferrer">
+            <a href="handleClick()" target="_blank" rel="noreferrer">
               <div className="w-[45px] h-[53px] flex justify-center items-center ml-[-9px] mt-[-75px]">
                 <span className="text-[20px] text-white">1</span>
               </div>

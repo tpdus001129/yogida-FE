@@ -1,5 +1,5 @@
 import LocationMap from '../components/KakaoMaps/LocationMap';
-import Header from '../components//Login/Header';
+import Header from '../components/Login/Header';
 
 export default function Map() {
   return (
