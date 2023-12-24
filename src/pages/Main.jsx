@@ -67,14 +67,16 @@ export default function Main() {
                         <div className="mr-[18px] pl-[20px]">
                           <IoSearchOutline size="20px" />
                         </div>
-                        <span>
-                          <div className="text-sm">어디로 여행가세요?</div>
-                          <div className="text-[10px] text-gray-1 text-left">여행지를 알려주세요.</div>
-                        </span>
+                        {keyword ? (
+                          <p> {cityValue}</p>
+                        ) : (
+                          <span>
+                            <div className="text-sm">어디로 여행가세요?</div>
+                            <div className="text-[10px] text-gray-1 text-left">여행지를 알려주세요.</div>
+                          </span>
+                        )}
                       </button>
                     </div>
-
-                    {/* 필터 */}
                     <button
                       className="w-[52px] h-[52px] border rounded-[26px] border-gray-2 flex justify-center items-center"
                       onClick={() => {
