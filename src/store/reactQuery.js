@@ -21,6 +21,7 @@ export const queryClient = new QueryClient({
 });
 
 export const queryKeys = {
+  mypagePost: 'MYPAGE_POSTS',
   mypageComment: 'MYPAGE_COMMENT',
   mypageBookmarks: 'MYPAGE_BOOKMARKS',
   mypageLikes: 'MYPAGE_LIKES',

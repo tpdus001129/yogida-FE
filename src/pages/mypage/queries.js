@@ -3,6 +3,34 @@ import { queryClient, queryKeys } from '../../store/reactQuery';
 import commentAPI from '../../services/comment';
 import likesAPI from '../../services/likes';
 import bookmarkAPI from '../../services/bookmarks';
+import postsAPI from '../../services/posts';
+
+// 내 여행
+export const useMypagePostsQuery = () => {
+  const { data: postsList } = useQuery({
+    queryKey: [queryKeys.mypagePost],
+    queryFn: postsAPI.getAllPostsByMe,
+    useErrorBoundary: false,
+    select: (data) => ({ list: data.data.posts, totalCount: data.data.posts.length }),
+  });
+
+  const invalidateMatchQuery = () =>
+    queryClient.invalidateQueries({
+      queryKey: [queryKeys.mypagePost],
+    });
+
+  const removePost = useMutation({
+    mutationFn: postsAPI.removeOne,
+    onSuccess: invalidateMatchQuery,
+  }).mutateAsync;
+
+  const updatePost = useMutation({
+    mutationFn: postsAPI.updateOne,
+    onSuccess: invalidateMatchQuery,
+  }).mutateAsync;
+
+  return { postsList, removePost, updatePost };
+};
 
 // 내 댓글
 export const useMypageCommentQuery = () => {
@@ -10,7 +38,7 @@ export const useMypageCommentQuery = () => {
     queryKey: [queryKeys.mypageComment],
     queryFn: commentAPI.getAllCommentsByMe,
     useErrorBoundary: false,
-    select: (data) => ({ list: data.data, totalCount: data.data.length }),
+    select: (data) => ({ list: data.data.myComments, totalCount: data.data.myComments.length }),
   });
 
   const invalidateMatchQuery = () =>

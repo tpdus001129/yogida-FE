@@ -24,13 +24,15 @@ export default function Bookmarks() {
     <>
       <Title title="내가 저장한 장소" count={totalCount} icon={<IoBookmark color="#FFDB5F" size="13" />} />
 
-      <DeleteAllCheckbox
-        clickedCount={numChecked}
-        totalCount={totalCount}
-        title="장소"
-        onClick={toggleAllCheckedById}
-        handleRemoveClick={handleRemoveClick}
-      />
+      {totalCount !== 0 && (
+        <DeleteAllCheckbox
+          clickedCount={numChecked}
+          totalCount={totalCount}
+          title="장소"
+          onClick={toggleAllCheckedById}
+          handleRemoveClick={handleRemoveClick}
+        />
+      )}
 
       <div className="border-b border-gray-4 mb-[20px]"></div>
 
