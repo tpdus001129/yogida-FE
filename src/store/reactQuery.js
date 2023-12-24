@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 import { QueryClient } from 'react-query';
 
 export const queryErrorHandler = (error) => {
-  return toast.error(`데이터를 가져오지 못했습니다! \n error code : ${error}`);
+  return toast.error(`${error.status} :: ${error.message}`);
 };
 
 export const queryClient = new QueryClient({
@@ -21,7 +21,10 @@ export const queryClient = new QueryClient({
 });
 
 export const queryKeys = {
+  mypagePost: 'MYPAGE_POSTS',
   mypageComment: 'MYPAGE_COMMENT',
+  mypageBookmarks: 'MYPAGE_BOOKMARKS',
+  mypageLikes: 'MYPAGE_LIKES',
   kakaoUser: 'KAKAO_USER',
   loginStatus: 'LOGiN_STATUS',
 };

@@ -15,7 +15,6 @@ import ChangePassword from './pages/ChangePassword';
 import Notification from './pages/Notification';
 import Map from './pages/Map';
 import Setup from './pages/setup/Setup';
-
 import { PATH } from './constants/path';
 import { useAuth } from './hooks/useAuth';
 import { useSetRecoilState } from 'recoil';

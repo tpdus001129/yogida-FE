@@ -2,7 +2,7 @@ import axios, { HttpStatusCode, isAxiosError } from 'axios';
 
 const handleAxiosError = (error) => {
   console.log(`${error.status} :: ${error.data.message}`);
-  throw error.status;
+  throw { status: error.status, message: error.data.message };
 };
 
 const api = axios.create({
