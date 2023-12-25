@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useCheckLoginQuery } from '../pages/auth/queries';
 import { PATH } from '../constants/path';
@@ -20,9 +20,7 @@ export function useAuth() {
     }
   }, [isPrivate, refetch]);
 
-  useEffect(() => {
-    getUserAuth();
-  }, [getUserAuth, pathname]);
+  getUserAuth();
 
   return { loginUserInfo };
 }
