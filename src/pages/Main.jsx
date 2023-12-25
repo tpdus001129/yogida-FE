@@ -1,28 +1,26 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { IoOptionsOutline } from 'react-icons/io5';
-import { IoSearchOutline } from 'react-icons/io5';
+import { IoOptionsOutline, IoSearchOutline } from 'react-icons/io5';
 
-import { getPostsAllList } from '../services/posts';
+import { getPostsAllList, getPostSearchCity, getPostTag } from '../services/posts';
 
 import Header from '../components/Main/Header';
 import PostItem from '../components/Main/PostItem';
 import Search from './Search';
+import Filter from './Filter';
 import NotFound from '../components/Search/NoFound';
-
-import { getPostSearchCity } from '../services/posts';
 
 export default function Main() {
   const [data, setData] = useState([]);
-  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const cityValue = queryParams.get('city');
+  const tagValue = queryParams.get('tag');
+  const navigate = useNavigate();
 
   // 검색어 모드
   const [searchMode, setSearchMode] = useState(false);
-  const keyword = decodeURI(location.search);
 
   function searchModeOn() {
     setSearchMode(true);
@@ -32,12 +30,64 @@ export default function Main() {
     setSearchMode(false);
   }
 
+  // 필터모드
+  const [filterMode, setFilterMode] = useState(false);
+
+  function filterModeOn() {
+    setFilterMode(true);
+  }
+
+  function filterModeOff() {
+    setFilterMode(false);
+  }
+
+  const keyword = decodeURI(location.search);
+
   const [notFound, setNotFound] = useState(false);
 
-  // API
+  // 체크된 값을 담을 배열
+  const [checkedList, setCheckedList] = useState([]);
+
+  // 배열에 값 넣기
+  function checkedValue(value) {
+    setCheckedList((prevList) => {
+      // 선택된 값이 있으면 해당 값을 해제(배열에서 삭제)
+      if (prevList.includes(value)) {
+        return prevList.filter((item) => item !== value);
+      }
+
+      // 최신순, 오래된순, 찜많은순이 이미 선택되어 있다면 해당 값을 해제 후 값을 바꿈
+      const oneValue = ['최신순', '오래된순', '찜많은순'];
+      if (oneValue.includes(value)) {
+        const changeValue = prevList.filter((item) => oneValue.includes(item));
+        if (changeValue.length > 0) {
+          return [...prevList.filter((item) => !oneValue.includes(item)), value];
+        }
+      }
+
+      // 길이가 5미만이면 값을 배열에 추가
+      if (prevList.length < 5) {
+        return [...prevList, value];
+      }
+
+      // 길이가 5를 넘으면 이전 값 유지
+      return [...prevList];
+    });
+  }
+
+  // 쿼리스트링 만들기
+  function makeQueryString() {
+    if (Array.isArray(checkedList)) {
+      const queryString = checkedList.join(',');
+      navigate(`?tag=${queryString}`);
+      filterModeOff();
+    }
+  }
+
+  // API: 전체 Post OR 검색 Post
   useEffect(() => {
-    getPostsAllList().then((posts) => {
-      setData(posts);
+    getPostsAllList().then((Posts) => {
+      setData(Posts);
       if (keyword) {
         getPostSearchCity(cityValue).then((posts) => {
           if (posts.length === 0) {
@@ -47,13 +97,30 @@ export default function Main() {
           }
         });
       }
+      if (checkedList.length > 0) {
+        getPostTag(checkedList).then((posts) => {
+          setData(posts);
+        });
+      }
     });
-  }, [keyword, cityValue]);
+  }, [keyword, cityValue, checkedList]);
+
+  useEffect(() => {
+    console.log('태그전달값', checkedList);
+  }, [checkedList]);
 
   return (
     <>
       {searchMode ? (
         <Search searchModeOff={searchModeOff} />
+      ) : filterMode ? (
+        <Filter
+          filterModeOff={filterModeOff}
+          checkedValue={checkedValue}
+          makeQueryString={makeQueryString}
+          setCheckedList={setCheckedList}
+          checkedList={checkedList}
+        />
       ) : (
         <div className="w-full h-screen flex justify-center">
           <div className="w-mobile flex flex-col">
@@ -77,16 +144,25 @@ export default function Main() {
                         )}
                       </button>
                     </div>
-                    <button
-                      className="w-[52px] h-[52px] border rounded-[26px] border-gray-2 flex justify-center items-center"
-                      onClick={() => {
-                        navigate('/filter');
-                      }}
-                    >
-                      <IoOptionsOutline />
-                    </button>
+                    {checkedList === null || checkedList.length === 0 ? (
+                      <button
+                        className="w-[52px] h-[52px] border rounded-full border-gray-2 flex justify-center items-center"
+                        onClick={filterModeOn}
+                      >
+                        <IoOptionsOutline className="text-[20px]" />
+                      </button>
+                    ) : (
+                      <button
+                        className={`w-[52px] h-[52px] ${
+                          checkedList ? 'bg-primary' : 'border-gray-2'
+                        } rounded-full flex justify-center items-center`}
+                        onClick={filterModeOn}
+                      >
+                        <IoOptionsOutline className={`text-[20px] ${checkedList ? 'text-white' : ''}`} />
+                      </button>
+                    )}
                   </div>
-                  {notFound ? <NotFound /> : <PostItem data={data} />}
+                  {notFound ? <NotFound /> : <PostItem data={data} filter={tagValue} />}
                 </div>
               </div>
               <div className="w-full h-[64px]"></div>

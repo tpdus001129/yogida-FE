@@ -42,6 +42,6 @@ export default function PostItem({ data }) {
 }
 
 PostItem.propTypes = {
-  data: PropTypes.array,
-  searchModeOff: PropTypes.func,
+  data: PropTypes.array.isRequired,
+  filter: PropTypes.string,
 };

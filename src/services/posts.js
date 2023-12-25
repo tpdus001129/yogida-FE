@@ -36,7 +36,16 @@ export async function getPostSearchCity(city) {
   }
 }
 
-// api.get(`products/?page=${page}&search=${data}`)}
+// 필터 페이지 GET
+export async function getPostTag(tag) {
+  try {
+    const result = await axios.get(`http://localhost:5500/api/v1/posts/?tag=${tag}`);
+    return result.data.posts;
+  } catch (error) {
+    console.error('Error: ', error);
+    throw error;
+  }
+}
 
 const postsAPI = {
   async getAllPostsByMe() {
