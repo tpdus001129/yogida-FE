@@ -20,7 +20,7 @@ export default function Navbar() {
         <Tab path={PATH.notification} icon={<IoNotificationsOutline size={26} />} />
         <Tab path={PATH.schedule} icon={<PiNotePencil size={26} />} />
         <Tab
-          path={user ? PATH.mypage : PATH.login}
+          path={PATH.mypage}
           icon={user ? <Profile img={user?.profileImageSrc} /> : <IoPersonCircleOutline size={26} />}
         />
       </ul>

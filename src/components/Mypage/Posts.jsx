@@ -11,7 +11,6 @@ import useModal from '../../hooks/useModal';
 
 export default function Posts() {
   const { postsList } = useMypagePostsQuery();
-  const { list, totalCount } = postsList;
   const { openModal } = useModal();
 
   const modal = () => {
@@ -33,11 +32,11 @@ export default function Posts() {
         </div>
       </Link>
 
-      <Title title={'지난 여행'} count={totalCount} />
+      <Title title={'지난 여행'} count={postsList?.totalCount} />
 
       <div className="flex flex-col gap-[20px]">
-        {list !== 0 &&
-          list?.map((item) => (
+        {postsList?.list !== 0 &&
+          postsList?.list?.map((item) => (
             <Post
               key={item._id}
               img={item?.schedules[0][0].placeImageSrc || sample}

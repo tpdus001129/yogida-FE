@@ -58,11 +58,11 @@ export default function Mypage() {
         </div>
         <div className="flex flex-col items-center justify-center h-[140px] ">
           <img
-            src={user.profileImageSrc}
+            src={user?.profileImageSrc}
             alt="profile"
             className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]"
           />
-          <span className="text-black text-[20px] font-bold tracking-tight">{user.nickname}</span>
+          <span className="text-black text-[20px] font-bold tracking-tight">{user?.nickname}</span>
         </div>
       </section>
       <section>

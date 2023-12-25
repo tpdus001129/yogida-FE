@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useLayoutEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useCheckLoginQuery } from '../pages/auth/queries';
 import { PATH } from '../constants/path';
@@ -8,19 +8,21 @@ const PRIVATE_PATHS = [PATH.mypage, PATH.notification, PATH.schedule];
 
 export function useAuth() {
   const { pathname } = useLocation();
-  const { loginUserInfo, refetch } = useCheckLoginQuery();
+  const { loginUserInfo, refetch, isError } = useCheckLoginQuery();
 
   const isPrivate = useMemo(() => {
     return PRIVATE_PATHS.includes(pathname);
   }, [pathname]);
 
-  const getUserAuth = useCallback(() => {
+  const getUserAuth = useCallback(async () => {
     if (isPrivate) {
-      refetch();
+      return await refetch();
     }
   }, [isPrivate, refetch]);
 
-  getUserAuth();
+  useLayoutEffect(() => {
+    getUserAuth();
+  }, [getUserAuth, pathname]);
 
-  return { loginUserInfo };
+  return { loginUserInfo, isPrivate, isError, getUserAuth };
 }
