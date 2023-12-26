@@ -14,10 +14,21 @@ export const useMypagePostsQuery = () => {
     select: (data) => ({ list: data.data.posts, totalCount: data.data.posts.length }),
   });
 
+  const { data: post } = useQuery({
+    queryKey: [queryKeys.mypagePost],
+    queryFn: postsAPI.getPostById,
+    useErrorBoundary: false,
+  });
+
   const invalidateMatchQuery = () =>
     queryClient.invalidateQueries({
       queryKey: [queryKeys.mypagePost],
     });
+
+  const addPost = useMutation({
+    mutationFn: postsAPI.addOne,
+    onSuccess: invalidateMatchQuery,
+  }).mutateAsync;
 
   const removePost = useMutation({
     mutationFn: postsAPI.removeOne,
@@ -29,7 +40,7 @@ export const useMypagePostsQuery = () => {
     onSuccess: invalidateMatchQuery,
   }).mutateAsync;
 
-  return { postsList, removePost, updatePost };
+  return { postsList, post, addPost, removePost, updatePost };
 };
 
 // 내 댓글

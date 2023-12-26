@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { IoCheckmarkCircle } from 'react-icons/io5';
-import { IoTrashOutline } from 'react-icons/io5';
 import { IoHeartSharp } from 'react-icons/io5';
 import sample from '../../assets/images/sample.jpg';
 import Title from './Title';
@@ -15,15 +14,8 @@ export default function Likes() {
   const { list, totalCount } = likesList;
   const { checkedIdsSet, numChecked, handleOnChange, toggleAllCheckedById } = useCheckbox(list);
 
-  const handleRemoveClick = async (id) => {
-    console.log('id : ', id);
-    if (typeof id === 'string') {
-      handleOnChange(id);
-    }
-    // const payload = typeof id === 'string' ? [id] : [...checkedIdsSet];
-    console.log('patyload : ', checkedIdsSet);
-    const payload = [...checkedIdsSet];
-    const result = await removeLikes(payload);
+  const handleRemoveClick = async () => {
+    const result = await removeLikes([...checkedIdsSet]);
     if (result.status === 200) {
       toast.success('성공적으로 삭제되었습니다!');
     }
@@ -59,7 +51,6 @@ export default function Likes() {
                 subTitle={`${convertSimpleDate(item?.postId?.startDate)} ~ ${convertSimpleDate(item?.postId?.endDate)}`}
                 checkedIdsSet={checkedIdsSet}
                 onClick={() => handleOnChange(item?._id)}
-                handleRemoveClick={() => handleRemoveClick(item?.id)}
               />
             );
           })}
@@ -68,7 +59,7 @@ export default function Likes() {
   );
 }
 
-function Like({ id, img, title, subTitle, checkedIdsSet, onClick, handleRemoveClick }) {
+function Like({ id, img, title, subTitle, checkedIdsSet, onClick }) {
   const checked = checkedIdsSet.has(id) ? 'text-primary' : 'text-gray-3';
   return (
     <>
@@ -76,13 +67,13 @@ function Like({ id, img, title, subTitle, checkedIdsSet, onClick, handleRemoveCl
         <IoCheckmarkCircle className={checked} size={20} />
         <div className="flex gap-[16px] items-center w-full">
           <img src={img} alt="card-thumbnail" className="w-[60px] h-[60px] rounded-full object-cover" />
-          <div className="w-[65%]">
+          <div className="w-full">
             <div className="flex items-center">
               <strong className=" block text-black text-[14px] truncate">{title}</strong>
             </div>
             <span className="text-gray-1 text-[14px] font-medium">{subTitle}</span>
           </div>
-          <IoTrashOutline size={16} className="text-gray-1" onClick={handleRemoveClick} />
+          {/* <IoTrashOutline size={16} className="text-gray-1"  /> */}
         </div>
       </div>
     </>
