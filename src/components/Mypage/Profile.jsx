@@ -5,6 +5,7 @@ import { useOutletContext } from 'react-router';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { userState } from '../../recoils/userAtom';
 import { useRecoilValue } from 'recoil';
+import defaultProfile from '../../assets/images/defaultProfile.png';
 
 export default function Profile({ setEditProfileMode }) {
   const { setNavbarHidden } = useOutletContext();
@@ -12,9 +13,7 @@ export default function Profile({ setEditProfileMode }) {
 
   const [profileImg, setProfileImg] = useState('');
   const imgRef = useRef(null);
-  const emailRef = useRef(null);
   const nicknameRef = useRef(null);
-  const passwordRef = useRef(null);
 
   useLayoutEffect(() => {
     setNavbarHidden(true);
@@ -25,12 +24,11 @@ export default function Profile({ setEditProfileMode }) {
   }, [setNavbarHidden]);
 
   useEffect(() => {
-    if (email && nickname && profileImageSrc) {
+    if (nickname || profileImageSrc) {
       setProfileImg(profileImageSrc);
-      emailRef.current.value = email;
       nicknameRef.current.value = nickname;
     }
-  }, [email, nickname, profileImageSrc]);
+  }, [nickname, profileImageSrc]);
 
   const handleChangeImage = async (e) => {
     if (!e.target.files) {
@@ -53,7 +51,11 @@ export default function Profile({ setEditProfileMode }) {
         </header>
         <div className="flex flex-col items-center justify-center h-[140px] ">
           <input type="file" name="profile" id="profile" className="hidden" ref={imgRef} onChange={handleChangeImage} />
-          <img src={profileImg} alt="profile" className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]" />
+          <img
+            src={profileImg || defaultProfile}
+            alt="profile"
+            className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]"
+          />
           <label htmlFor="profile" className="text-primary text-[14px] font-medium tracking-tight">
             사진 수정
           </label>
@@ -64,11 +66,12 @@ export default function Profile({ setEditProfileMode }) {
         <label htmlFor="email" className="text-[14px] font-bold flex items-center">
           <span className="w-[175px]">이메일</span>
           <input
+            value={email}
             type="email"
             name="email"
             id="email"
-            className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"
-            ref={emailRef}
+            className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium disabled:bg-white"
+            disabled
           />
         </label>
         <label htmlFor="nickname" className="text-[14px] font-bold flex items-center">
@@ -81,7 +84,7 @@ export default function Profile({ setEditProfileMode }) {
             ref={nicknameRef}
           />
         </label>
-        <label htmlFor="email" className="text-[14px] font-bold flex items-center">
+        {/* <label htmlFor="email" className="text-[14px] font-bold flex items-center">
           <span className="w-[175px]">비밀번호</span>
           <input
             type="password"
@@ -99,7 +102,7 @@ export default function Profile({ setEditProfileMode }) {
             id="password-confirm"
             className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"
           />
-        </label>
+        </label> */}
       </div>
       <div className="mt-auto flex flex-col gap-[11px] px-[24px] w-full">
         <Button type="primary" size={'large'} text={'bold'}>
