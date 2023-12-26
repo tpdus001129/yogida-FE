@@ -22,6 +22,7 @@ import {
   IoCamera,
 } from 'react-icons/io5';
 import { SearchPlace, SearchTravelDestination, SelectTag } from './Search';
+// import { useMypagePostsQuery } from '../../pages/mypage/queries';
 
 export default function Schedule() {
   const navigate = useNavigate();
@@ -29,12 +30,31 @@ export default function Schedule() {
   const [addPlan, setAddPlan] = useState(false); //장소 추가
   const [addTag, setAddTag] = useState(false); //태그 선택
 
+  // const { post, addPost } = useMypagePostsQuery();
+
+  // const startDateRef = useRef(); //시작 날짜
+  // const endDateRef = useRef(); //종료 날짜
+  // const titleRef = useRef(); // 제목
+  // const reviewTextRef = useRef(); // 간단 리뷰
+  // const destinationRef = useRef(); // 여행지
+  // const peopleCountRef = useRef(); //인원수
+  // const costRef = useRef(); //예산
+  // const isPublicRef = useRef(); //게시글 공개 여부
+  // const schedulesRef = useRef(); // 코스 등록
+  // const tagRef = useRef(); //태그
+  // const distancesRef = useRef(); //거리..?
+
+  const onSubmit = () => {
+    console.log('submit : ');
+  };
+
   //여행지 검색
   if (addTravelDestination) return <SearchTravelDestination onClose={() => setAddTravelDestination(false)} />;
   //장소 검색
   if (addPlan) return <SearchPlace onClose={() => setAddPlan(false)} />;
   //태그 선택
   if (addTag) return <SelectTag onClose={() => setAddTag(false)} />;
+
   return (
     <>
       <section className="w-full top-0 border-[#E8E8E8] border-b-[1px]">
@@ -163,7 +183,9 @@ export default function Schedule() {
           <Tag tags={['태그', '선택된 태그 나오게 하기']} />
         </div>
 
-        <Button type={'primary'}>작성완료</Button>
+        <Button type={'primary'} onClick={onSubmit}>
+          작성완료
+        </Button>
       </section>
     </>
   );

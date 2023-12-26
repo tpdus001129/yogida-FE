@@ -4,10 +4,19 @@ import { useSetRecoilState } from 'recoil';
 import { userState } from '../recoils/userAtom';
 import { useEffect } from 'react';
 import { PATH } from '../constants/path';
+import useNotification from '../hooks/useNotification';
+import { useNotificationQuery } from './notification/queries';
 
 export default function PrivateRoute() {
   const { loginUserInfo, isPrivate, isError, pathname } = useAuth();
   const setUser = useSetRecoilState(userState);
+
+  const { setNotificationList } = useNotification();
+  const { data } = useNotificationQuery();
+
+  useEffect(() => {
+    setNotificationList(data);
+  }, [data, setNotificationList]);
 
   // 로그인 유저정보 recoil에 저장
   useEffect(() => {
