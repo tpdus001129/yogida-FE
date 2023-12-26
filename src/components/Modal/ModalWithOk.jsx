@@ -24,13 +24,17 @@ export default function ModalWithOk() {
     };
   });
 
+  const calendarStyle =
+    modal.type === 'calendar'
+      ? 'w-[90%] bg-white rounded-xl flex flex-col gap-[16px]'
+      : 'w-64 h-48 bg-white rounded-xl px-6 pb-6 flex flex-col';
   return (
     <>
       {modal.isOpen && (
         <>
           <div className="fixed top-0 left-0 w-screen h-screen bg-gray-1 opacity-50 !m-0 !p-0 z-10"></div>
           <div className="fixed top-0 left-0 w-screen h-screen !m-0 !p-0 flex justify-center items-center z-20 ">
-            <div className="w-64 h-48 bg-white rounded-xl px-6 pb-6 flex flex-col">
+            <div className={calendarStyle}>
               <p className="w-full text-center break-keep whitespace-pre-wrap grow flex justify-center items-center">
                 {modal.message}
               </p>

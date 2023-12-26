@@ -9,7 +9,7 @@ import Header from '../components/Main/Header';
 import PostItem from '../components/Main/PostItem';
 import Search from './Search';
 import Filter from './Filter';
-import NotFound from '../components/Search/NoFound';
+import NotFound from '../components/Search/NotFound';
 
 export default function Main() {
   const [data, setData] = useState([]);
