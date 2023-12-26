@@ -12,10 +12,11 @@ export default function Bookmarks() {
   const { list, totalCount } = bookmarksList;
   const { checkedIdsSet, numChecked, handleOnChange, toggleAllCheckedById } = useCheckbox(list);
 
-  const handleRemoveClick = async ({ id }) => {
-    const payload = id ? [id] : [...checkedIdsSet];
+  const handleRemoveClick = async (id) => {
+    const payload = typeof id === 'string' ? [id] : [...checkedIdsSet];
     const result = await removeBookmarks(payload);
     if (result.status === 200) {
+      handleOnChange(id);
       toast.success('성공적으로 삭제되었습니다!');
     }
   };
@@ -42,11 +43,11 @@ export default function Bookmarks() {
             <Bookmark
               key={item._id}
               id={item._id}
-              img={sample}
-              title="안목해변"
-              subTitle="관광명소"
+              img={item?.placeImageSrc || sample}
+              title={item?.placeName}
+              subTitle={item?.category}
               checkedIdsSet={checkedIdsSet}
-              onClick={() => handleOnChange(item._id)}
+              onClick={() => handleOnChange(item?._id)}
               handleRemoveClick={handleRemoveClick}
             />
           ))}

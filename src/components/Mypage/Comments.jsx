@@ -9,17 +9,20 @@ import { useNavigate } from 'react-router';
 export default function Comments() {
   const { profileImageSrc } = useRecoilValue(userState);
   const { commentList } = useMypageCommentQuery();
-  const { list, totalCount } = commentList;
 
   return (
     <>
-      <Title title="내가 쓴 댓글" count={totalCount} icon={<IoChatbubbleSharp color="#589BF7" size="13" />} />
+      <Title
+        title="내가 쓴 댓글"
+        count={commentList?.totalCount}
+        icon={<IoChatbubbleSharp color="#589BF7" size="13" />}
+      />
 
       <div className="border-b border-gray-4 mb-[20px]"></div>
 
       <div className="flex flex-col gap-[20px]">
-        {totalCount !== 0 &&
-          list?.map((item) => (
+        {commentList?.totalCount !== 0 &&
+          commentList?.list?.map((item) => (
             <Comment key={item._id} img={profileImageSrc} title={item?.content} postId={item?.postId} />
           ))}
       </div>

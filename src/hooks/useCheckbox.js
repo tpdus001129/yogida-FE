@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 export default function useCheckbox(list) {
   const [checkedIdsSet, setCheckedIdsSet] = useState(new Set());
-  const numChecked = checkedIdsSet.size;
+  const numChecked = useMemo(() => checkedIdsSet.size, [checkedIdsSet.size]);
 
   const updateSet = (set, id) => {
     const updatedSet = new Set(set);
@@ -20,14 +20,17 @@ export default function useCheckbox(list) {
     setCheckedIdsSet((prevSet) => updateSet(prevSet, id));
   };
 
-  const toggleAllCheckedById = ({ target: { checked } }) => {
-    if (checked) {
-      const allChecked = new Set(list.map(({ _id }) => _id));
-      setCheckedIdsSet(allChecked);
-    } else {
-      setCheckedIdsSet(new Set());
-    }
-  };
+  const toggleAllCheckedById = useCallback(
+    ({ target: { checked } }) => {
+      if (checked) {
+        const allChecked = new Set(list?.map(({ _id }) => _id));
+        setCheckedIdsSet(allChecked);
+      } else {
+        setCheckedIdsSet(new Set());
+      }
+    },
+    [list],
+  );
 
   return {
     checkedIdsSet,

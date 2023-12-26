@@ -13,6 +13,7 @@ export const useCheckLoginQuery = () => {
     useErrorBoundary: false,
     enabled: false,
     select: (data) => data.data.user,
+    onError: () => {},
   });
 
   return { loginUserInfo, refetch, isError };
