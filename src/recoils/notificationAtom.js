@@ -12,6 +12,6 @@ export const notificationCountState = selector({
     const notification = get(notificationListState);
     return notification?.filter((item) => {
       return item.isRead === false;
-    }).length;
+    })?.length;
   },
 });
