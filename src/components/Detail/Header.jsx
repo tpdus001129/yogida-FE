@@ -7,13 +7,16 @@ import useDayCalculation from '../../hooks/useDayCalculation';
 import { IoLockClosed } from 'react-icons/io5';
 // import { IoCreateOutline } from "react-icons/io5";
 
+// 헤더 아이콘 버튼 타입
+const buttonType = true;
+
+//태그 화이트 모드
+const whiteMode = true;
+
+// 헤더 아이콘
+const headerIcon = ['share', 'comment', 'heart'];
+
 export default function Header({ headerData }) {
-  // 헤더 아이콘 버튼 타입
-  const buttonType = true;
-
-  //태그 화이트 모드
-  const whiteMode = true;
-
   // 날짜 계산기 커스텀 훅 사용
   const dayCalculation = useDayCalculation(headerData.startDate, headerData.endDate);
 
@@ -22,9 +25,6 @@ export default function Header({ headerData }) {
 
   // O박 O일 날짜 포맷
   const dateFormat = dayCalculation + '박 ' + (dayCalculation + 1) + '일';
-
-  // 헤더 아이콘
-  const headerIcon = ['share', 'comment', 'heart'];
 
   // 정보 아이콘
   const infoData = [

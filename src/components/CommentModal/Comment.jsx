@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import ReplyButton from './ReplyButton';
 import ReplyId from './ReplyId';
 
-export default function Comment({ reply, nickname, content, date }) {
+export default function Comment({ reply, image, nickname, content, date }) {
   return (
     <div className={`mx-[24px] flex items-center mb-[16px] ${reply ? 'ml-[44px]' : ''}`}>
-      <div className="w-[50px] h-[50px] rounded-full bg-gray-3 mr-[10px] flex-shrink-0"></div>
+      <div className="w-[50px] h-[50px] rounded-full bg-gray-3 mr-[10px] flex-shrink-0 overflow-hidden">
+        <Profile img={image} />
+      </div>
       <div>
         <div className="flex">
           <div className="text-[12px] font-bold mr-[8px]">{nickname}</div>
@@ -25,11 +27,16 @@ export default function Comment({ reply, nickname, content, date }) {
   );
 }
 
+function Profile({ img }) {
+  return <img src={img} alt="profile-img" className="rounded-full items-center w-[50px]" />;
+}
+
 Comment.propTypes = {
   reply: PropTypes.bool.isRequired,
   nickname: PropTypes.string,
   content: PropTypes.string,
   date: PropTypes.string,
+  image: PropTypes.string,
 };
 
 Comment.defaultProps = {
@@ -38,4 +45,8 @@ Comment.defaultProps = {
 
 ReplyButton.defaultProps = {
   className: '',
+};
+
+Profile.propTypes = {
+  img: PropTypes.string,
 };

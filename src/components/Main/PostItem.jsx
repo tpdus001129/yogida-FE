@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
-import { IoChatbubbleOutline } from 'react-icons/io5';
+import { IoChatbubbleOutline, IoHeartOutline } from 'react-icons/io5';
 
 import Tag from '../commons/Tag';
 import ImageSlide from './ImageSlide';
@@ -21,7 +21,9 @@ export default function PostItem({ data }) {
                 <p className="mb-[6px]">{item.destination}</p>
                 <div className="flex items-center">
                   <IoChatbubbleOutline size="16" className="mr-[4px]" />
-                  <span>댓글수</span>
+                  <span className="mr-[10px]">댓글수</span>
+                  <IoHeartOutline size="18" className="mr-[4px]" />
+                  <span>{item.likeCount}</span>
                 </div>
               </div>
               <p className="text-[22px] font-bold mb-[10px]">{item.title}</p>

@@ -2,6 +2,8 @@ import { useState, createContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getPostByPostId } from '../services/posts';
+import { userState } from '../recoils/userAtom';
+import { useRecoilValue } from 'recoil';
 
 import Header from '../components/Detail/Header';
 import DayButton from '../components/Detail/DayButton';
@@ -14,13 +16,12 @@ import useDayCalculation from '../hooks/useDayCalculation';
 export const ModalContext = createContext();
 
 export default function Detail() {
+  const user = useRecoilValue(userState);
+
   const { id: postId } = useParams();
   const [data, setData] = useState([]);
   const [dayTitle, setDayTitle] = useState('');
   const [index, setIndex] = useState(0);
-
-  // 나의 글 유무
-  // const myPost = true;
 
   // 댓글 모드
   const [commentModalMode, setCommentModalMode] = useState(false);
@@ -95,13 +96,27 @@ export default function Detail() {
     }
   }
 
-  // day 버튼 클릭시 day에 맞는 스케줄
+  // day 버튼 클릭시 day에 맞는 거리
   function distancesData() {
     if (data.distances && data.distances.length > 0) {
       const distancesData = data.distances;
       return distancesData;
     }
   }
+
+  // // 북마크API
+
+  // async function postBookmark() {
+  //   try {
+  //     const result = await bookmarkAPI.postBookmarkByMe(postId, singleScheduleId);
+  //     console.log('Bookmark Result:', result);
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // }
+
+  // postBookmark();
+  // bookmarkAPI.postBookmarkByMe(postId, singleScheduleId);
 
   if (!data) return <p>loading...</p>;
   return (
@@ -110,7 +125,7 @@ export default function Detail() {
       <div className={commentModalMode ? 'w-full h-screen overflow-hidden' : ''}>
         <Header headerData={data} />
         <div className="w-full h-[160px] mb-[22px]">
-          {data.schedules && <CourseMap data={data.schedules.map((schedule) => schedule)} />}
+          {dayClickedSchedulesData() && <CourseMap data={dayClickedSchedulesData()} />}
         </div>
         <div className="overflow-scroll scrollbar-hide">
           {data.startDate && (
@@ -130,6 +145,7 @@ export default function Detail() {
               schedulesData={dayClickedSchedulesData()}
               distancesData={distancesData()}
               distanceIndex={index}
+              postId={postId}
             />
           )}
         </div>
@@ -144,14 +160,17 @@ export default function Detail() {
           </div>
           <div className="w-full bg-input rounded-[4px] text-[14px] p-[8px] break-all">{data.reviewText}</div>
         </div>
-        <div className="w-full flex flex-col gap-[6px] justify-center pb-[60px] px-[24px]">
-          <Button type={'default'} text={'description'}>
-            수정하기
-          </Button>
-          <Button type={'red'} text={'description'}>
-            삭제하기
-          </Button>
-        </div>
+
+        {user && (
+          <div className="w-full flex flex-col gap-[6px] justify-center pb-[60px] px-[24px]">
+            <Button type={'default'} text={'description'}>
+              수정하기
+            </Button>
+            <Button type={'red'} text={'description'}>
+              삭제하기
+            </Button>
+          </div>
+        )}
       </div>
     </ModalContext.Provider>
   );
