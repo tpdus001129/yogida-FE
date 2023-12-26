@@ -1,13 +1,18 @@
 import { useQuery, useMutation } from 'react-query';
 import { queryKeys, queryClient } from '../../store/reactQuery';
 import alarmsAPI from '../../services/alarms';
+import { useAuth } from '../../hooks/useAuth';
 
 export const useNotificationQuery = () => {
-  const { data } = useQuery({
+  const { loginUserInfo } = useAuth();
+  const { data, refetch } = useQuery({
     queryKey: [queryKeys.notification],
-    queryFn: alarmsAPI.getAllAlarms,
-    enabled: false,
-    refetchInterval: 1000 * 60 * 2,
+    queryFn: () => {
+      if (loginUserInfo) {
+        return alarmsAPI.getAllAlarms();
+      }
+    },
+    refetchInterval: loginUserInfo ? 1000 * 60 * 2 : false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
@@ -33,5 +38,5 @@ export const useNotificationQuery = () => {
     onSuccess: invalidateMatchQuery,
   }).mutateAsync;
 
-  return { data, readAlarm, deleteAlarm, deleteAllAlarm };
+  return { data, refetch, readAlarm, deleteAlarm, deleteAllAlarm };
 };
