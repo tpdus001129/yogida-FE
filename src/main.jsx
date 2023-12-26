@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { ErrorBoundary } from 'react-error-boundary';
 import App from './App.jsx';
@@ -14,21 +14,21 @@ import Loading from './pages/Loading.jsx';
 import ApiErrorBoundary from './pages/ApiErrorBoundary.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ErrorBoundary fallbackRender={ApiErrorBoundary}>
-        <Suspense fallback={<Loading />}>
-          <QueryClientProvider client={queryClient}>
-            <RecoilRoot>
-              <ModalWithOk />
-              <App />
-              <Toaster />
-            </RecoilRoot>
-            {/* <ReactQueryDevtools /> */}
-            {/* 옵션: 개발 도구 사용 */}
-          </QueryClientProvider>
-        </Suspense>
-      </ErrorBoundary>
-    </BrowserRouter>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <BrowserRouter>
+    <ErrorBoundary fallbackRender={ApiErrorBoundary}>
+      <Suspense fallback={<Loading />}>
+        <QueryClientProvider client={queryClient}>
+          <RecoilRoot>
+            <ModalWithOk />
+            <App />
+            <Toaster />
+          </RecoilRoot>
+          {/* <ReactQueryDevtools /> */}
+          {/* 옵션: 개발 도구 사용 */}
+        </QueryClientProvider>
+      </Suspense>
+    </ErrorBoundary>
+  </BrowserRouter>,
+  // </React.StrictMode>,
 );

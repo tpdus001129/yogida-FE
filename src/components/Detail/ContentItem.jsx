@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
@@ -32,26 +33,21 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
     }
   }
 
-  // function mapHandleClick(latitude, longitude) {
-  //   navigate(`https://map.kakao.com/link/search/${latitude},${longitude}`);
-  // }
-
-  // const searchURL = `https://map.kakao.com/link/search/${latitude},${longitude}`;
-
-  //   window.open(searchURL, '_blank');
-  // }
+  // 상세페이지에 전달할 data 로컬 스토리지에 저장
+  useEffect(() => {
+    if (schedulesData) {
+      schedulesData.map((places) => {
+        localStorage.setItem(`detail-data-${places._id}`, JSON.stringify(places));
+      });
+    }
+  }, [schedulesData]);
 
   if (!schedulesData) return <div>Loading...</div>;
   return (
     <div>
       {distancesData &&
         schedulesData.map((places, index) => (
-          <a
-            href={`https://map.kakao.com/link/search/${places.placePosition[0]},${places.placePosition[1]}`}
-            target="_blank"
-            rel="noreferrer"
-            key={index}
-          >
+          <Link to={`/map/${places._id}`} key={places._id}>
             <div className="flex mx-[24px] justify-between" key={index}>
               {/* 왼쪽 컨텐츠*/}
               <div className="flex flex-col items-center relative">
@@ -103,7 +99,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                 </div>
               </div>
             </div>
-          </a>
+          </Link>
         ))}
     </div>
   );
@@ -113,5 +109,5 @@ ContentItem.propTypes = {
   distanceIndex: PropTypes.number.isRequired,
   schedulesData: PropTypes.array.isRequired,
   distancesData: PropTypes.array.isRequired,
-  postId: PropTypes.number,
+  postId: PropTypes.string,
 };
