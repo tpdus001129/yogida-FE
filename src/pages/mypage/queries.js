@@ -4,6 +4,11 @@ import commentAPI from '../../services/comment';
 import likesAPI from '../../services/likes';
 import bookmarkAPI from '../../services/bookmarks';
 import postsAPI from '../../services/posts';
+import toast from 'react-hot-toast';
+
+export const queryErrorHandler = (error) => {
+  return toast.error(`${error.status} :: ${error.message}`);
+};
 
 // 내 여행
 export const useMypagePostsQuery = () => {
@@ -93,6 +98,7 @@ export const useMypageLikesQuery = () => {
   const removeLikes = useMutation({
     mutationFn: likesAPI.removeAll,
     onSuccess: invalidateMatchQuery,
+    onError: queryErrorHandler,
   }).mutateAsync;
 
   return { likesList, removeLikes };
