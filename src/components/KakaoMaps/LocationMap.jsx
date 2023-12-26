@@ -1,7 +1,7 @@
 import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 
 export default function LocationMap() {
-  // function handleClick(mouseEvent) {
+  // function mapHandleClick() {
   //   const latlng = mouseEvent.latLng;
   //   const getLat = 37.54699;
   //   const getLng = 127.09598;
