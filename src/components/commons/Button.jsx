@@ -19,6 +19,7 @@ const typeStyle = {
   kakao: 'bg-kakaoyellow text-kakaoblack border-transparent',
   secondary: 'bg-secondary text-gray-1 border-transparent',
   red: 'bg-red text-white border-transparent',
+  gray: 'bg-gray-3 text-white border-transparent',
 };
 
 const sizeStyle = {

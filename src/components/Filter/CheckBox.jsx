@@ -20,14 +20,6 @@ export default function CheckBox({ tag, checked, setChecked }) {
           <label>{item}</label>
         </span>
       ))}
-
-      {/* 클릭상태 */}
-      {/* <div>
-        <input type="checkbox" className="hidden" />
-        <label className="text-center bg-[#CDE1FD] border rounded-[20px] border-solid border-primary px-[16px] py-[10px] cursor-pointer text-[14px] text-primary font-bold mr-[8px]">
-          Label Text
-        </label>
-      </div> */}
     </div>
   );
 }
