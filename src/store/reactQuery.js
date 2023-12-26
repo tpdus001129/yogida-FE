@@ -27,4 +27,5 @@ export const queryKeys = {
   mypageLikes: 'MYPAGE_LIKES',
   kakaoUser: 'KAKAO_USER',
   loginStatus: 'LOGiN_STATUS',
+  notification: 'NOTIFICATION',
 };

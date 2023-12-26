@@ -9,19 +9,34 @@ import { PiNotePencil } from 'react-icons/pi';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoils/userAtom';
 import { PATH } from '../../constants/path';
+import useNotification from '../../hooks/useNotification';
 
 export default function Navbar() {
   //recoil에 저장된 user정보 가져오기
   const user = useRecoilValue(userState);
+  const { notificationCount } = useNotification();
+
   return (
     <nav className="border-t-[1px] border-solid border-gray w-full fixed bottom-0 left-0 h-navbar bg-white z-10">
       <ul className="flex items-center h-full w-full px-[20px] py-[12px]">
         <Tab path={PATH.root} icon={<IoHomeOutline size={26} />} />
-        <Tab path={PATH.notification} icon={<IoNotificationsOutline size={26} />} />
+        <Tab
+          path={PATH.notification}
+          icon={
+            <div className="relative">
+              <IoNotificationsOutline size={26} />
+              {notificationCount > 0 && (
+                <span className="absolute bottom-[-4px] right-[-4px] text-xs text-white bg-red py-[2px] px-[4px] rounded-full">
+                  {notificationCount}
+                </span>
+              )}
+            </div>
+          }
+        />
         <Tab path={PATH.schedule} icon={<PiNotePencil size={26} />} />
         <Tab
-          path={PATH.mypage}
-          icon={user ? <Profile img={user?.profileImageSrc} /> : <IoPersonCircleOutline size={26} />}
+          path={user ? PATH.mypage : PATH.login}
+          icon={user?.profileImageSrc ? <Profile img={user?.profileImageSrc} /> : <IoPersonCircleOutline size={26} />}
         />
       </ul>
     </nav>

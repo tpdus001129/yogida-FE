@@ -11,13 +11,38 @@ import FindPassword from './pages/FindPassword';
 import CommentModal from './components/CommentModal/CommentModal';
 import Detail from './pages/Detail';
 import ChangePassword from './pages/ChangePassword';
-import Notification from './pages/Notification';
+import Notification from './pages/notification/Notification';
 import Map from './pages/Map';
 import Setup from './pages/setup/Setup';
-import { PATH } from './constants/path';
 import PrivateRoute from './pages/PrivateRoute';
+import { PATH } from './constants/path';
+import { useAuth } from './hooks/useAuth';
+import { useSetRecoilState } from 'recoil';
+import { userState } from './recoils/userAtom';
+import { useEffect } from 'react';
+import useNotification from './hooks/useNotification';
+import { useNotificationQuery } from './pages/notification/queries';
 
 function App() {
+  // 로그인이 필요한 페이지인지 check
+  // 해당 페이지일 경우 로그인 한 유저 정보 가져오기
+  const { loginUserInfo } = useAuth();
+  const setUser = useSetRecoilState(userState);
+
+  const { setNotificationList } = useNotification();
+  const { data } = useNotificationQuery();
+
+  useEffect(() => {
+    setNotificationList(data);
+  }, [data, setNotificationList]);
+
+  // 로그인 유저정보 recoil에 저장
+  useEffect(() => {
+    if (loginUserInfo) {
+      setUser(loginUserInfo);
+    }
+  }, [loginUserInfo, setUser]);
+
   return (
     <Routes>
       <Route element={<PrivateRoute />}>
