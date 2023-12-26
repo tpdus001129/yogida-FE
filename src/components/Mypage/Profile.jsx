@@ -10,7 +10,7 @@ export default function Profile({ setEditProfileMode }) {
   const { setNavbarHidden } = useOutletContext();
   const { email, nickname, profileImageSrc } = useRecoilValue(userState);
 
-  const [profileImg, setProfileImg] = useState();
+  const [profileImg, setProfileImg] = useState('');
   const imgRef = useRef(null);
   const emailRef = useRef(null);
   const nicknameRef = useRef(null);

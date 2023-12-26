@@ -24,7 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <App />
               <Toaster />
             </RecoilRoot>
-            {/* <ReactQueryDevtools />  */}
+            {/* <ReactQueryDevtools /> */}
             {/* 옵션: 개발 도구 사용 */}
           </QueryClientProvider>
         </Suspense>

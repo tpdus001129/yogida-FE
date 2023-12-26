@@ -7,8 +7,8 @@ const likesAPI = {
     return await api.get(API_URL);
   },
 
-  async removeAll() {
-    return await api.delete(API_URL);
+  async removeAll(payload) {
+    return await api.patch(API_URL, payload);
   },
 };
 
