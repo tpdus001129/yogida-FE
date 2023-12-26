@@ -12,6 +12,7 @@ import { userState } from '../../recoils/userAtom';
 import { useMutation } from 'react-query';
 import authAPI from '../../services/auth';
 import { useResetAuth } from '../../hooks/useResetAuth';
+import defaultProfile from '../../assets/images/defaultProfile.png';
 
 const TABS = [
   {
@@ -58,10 +59,11 @@ export default function Mypage() {
         </div>
         <div className="flex flex-col items-center justify-center h-[140px] ">
           <img
-            src={user?.profileImageSrc}
+            src={user?.profileImageSrc || defaultProfile}
             alt="profile"
             className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]"
           />
+
           <span className="text-black text-[20px] font-bold tracking-tight">{user?.nickname}</span>
         </div>
       </section>

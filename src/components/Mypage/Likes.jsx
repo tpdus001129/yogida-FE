@@ -15,8 +15,14 @@ export default function Likes() {
   const { list, totalCount } = likesList;
   const { checkedIdsSet, numChecked, handleOnChange, toggleAllCheckedById } = useCheckbox(list);
 
-  const handleRemoveClick = async ({ id }) => {
-    const payload = id ? [id] : [...checkedIdsSet];
+  const handleRemoveClick = async (id) => {
+    console.log('id : ', id);
+    if (typeof id === 'string') {
+      handleOnChange(id);
+    }
+    // const payload = typeof id === 'string' ? [id] : [...checkedIdsSet];
+    console.log('patyload : ', checkedIdsSet);
+    const payload = [...checkedIdsSet];
     const result = await removeLikes(payload);
     if (result.status === 200) {
       toast.success('성공적으로 삭제되었습니다!');
@@ -46,14 +52,14 @@ export default function Likes() {
             const title = item?.postId?.title;
             return (
               <Like
-                key={item._id}
-                id={item._id}
+                key={item?._id}
+                id={item?._id}
                 img={img}
                 title={title}
                 subTitle={`${convertSimpleDate(item?.postId?.startDate)} ~ ${convertSimpleDate(item?.postId?.endDate)}`}
                 checkedIdsSet={checkedIdsSet}
-                onClick={() => handleOnChange(item._id)}
-                handleRemoveClick={handleRemoveClick}
+                onClick={() => handleOnChange(item?._id)}
+                handleRemoveClick={() => handleRemoveClick(item?.id)}
               />
             );
           })}
@@ -76,7 +82,7 @@ function Like({ id, img, title, subTitle, checkedIdsSet, onClick, handleRemoveCl
             </div>
             <span className="text-gray-1 text-[14px] font-medium">{subTitle}</span>
           </div>
-          <IoTrashOutline size={16} className="text-gray-1" onClick={() => handleRemoveClick(id)} />
+          <IoTrashOutline size={16} className="text-gray-1" onClick={handleRemoveClick} />
         </div>
       </div>
     </>

@@ -9,6 +9,7 @@ import { PiNotePencil } from 'react-icons/pi';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoils/userAtom';
 import { PATH } from '../../constants/path';
+import defaultProfile from '../../assets/images/defaultProfile.png';
 import useNotification from '../../hooks/useNotification';
 
 export default function Navbar() {
@@ -35,8 +36,8 @@ export default function Navbar() {
         />
         <Tab path={PATH.schedule} icon={<PiNotePencil size={26} />} />
         <Tab
-          path={user ? PATH.mypage : PATH.login}
-          icon={user?.profileImageSrc ? <Profile img={user?.profileImageSrc} /> : <IoPersonCircleOutline size={26} />}
+          path={PATH.mypage}
+          icon={user ? <Profile img={user?.profileImageSrc || defaultProfile} /> : <IoPersonCircleOutline size={26} />}
         />
       </ul>
     </nav>
@@ -54,7 +55,9 @@ function Tab({ path, icon }) {
 }
 
 function Profile({ img }) {
-  return <img src={img} alt="profile-img" className="rounded-full flex items-center w-fit m-auto h-full p-[5px]" />;
+  return (
+    <img src={img} alt="profile-img" className="flex items-center w-fit m-auto object-cover h-[24px] rounded-full" />
+  );
 }
 
 Tab.propTypes = {

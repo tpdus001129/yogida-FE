@@ -9,12 +9,12 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       suspense: true,
-      // onError: queryErrorHandler,
+      onError: queryErrorHandler,
       retry: 0,
     },
     mutations: {
       suspense: true,
-      // onError: queryErrorHandler,
+      onError: queryErrorHandler,
       retry: 0,
     },
   },
