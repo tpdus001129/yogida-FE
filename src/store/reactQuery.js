@@ -25,6 +25,7 @@ export const queryKeys = {
   mypageComment: 'MYPAGE_COMMENT',
   mypageBookmarks: 'MYPAGE_BOOKMARKS',
   mypageLikes: 'MYPAGE_LIKES',
+  schedule: 'SCHEDULE',
   kakaoUser: 'KAKAO_USER',
   loginStatus: 'LOGiN_STATUS',
   notification: 'NOTIFICATION',

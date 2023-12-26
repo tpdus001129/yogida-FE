@@ -6,6 +6,7 @@ export const useNotificationQuery = () => {
   const { data } = useQuery({
     queryKey: [queryKeys.notification],
     queryFn: alarmsAPI.getAllAlarms,
+    enabled: false,
     refetchInterval: 1000 * 60 * 2,
     refetchOnMount: false,
     refetchOnWindowFocus: false,

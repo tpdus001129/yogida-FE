@@ -48,8 +48,20 @@ export async function getPostTag(tag) {
 }
 
 const postsAPI = {
+  async getAllPosts() {
+    return await api.get(API_URL);
+  },
+
+  async getPostById(postId) {
+    return await api.get(API_URL + `/${postId}`);
+  },
+
   async getAllPostsByMe() {
     return await api.get(API_URL + '/my-page');
+  },
+
+  async addOne(payload) {
+    return await api.post(API_URL, payload);
   },
 
   async removeOne(id) {
