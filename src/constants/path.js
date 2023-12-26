@@ -12,7 +12,7 @@ export const PATH = {
   post: '/posts/:id',
   changePassword: '/change-password',
   commentModal: '/comment-modal',
-  map: '/map',
+  map: '/map/:id',
   setup: '/setup',
   notfound: '*',
 };

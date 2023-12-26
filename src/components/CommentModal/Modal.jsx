@@ -1,6 +1,11 @@
 import { useState, useContext } from 'react';
 import { ModalContext } from '../../pages/Detail';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoils/userAtom';
+
+import moment from 'moment';
+import 'moment/locale/ko';
 
 import Comment from './Comment';
 import Input from './Input';
@@ -8,7 +13,11 @@ import Background from './Background';
 
 export default function Modal() {
   //   const reply = true;
+  const user = useRecoilValue(userState);
   const [inputValue, setInputValue] = useState('');
+
+  // 댓글 작성 시간
+  const nowTime = moment().format('YYYY년 MM월 DD일');
 
   const { commentModalMode, setCommentModalMode } = useContext(ModalContext);
 
@@ -19,7 +28,12 @@ export default function Modal() {
   const [comments, setComments] = useState([]);
 
   // 새로운 댓글
-  const [newComment, setNewComment] = useState({ nickname: 'leelee', date: '2020년 10월 10일', content: '' });
+  const [newComment, setNewComment] = useState({
+    image: user.profileImageSrc,
+    nickname: user.nickname,
+    date: nowTime,
+    content: '',
+  });
 
   // 댓글 추가
   function addCommentHandler() {
@@ -42,7 +56,13 @@ export default function Modal() {
               <p className="text-[14px] text-gray-1 text-center">작성된 댓글이 없습니다.</p>
             ) : (
               comments.map((comment, index) => (
-                <Comment key={index} nickname={comment.nickname} date={comment.date} content={comment.content} />
+                <Comment
+                  key={index}
+                  image={user.profileImageSrc}
+                  nickname={comment.nickname}
+                  date={comment.date}
+                  content={comment.content}
+                />
               ))
             )}
           </div>
