@@ -10,10 +10,10 @@ export default function PrivateRoute() {
 
   // 로그인 유저정보 recoil에 저장
   useEffect(() => {
-    if (loginUserInfo) {
+    if (loginUserInfo && !isError) {
       setUser(loginUserInfo);
     }
-  }, [loginUserInfo, setUser]);
+  }, [isError, loginUserInfo, setUser]);
 
   if (isError && isPrivate) return <Navigate to="/login" />;
   return <Outlet />;

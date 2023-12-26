@@ -8,6 +8,7 @@ import DeleteAllCheckbox from './DeleteAllCheckbox';
 import { useMypageLikesQuery } from '../../pages/mypage/queries';
 import useCheckbox from '../../hooks/useCheckbox';
 import toast from 'react-hot-toast';
+import { convertSimpleDate } from '../../utils/convertSimpleDate';
 
 export default function Likes() {
   const { likesList, removeLikes } = useMypageLikesQuery();
@@ -40,18 +41,22 @@ export default function Likes() {
 
       <div className="flex flex-col gap-[20px]">
         {totalCount !== 0 &&
-          list?.map((item) => (
-            <Like
-              key={item._id}
-              id={item._id}
-              img={sample}
-              title="강릉 여행"
-              subTitle="2023.05.24 ~ 05.28"
-              checkedIdsSet={checkedIdsSet}
-              onClick={() => handleOnChange(item._id)}
-              handleRemoveClick={handleRemoveClick}
-            />
-          ))}
+          list?.map((item) => {
+            const img = item?.postId?.schedules[0][0]?.placeImageSrc || sample;
+            const title = item?.postId?.title;
+            return (
+              <Like
+                key={item._id}
+                id={item._id}
+                img={img}
+                title={title}
+                subTitle={`${convertSimpleDate(item?.postId?.startDate)} ~ ${convertSimpleDate(item?.postId?.endDate)}`}
+                checkedIdsSet={checkedIdsSet}
+                onClick={() => handleOnChange(item._id)}
+                handleRemoveClick={handleRemoveClick}
+              />
+            );
+          })}
       </div>
     </>
   );
