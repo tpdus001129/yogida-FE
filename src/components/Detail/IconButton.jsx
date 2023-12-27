@@ -7,7 +7,7 @@ import { ModalContext } from '../../pages/Detail';
 import toast from 'react-hot-toast';
 
 import {
-  IoChevronBackOutline,
+  IoChevronBack,
   IoShareOutline,
   IoChatbubbleOutline,
   IoHeartOutline,
@@ -30,7 +30,7 @@ export default function IconButton({ iconName, buttonType }) {
   function iconSelect(name) {
     switch (name) {
       case 'prev':
-        return <IoChevronBackOutline size="25" />;
+        return <IoChevronBack size="25" />;
       case 'heart':
         return isHeartClicked ? <IoHeartSharp size="25" className="text-red" /> : <IoHeartOutline size="25" />;
       case 'comment':
@@ -40,13 +40,13 @@ export default function IconButton({ iconName, buttonType }) {
       case 'edit':
         return <IoCreateOutline size="24" />;
       case 'wallet':
-        return <IoWalletOutline size="24" />;
+        return <IoWalletOutline size="24" className="text-gray-1" />;
       case 'calendar':
-        return <IoCalendarClearOutline size="22" />;
+        return <IoCalendarClearOutline size="22" className="text-gray-1" />;
       case 'destination':
-        return <IoLocationOutline size="24" />;
+        return <IoLocationOutline size="24" className="text-gray-1" />;
       case 'people':
-        return <IoPeopleOutline size="24" />;
+        return <IoPeopleOutline size="24" className="text-gray-1" />;
       default:
         return null;
     }

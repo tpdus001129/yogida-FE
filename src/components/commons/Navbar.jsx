@@ -11,11 +11,29 @@ import { userState } from '../../recoils/userAtom';
 import { PATH } from '../../constants/path';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import useNotification from '../../hooks/useNotification';
+import { useAuth } from '../../hooks/useAuth';
+import { useNotificationQuery } from '../../pages/notification/queries';
+import { useEffect } from 'react';
 
 export default function Navbar() {
   //recoil에 저장된 user정보 가져오기
   const user = useRecoilValue(userState);
-  const { notificationCount } = useNotification();
+  const { loginUserInfo } = useAuth();
+
+  const { setNotificationList, notificationCount } = useNotification();
+  const { data, refetch } = useNotificationQuery();
+
+  useEffect(() => {
+    if (loginUserInfo) {
+      refetch();
+    }
+  }, [loginUserInfo, refetch]);
+
+  useEffect(() => {
+    if (loginUserInfo) {
+      setNotificationList(data);
+    }
+  }, [data, loginUserInfo, setNotificationList]);
 
   return (
     <nav className="border-t-[1px] border-solid border-gray w-full fixed bottom-0 left-0 h-navbar bg-white z-10">

@@ -19,6 +19,8 @@ export default function Main() {
   const tagValue = queryParams.get('tag');
   const navigate = useNavigate();
 
+  console.log(location.search); //디코딩해야함 decodeURIComponent 디코딩 하고 넣어야함
+
   // 검색어 모드
   const [searchMode, setSearchMode] = useState(false);
 
@@ -84,6 +86,8 @@ export default function Main() {
     }
   }
 
+  // 키워드가 있냐 없냐에 따라 부르는 API가 달라지게 구현해야함
+  // [전체 검색]: 여기만 useEffect사용, [키워드], [필터+검색] 으로 나눠짐 -> useEffect에 전부다 들어가 있으면 안됨(따로)
   // API: 전체 Post OR 검색 Post
   useEffect(() => {
     getPostsAllList().then((Posts) => {
@@ -126,7 +130,7 @@ export default function Main() {
           <div className="w-mobile flex flex-col">
             <div>
               <Header />
-              <div className="mx-[24px] mt-[24px]">
+              <div className="mx-[24px]">
                 <div className="mx-auto">
                   <div className="mb-[22px] flex">
                     <div className="w-[264px] h-[52px] border rounded-[26px] border-gray-4 bg-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] mr-[11px] flex items-center">

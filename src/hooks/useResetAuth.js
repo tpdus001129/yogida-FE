@@ -3,10 +3,12 @@ import { userState } from '../recoils/userAtom';
 import { useNavigate } from 'react-router';
 import { PATH } from '../constants/path';
 import toast from 'react-hot-toast';
+import useNotification from './useNotification';
 
 export const useResetAuth = () => {
   const navigate = useNavigate();
   const resetAuthToken = useResetRecoilState(userState);
+  const { resetNotification } = useNotification();
 
   return () => {
     toast.success('로그아웃 되었습니다.');
@@ -16,5 +18,6 @@ export const useResetAuth = () => {
     //recoil의 user정보 지우기
     //localhost의 user정보 지우기
     resetAuthToken();
+    resetNotification();
   };
 };
