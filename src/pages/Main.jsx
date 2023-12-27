@@ -81,7 +81,7 @@ export default function Main() {
       const queryString = checkedList.join(',');
       navigate(`?tag=${queryString}`);
       filterModeOff();
-      setNotFound(true);
+      setNotFound(true); //삭제
     }
   }
 
@@ -89,7 +89,8 @@ export default function Main() {
   // [전체 검색]: 여기만 useEffect사용, [키워드], [필터+검색] 으로 나눠짐 -> useEffect에 전부다 들어가 있으면 안됨(따로)
   useEffect(() => {
     postsAPI.getAllPosts({ sort: '최신순', city: '서울' }).then((Posts) => {
-      setData(Posts);
+      console.log(Posts.data.posts);
+      setData(Posts.data.posts);
     });
   }, [data]);
 

@@ -5,6 +5,7 @@ export const modalAtom = atom({
   key: ATOM_KEY['modal'],
   default: {
     isOpen: false,
+    type: null,
     message: '',
     callback: () => {},
   },

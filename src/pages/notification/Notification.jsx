@@ -6,7 +6,11 @@ import { useEffect } from 'react';
 
 export default function Notification() {
   const { notificationList, setNotificationList } = useNotification();
-  const { data, deleteAllAlarm } = useNotificationQuery();
+  const { data, deleteAllAlarm, refetch } = useNotificationQuery();
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   useEffect(() => {
     setNotificationList(data);
@@ -21,7 +25,7 @@ export default function Notification() {
         </button>
       </div>
       <div className={`overflow-scroll h-[calc(100vh-144px)]`}>
-        {notificationList.map((notification) => (
+        {notificationList?.map((notification) => (
           <NotificationItem
             key={notification._id}
             type={notification.alarmType}

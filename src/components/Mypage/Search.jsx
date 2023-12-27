@@ -4,21 +4,31 @@ import { IoSearchOutline, IoReloadOutline } from 'react-icons/io5';
 import { IoClose } from 'react-icons/io5';
 import { TRAVEL_DESTINATION } from '../../constants';
 import { useEffect, useState } from 'react';
-import { getTags } from '../../services/tags';
 import Title from '../Filter/Title';
-import CheckBox from '../Filter/CheckBox';
 import Button from '../commons/Button';
+import { scrollToTop } from '../../utils/scrollToTop';
+import { convertToHangulJamo } from '../../utils/convertToHangulJamo';
+import { TAGS } from '../../constants';
+import toast from 'react-hot-toast';
 
-export function SearchTravelDestination({ onClose }) {
+export function SearchTravelDestination({ handleDestinationClick, onClose }) {
+  const [keyword, setKeyword] = useState('');
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   return (
     <div className="w-full">
       <Header title={'검색'} onClick={onClose} />
       {/* 검색 */}
       <form className="w-full h-[74px] flex relative items-center px-[24px]">
         <input
-          className="w-full h-[48px] pl-[20px] rounded-[24px] focus:outline-none bg-gray-3 opacity-30 placeholder:text-gray-1"
+          className="w-full h-[48px] pl-[20px] rounded-[24px] focus:outline-none bg-gray-4 placeholder:text-gray-1"
           type="text"
           placeholder="여행, 어디로 떠나시나요?"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
         />
         <button className="absolute right-[40px] top-[35%]" type="submit">
           <IoSearchOutline size="22" />
@@ -26,9 +36,9 @@ export function SearchTravelDestination({ onClose }) {
       </form>
 
       <ul className="w-full px-[24px]">
-        {TRAVEL_DESTINATION.map((item) => (
+        {TRAVEL_DESTINATION.filter((destination) => convertToHangulJamo(destination).includes(keyword)).map((item) => (
           <li key={item}>
-            <DestinationItem name={item} />
+            <DestinationItem name={item} onClick={() => handleDestinationClick(item)} />
           </li>
         ))}
       </ul>
@@ -57,23 +67,41 @@ export function SearchPlace({ onClose }) {
   );
 }
 
-export function SelectTag({ onClose }) {
-  const [data, setData] = useState([]);
-  const [checked, setChecked] = useState(false);
-  function resetHandler() {
-    setChecked(false);
-  }
+export function SelectTag({ tag, handleTagsClick, onClose }) {
+  // 체크된 값을 담을 배열
+  const [checkedList, setCheckedList] = useState([]);
 
   useEffect(() => {
-    getTags()
-      .then((tags) => {
-        tags.shift();
-        setData(tags);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
+    if (tag && tag?.length !== 0) {
+      setCheckedList(tag);
+    }
+  }, [tag]);
+
+  // 배열에 값 넣기
+  function checkedValue(value) {
+    setCheckedList((prevList) => {
+      // 선택된 값이 있으면 해당 값을 해제(배열에서 삭제)
+      if (prevList.includes(value)) {
+        return prevList.filter((item) => item !== value);
+      }
+
+      // 길이가 5미만이면 값을 배열에 추가
+      if (prevList.length < 5) {
+        return [...prevList, value];
+      }
+      toast('태그는 최대 5개까지 선택할 수 있습니다.', {
+        icon: '👏',
       });
-  }, []);
+
+      // 길이가 5를 넘으면 이전 값 유지
+      return [...prevList];
+    });
+  }
+
+  // 필터 초기화
+  function filterResetHandler() {
+    setCheckedList([]);
+  }
 
   return (
     <>
@@ -82,23 +110,47 @@ export function SelectTag({ onClose }) {
         {/* 필터초기화 */}
         <div className="mx-[24px]">
           <div className="flex justify-end">
-            <button className="flex items-center text-primary" onClick={resetHandler}>
+            <button className="flex items-center text-primary" onClick={filterResetHandler}>
               <span className="mr-[2px] text-[12px]">필터 초기화</span>
               <IoReloadOutline size="12" />
             </button>
           </div>
           {/* 필터 */}
           <div>
-            {data.map((item, index) => (
-              <div key={index}>
+            {TAGS?.map((item, index) => (
+              <div key={item.title + index}>
                 <Title title={item.title} />
-                <CheckBox tag={item.name} checked={checked} setChecked={setChecked} />
+                <div className="flex flex-wrap gap-[4px]">
+                  {item.contents.map((content, innerIndex) => (
+                    <span key={innerIndex}>
+                      <input
+                        type="checkbox"
+                        id={`${item.title}-${innerIndex}`}
+                        value={content}
+                        className="hidden"
+                        onClick={(e) => checkedValue(e.target.value)}
+                      />
+                      <label
+                        htmlFor={`${item.title}-${innerIndex}`}
+                        className={`inline-block bg-opacity-30 text-center rounded-[20px] px-[16px] py-[10px] cursor-pointer text-[14px] ${
+                          checkedList && checkedList.includes(content)
+                            ? 'bg-primary text-primary font-bold'
+                            : 'bg-gray-3 text-gray-3 font-bold'
+                        }`}
+                      >
+                        {content}
+                      </label>
+                    </span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="mt-auto flex flex-col gap-[11px] px-[24px] w-full">
-          <Button type="primary">태그 선택하기</Button>
+        <div className="mt-auto flex flex-col gap-[11px] px-[24px] w-full pb-[24px]">
+          <Button type="primary" onClick={() => handleTagsClick(checkedList)}>
+            태그 선택하기
+          </Button>
         </div>
       </div>
     </>
@@ -114,11 +166,13 @@ function Header({ title, onClick }) {
   );
 }
 
-function DestinationItem({ name }) {
+function DestinationItem({ name, onClick }) {
   return (
     <div className="flex items-center justify-between py-4">
       <strong>{name}</strong>
-      <button className="bg-gray-4 text-sm px-3 py-1 rounded-2xl">선택</button>
+      <button className="bg-gray-4 text-sm px-3 py-1 rounded-2xl" onClick={onClick}>
+        선택
+      </button>
     </div>
   );
 }
@@ -128,9 +182,12 @@ SearchPlace.propTypes = {
 };
 SearchTravelDestination.propTypes = {
   onClose: PropTypes.func.isRequired,
+  handleDestinationClick: PropTypes.func,
 };
 SelectTag.propTypes = {
+  tag: PropTypes.array,
   onClose: PropTypes.func.isRequired,
+  handleTagsClick: PropTypes.func,
 };
 
 Header.propTypes = {
@@ -139,4 +196,5 @@ Header.propTypes = {
 };
 DestinationItem.propTypes = {
   name: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };

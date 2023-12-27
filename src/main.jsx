@@ -15,20 +15,20 @@ import ApiErrorBoundary from './pages/ApiErrorBoundary.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
-  <BrowserRouter>
-    <ErrorBoundary fallbackRender={ApiErrorBoundary}>
-      <Suspense fallback={<Loading />}>
-        <QueryClientProvider client={queryClient}>
-          <RecoilRoot>
+  <RecoilRoot>
+    <BrowserRouter>
+      <ErrorBoundary fallbackRender={ApiErrorBoundary}>
+        <Suspense fallback={<Loading />}>
+          <QueryClientProvider client={queryClient}>
             <ModalWithOk />
             <App />
             <Toaster />
-          </RecoilRoot>
-          {/* <ReactQueryDevtools /> */}
-          {/* 옵션: 개발 도구 사용 */}
-        </QueryClientProvider>
-      </Suspense>
-    </ErrorBoundary>
-  </BrowserRouter>,
+            {/* <ReactQueryDevtools /> */}
+            {/* 옵션: 개발 도구 사용 */}
+          </QueryClientProvider>
+        </Suspense>
+      </ErrorBoundary>
+    </BrowserRouter>
+  </RecoilRoot>,
   // </React.StrictMode>,
 );
