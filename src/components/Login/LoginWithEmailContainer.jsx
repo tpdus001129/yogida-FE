@@ -24,7 +24,7 @@ export default function LoginWithEmailContainer() {
         navigate('/');
       })
       .catch((error) => {
-        switch (error.response?.status) {
+        switch (error?.status) {
           case 400: {
             openModal({ message: `이메일 또는 비밀번호가 일치하지 않습니다.` });
             break;
