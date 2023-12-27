@@ -92,7 +92,7 @@ export default function Main() {
     postsAPI.getAllPosts({ sort: sortValue, tag: tagValue, city: cityValue }).then((Posts) => {
       setData(Posts.data.posts);
     });
-  }, [data, sortValue, tagValue, cityValue]);
+  }, [sortValue, tagValue, cityValue]);
 
   // if (keyword) {
   //   getPostSearchCity(cityValue).then((posts) => {

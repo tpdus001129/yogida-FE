@@ -1,12 +1,24 @@
 import PropTypes from 'prop-types';
 import { IoArrowUpCircle } from 'react-icons/io5';
 
-export default function Input({ className, inputValue, setInputValue, addCommentHandler, disabled }) {
+export default function Input({
+  className,
+  inputValue,
+  setInputValue,
+  addCommentHandler,
+  disabled,
+  createComment,
+  postId,
+}) {
   function onSubmitHandler(e) {
     e.preventDefault();
     addCommentHandler();
+    createComment(postId, inputValue);
     setInputValue('');
   }
+
+  console.log('postId', postId);
+  console.log('inputValue', inputValue);
 
   return (
     <div className={className}>
@@ -36,4 +48,6 @@ Input.propTypes = {
   setInputValue: PropTypes.func,
   addCommentHandler: PropTypes.func,
   disabled: PropTypes.bool,
+  createComment: PropTypes.func,
+  postId: PropTypes.string,
 };
