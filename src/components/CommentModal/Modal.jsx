@@ -13,11 +13,8 @@ import Background from './Background';
 import commentAPI from '../../services/comment';
 
 export default function Modal() {
-  //   const reply = true;
   const user = useRecoilValue(userState);
   const [inputValue, setInputValue] = useState('');
-
-  console.log(user);
 
   // 댓글 작성 시간
   const nowTime = moment().format('YYYY년 MM월 DD일');
@@ -27,6 +24,7 @@ export default function Modal() {
   const { handleTouchStart, handleTouchMove, handleTouchEnd } = useBottomSheet(() => {
     setCommentModalMode(false);
   });
+
   // 댓글 목록
   const [comments, setComments] = useState([]);
 
