@@ -6,7 +6,7 @@ const handleAxiosError = (error) => {
 };
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL, //데이터를 요청할 기본 주소
+  // baseURL: import.meta.env.VITE_BACKEND_URL, //데이터를 요청할 기본 주소
   timeout: 7000, // 요청이 timeout보다 오래 걸리면 요청이 중단된다.
   headers: {
     'Content-Type': 'application/json',

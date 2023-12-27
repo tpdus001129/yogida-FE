@@ -1,7 +1,6 @@
 import { useState, createContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { getPostByPostId } from '../services/posts';
 import { userState } from '../recoils/userAtom';
 import { useRecoilValue } from 'recoil';
 
@@ -12,17 +11,21 @@ import Button from '../components/commons/Button';
 import CourseMap from '../components/KakaoMaps/CourseMap';
 import Modal from '../components/CommentModal/Modal';
 import useDayCalculation from '../hooks/useDayCalculation';
+import postsAPI from '../services/posts';
+import commentAPI from '../services/comment';
 
 export const ModalContext = createContext();
 
 export default function Detail() {
   const user = useRecoilValue(userState);
-
+  // const location = useLocation();
   const { id: postId } = useParams();
   const [data, setData] = useState([]);
   const [dayTitle, setDayTitle] = useState('');
   const [index, setIndex] = useState(0);
+  const [comments, setComments] = useState([]);
 
+  console.log(comments);
   // 댓글 모드
   const [commentModalMode, setCommentModalMode] = useState(false);
 
@@ -30,11 +33,11 @@ export default function Detail() {
   const [mouseDownClientY, setMouseDownClientY] = useState(0);
   const [mouseUpClientY, setMouseUpClientY] = useState(0);
 
-  // API
+  // post API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const posts = await getPostByPostId(postId);
+        const posts = await postsAPI.getPostById(postId);
         setData(posts);
       } catch (error) {
         console.error('Error: ', error);
@@ -42,6 +45,34 @@ export default function Detail() {
     };
     fetchData();
   }, [postId]);
+
+  // comment API
+  useEffect(() => {
+    // const fetchData = async () => {
+    //   try {
+    //     const comments = await commentAPI.getAllCommentByPost(postId);
+    //     console.log('comments', comments);
+    //     setData(comments);
+    //   } catch (error) {
+    //     console.error('Error: ', error);
+    //   }
+    // };
+    // fetchData();
+
+    commentAPI
+      .getAllCommentByPost(postId)
+      .then((comment) => {
+        setComments(comment);
+      })
+      .catch((error) => {
+        console.error(error);
+        throw new Error('댓글을 불러오는 중에 오류가 생겼습니다.');
+      });
+  }, [postId]);
+
+  // useEffect(() => {
+  //   console.log('api get', comments);
+  // }, [postId]);
 
   // 드래그 종료 시 처리
   useEffect(() => {
@@ -104,24 +135,10 @@ export default function Detail() {
     }
   }
 
-  // // 북마크API
-
-  // async function postBookmark() {
-  //   try {
-  //     const result = await bookmarkAPI.postBookmarkByMe(postId, singleScheduleId);
-  //     console.log('Bookmark Result:', result);
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // }
-
-  // postBookmark();
-  // bookmarkAPI.postBookmarkByMe(postId, singleScheduleId);
-
   if (!data) return <p>loading...</p>;
   return (
     <ModalContext.Provider value={{ commentModalMode, setCommentModalMode }}>
-      {commentModalMode && <Modal onMouseDown={onMouseDown} onMouseUp={onMouseUp} />}
+      {commentModalMode && <Modal onMouseDown={onMouseDown} onMouseUp={onMouseUp} user={user} />}
       <div className={commentModalMode ? 'w-full h-screen overflow-hidden' : ''}>
         <Header headerData={data} />
         <div className="w-full h-[160px] mb-[22px]">

@@ -3,13 +3,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { IoOptionsOutline, IoSearchOutline } from 'react-icons/io5';
 
-import { getPostsAllList, getPostSearchCity, getPostTag } from '../services/posts';
-
 import Header from '../components/Main/Header';
 import PostItem from '../components/Main/PostItem';
 import Search from './Search';
 import Filter from './Filter';
 import NotFound from '../components/Search/NotFound';
+import postsAPI from '../services/posts';
 
 export default function Main() {
   const [data, setData] = useState([]);
@@ -19,7 +18,8 @@ export default function Main() {
   const tagValue = queryParams.get('tag');
   const navigate = useNavigate();
 
-  console.log(location.search); //디코딩해야함 decodeURIComponent 디코딩 하고 넣어야함
+  // 디코딩
+  const keyword = decodeURI(location.search);
 
   // 검색어 모드
   const [searchMode, setSearchMode] = useState(false);
@@ -42,8 +42,6 @@ export default function Main() {
   function filterModeOff() {
     setFilterMode(false);
   }
-
-  const keyword = decodeURI(location.search);
 
   const [notFound, setNotFound] = useState(false);
 
@@ -83,31 +81,32 @@ export default function Main() {
       const queryString = checkedList.join(',');
       navigate(`?tag=${queryString}`);
       filterModeOff();
+      setNotFound(true);
     }
   }
 
   // 키워드가 있냐 없냐에 따라 부르는 API가 달라지게 구현해야함
   // [전체 검색]: 여기만 useEffect사용, [키워드], [필터+검색] 으로 나눠짐 -> useEffect에 전부다 들어가 있으면 안됨(따로)
-  // API: 전체 Post OR 검색 Post
   useEffect(() => {
-    getPostsAllList().then((Posts) => {
+    postsAPI.getAllPosts({ sort: '최신순', city: '서울' }).then((Posts) => {
       setData(Posts);
-      if (keyword) {
-        getPostSearchCity(cityValue).then((posts) => {
-          if (posts.length === 0) {
-            setNotFound(true);
-          } else {
-            setData(posts);
-          }
-        });
-      }
-      if (checkedList.length > 0) {
-        getPostTag(checkedList).then((posts) => {
-          setData(posts);
-        });
-      }
     });
-  }, [keyword, cityValue, checkedList]);
+  }, [data]);
+
+  // if (keyword) {
+  //   getPostSearchCity(cityValue).then((posts) => {
+  //     if (posts.length === 0) {
+  //       setNotFound(true);
+  //     } else {
+  //       setData(posts);
+  //     }
+  //   });
+  // }
+  // if (checkedList.length > 0) {
+  //   getPostTag(checkedList).then((posts) => {
+  //     setData(posts);
+  //   });
+  // }
 
   useEffect(() => {
     console.log('태그전달값', checkedList);
