@@ -5,8 +5,12 @@ import InputWithLabel from '../components/Input/InputWithLabel';
 import logo from '../assets/logo.png';
 import InputPassword from '../components/Input/InputPassword';
 import usePassword from '../hooks/usePassword';
+import { useLocation } from 'react-router';
 
 export default function ChangePassword() {
+  const location = useLocation();
+  const email = location?.state?.email;
+
   const {
     password,
     setPassword,
@@ -14,7 +18,10 @@ export default function ChangePassword() {
     setCheckPassword,
     passwordValidationMessage,
     checkPasswordValidationMessage,
+    handleChangePassword,
   } = usePassword();
+
+  if (email === undefined) throw Error('접근이 올바르지 않습니다.');
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center ">
@@ -57,6 +64,7 @@ export default function ChangePassword() {
           type={'default'}
           text={'bold'}
           isDisabled={passwordValidationMessage !== '' || checkPasswordValidationMessage !== ''}
+          onClick={() => handleChangePassword({ email })}
         >
           비밀번호 변경
         </Button>

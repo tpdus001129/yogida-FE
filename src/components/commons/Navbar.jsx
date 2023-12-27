@@ -24,16 +24,16 @@ export default function Navbar() {
   const { data, refetch } = useNotificationQuery();
 
   useEffect(() => {
-    if (loginUserInfo) {
+    if (loginUserInfo && user) {
       refetch();
     }
-  }, [loginUserInfo, refetch]);
+  }, [user, loginUserInfo, refetch]);
 
   useEffect(() => {
-    if (loginUserInfo) {
+    if (loginUserInfo && user) {
       setNotificationList(data);
     }
-  }, [data, loginUserInfo, setNotificationList]);
+  }, [user, data, loginUserInfo, setNotificationList]);
 
   return (
     <nav className="border-t-[1px] border-solid border-gray w-full fixed bottom-0 left-0 h-navbar bg-white z-10">
