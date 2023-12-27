@@ -72,7 +72,7 @@ export default function Modal({ postId }) {
             <div className="w-1/6 h-[4px] bg-gray-3 rounded-[8px] mt-[16px]"></div>
           </div>
           <hr className="border-gray-3 mt-[64px] mb-[18px]" />
-          <div className="w-full h-[312px] overflow-scroll scrollbar-hide">
+          <div className="w-full h-[50vh] overflow-scroll scrollbar-hide">
             {comments.length === 0 ? (
               <p className="text-[14px] text-gray-1 text-center">작성된 댓글이 없습니다.</p>
             ) : (
@@ -81,7 +81,7 @@ export default function Modal({ postId }) {
                   key={index}
                   image={comment.authorId.profileImageSrc}
                   nickname={comment.authorId.nickname}
-                  date={comment.date}
+                  date={nowTime}
                   content={comment.content}
                 />
               ))

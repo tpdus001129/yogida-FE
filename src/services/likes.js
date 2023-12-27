@@ -12,6 +12,7 @@ const likesAPI = {
   },
 
   async removeAll(payload) {
+    console.log('페이로드', payload);
     return await api.patch(API_URL, payload);
   },
 };

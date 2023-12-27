@@ -10,7 +10,6 @@ const commentAPI = {
     return await api.get(API_URL + `?postId=${postId}`);
   },
   async postComment(postId, content) {
-    console.log('api content', content);
     return await api.post(API_URL, { postId, content });
   },
   async removeOne({ id }) {
