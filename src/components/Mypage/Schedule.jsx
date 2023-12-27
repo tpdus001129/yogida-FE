@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import DayButton from '../Detail/DayButton';
@@ -51,19 +51,50 @@ export default function Schedule() {
   const peopleCountRef = useRef(); //인원수
   const costRef = useRef(); //예산
   const [isPublic, setIsPublic] = useState('true'); //게시글 공개 여부
-  // const [schedules, setSchedules] = useState([]); // 코스 등록
+  const [schedules, setSchedules] = useState([]); // 코스 등록
   const [tag, setTag] = useState([]); //태그
   // const distancesRef = useRef(); //거리
 
   const [dayTitle, setDayTitle] = useState('');
-  // const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0); //선택한 day
+
+  // 날짜 계산기 커스텀 훅 사용
+  const dayCalculation = useDayCalculation(startDate, endDate);
 
   // const [info, setInfo] = useState();
   // const [markers, setMarkers] = useState([]);
   // const [map, setMap] = useState();
 
-  // 날짜 계산기 커스텀 훅 사용
-  const dayCalculation = useDayCalculation(startDate, endDate);
+  useEffect(() => {
+    if (startDate && endDate && dayCalculation > 0) {
+      const days = Array.from(Array(Math.ceil(dayCalculation)), () => new Array());
+      setSchedules(days);
+    }
+  }, [dayCalculation, startDate, endDate]);
+
+  // day별 장소 추가
+  const handleSingleScheduleClick = (option) => {
+    const singleSchedule = {
+      id: option?.id,
+      placeName: option?.place_name,
+      placeImageSrc: '',
+      star: 0,
+      category: option?.category,
+      placePosition: [Number(option?.x), Number(option?.y)],
+    };
+
+    setSchedules((prev) => prev.map((day, i) => (index === i ? [...day, singleSchedule] : day)));
+    console.log('singleSchedule:', singleSchedule);
+  };
+
+  // 장소 이미지 추가
+  const handleAddPlaceImgClick = ({ id, img }) => {
+    setSchedules((prev) =>
+      prev.map((day, i) =>
+        index === i ? day.map((place) => (place?.id === id ? { ...place, placeImageSrc: img } : place)) : day,
+      ),
+    );
+  };
 
   const handleDestinationClick = (text) => {
     setDestination(text);
@@ -81,6 +112,8 @@ export default function Schedule() {
     const result = await addPost();
     if (result?.status === 200) {
       toast.success('게시글이 등록되었습니다.');
+      // URL.revokeObjectURL(img);
+
       navigate(`${PATH.post}/${result?._id}`);
     }
   };
@@ -98,7 +131,8 @@ export default function Schedule() {
       />
     );
   //장소 검색
-  if (addPlan) return <SearchPlace onClose={() => setAddPlan(false)} />;
+  if (addPlan)
+    return <SearchPlace handleSingleScheduleClick={handleSingleScheduleClick} onClose={() => setAddPlan(false)} />;
   //태그 선택
   if (addTag) return <SelectTag tag={tag} handleTagsClick={handleTagsClick} onClose={() => setAddTag(false)} />;
 
@@ -267,7 +301,7 @@ export default function Schedule() {
       {startDate && endDate && (
         <>
           <div className="overflow-scroll  scrollbar-hide">
-            <DayButton startDate={startDate} dayCount={dayCalculation} dayTitle={setDayTitle} />
+            <DayButton startDate={startDate} dayCount={dayCalculation} dayTitle={setDayTitle} setIndex={setIndex} />
           </div>
           <p className="text-center text-[14px] font-bold mb-[30px]">{dayTitle}</p>
 
@@ -275,9 +309,13 @@ export default function Schedule() {
             <Button onClick={() => setAddPlan(true)}>장소 추가</Button>
 
             <ul className="mt-5 flex flex-col gap-5">
-              <li>
-                <Card />
-              </li>
+              {schedules[index]?.map((schedule, index) => {
+                return (
+                  <li key={schedule?.placeName + index}>
+                    <Card {...schedule} handleAddPlaceImgClick={handleAddPlaceImgClick} />
+                  </li>
+                );
+              })}
             </ul>
           </section>
           <ul role="list">
@@ -336,20 +374,40 @@ function ScheduleItem({ icon, title, id, width, children, onClick }) {
   );
 }
 
-function Card() {
+function Card(props) {
+  const { category, placeName, placeImageSrc, handleAddPlaceImgClick, id } = props;
+  const imgRef = useRef(null);
+
+  const handleChangeImage = (e) => {
+    if (!e.target.files) {
+      return;
+    }
+    const fileInput = e.target.files[0];
+    const url = URL.createObjectURL(fileInput);
+
+    handleAddPlaceImgClick({ id, img: url });
+  };
+
   return (
     <div className="w-full bg-[#ffffff] rounded-[20px] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
       <div className="h-[43px] flex justify-between items-center mx-[16px] rounded-t-[20px]">
         <div className="flex">
-          <p className="text-[14px] mr-[4px] font-bold">안목해변</p>
-          <p className="text-[12px] mt-[2px] line-height-[14px]">관광명소</p>
+          <p className="text-[14px] mr-[4px] font-bold">{placeName || ''}</p>
+          <p className="text-[12px] mt-[2px] line-height-[14px]">{category || ''}</p>
         </div>
       </div>
-      <div className="h-[120px] rounded-b-[20px] bg-[#d9d9d9] overflow-hidden flex items-center justify-center">
-        <button className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center">
-          <IoCamera size={24} color="white" />
-        </button>
-      </div>
+      <label
+        htmlFor="placeImg"
+        className="h-[130px] rounded-b-[20px] bg-[#d9d9d9] overflow-hidden flex items-center justify-center"
+      >
+        {placeImageSrc && <img src={placeImageSrc} alt="place-img" />}
+        {!placeImageSrc && (
+          <span className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center" type="button">
+            <IoCamera size={24} color="white" />
+          </span>
+        )}
+        <input type="file" name="placeImg" id="placeImg" className="hidden" ref={imgRef} onChange={handleChangeImage} />
+      </label>
     </div>
   );
 }
@@ -361,4 +419,12 @@ ScheduleItem.propTypes = {
   width: PropTypes.string,
   children: PropTypes.element,
   onClick: PropTypes.func,
+};
+
+Card.propTypes = {
+  category: PropTypes.string,
+  placeName: PropTypes.string,
+  placeImageSrc: PropTypes.string,
+  handleAddPlaceImgClick: PropTypes.func,
+  id: PropTypes.string,
 };

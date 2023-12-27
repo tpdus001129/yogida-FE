@@ -46,10 +46,9 @@ export function SearchTravelDestination({ handleDestinationClick, onClose }) {
   );
 }
 
-export function SearchPlace({ onClose }) {
+export function SearchPlace({ handleSingleScheduleClick, onClose }) {
   const [keyword, setKeyword] = useState('');
   const [places, setPlaces] = useState([]);
-  // const [map, setMap] = useState();
 
   useEffect(() => {
     const ps = new kakao.maps.services.Places();
@@ -59,6 +58,11 @@ export function SearchPlace({ onClose }) {
       }
     });
   }, [keyword]);
+
+  const onClick = (option) => {
+    handleSingleScheduleClick(option);
+    onClose();
+  };
 
   return (
     <div className="w-full">
@@ -82,7 +86,7 @@ export function SearchPlace({ onClose }) {
         <ul className="w-full px-[24px]">
           {places?.map((place) => (
             <li key={place?.id}>
-              <PlaceItem {...place} keyword={keyword} />
+              <PlaceItem {...place} keyword={keyword} onClick={onClick} />
             </li>
           ))}
         </ul>
@@ -201,7 +205,7 @@ function DestinationItem({ name, onClick }) {
   );
 }
 
-function PlaceItem({ keyword, place_name, category_name, address_name, onClick }) {
+function PlaceItem({ id, keyword, place_name, category_name, address_name, x, y, onClick }) {
   const category = category_name?.split(' > ').slice(0, 2).join('>');
   const address = address_name?.split(' ').slice(0, 2).join(' ');
   const name = place_name?.split(keyword);
@@ -217,7 +221,10 @@ function PlaceItem({ keyword, place_name, category_name, address_name, onClick }
           {category} · {address}
         </span>
       </div>
-      <button className="bg-gray-4 text-sm px-3 py-1 rounded-2xl" onClick={onClick}>
+      <button
+        className="bg-gray-4 text-sm px-3 py-1 rounded-2xl"
+        onClick={() => onClick({ id, category, address, place_name, x, y })}
+      >
         선택
       </button>
     </div>
@@ -226,6 +233,7 @@ function PlaceItem({ keyword, place_name, category_name, address_name, onClick }
 
 SearchPlace.propTypes = {
   onClose: PropTypes.func.isRequired,
+  handleSingleScheduleClick: PropTypes.func,
 };
 SearchTravelDestination.propTypes = {
   onClose: PropTypes.func.isRequired,
@@ -246,9 +254,12 @@ DestinationItem.propTypes = {
   onClick: PropTypes.func,
 };
 PlaceItem.propTypes = {
+  id: PropTypes.string,
   place_name: PropTypes.string,
   category_name: PropTypes.string,
   address_name: PropTypes.string,
   onClick: PropTypes.func,
   keyword: PropTypes.string,
+  x: PropTypes.string,
+  y: PropTypes.string,
 };
