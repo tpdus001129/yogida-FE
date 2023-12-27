@@ -69,8 +69,12 @@ export default function Profile({ setEditProfileMode }) {
 
   // 회원 정보 수정
   const handleInfoModify = async () => {
+    const formData = new FormData();
+    formData.append('nickname', newNickname);
+    formData.append('profile', imgRef.current.files[0]);
+    console.log('업데이트될 닉네임은?', newNickname);
     await userAPI
-      .userInfoModify({ nickname: newNickname })
+      .userInfoModify(formData)
       .then(() => {
         openModal({
           message: nickname === newNickname ? `수정된 정보가 없습니다.` : `회원 정보가 수정되었습니다.`,
