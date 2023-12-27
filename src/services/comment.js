@@ -6,6 +6,12 @@ const commentAPI = {
   async getAllCommentsByMe() {
     return await api.get(API_URL + '/my-page');
   },
+  async getAllCommentByPost(postId) {
+    return await api.get(API_URL + `?postId=${postId}`);
+  },
+  async postComment(postId, content) {
+    return await api.post(API_URL, { postId, content });
+  },
   async removeOne({ id }) {
     return await api.delete(API_URL + `/${id}`);
   },
