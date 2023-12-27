@@ -7,6 +7,9 @@ import { userState } from '../../recoils/userAtom';
 import { useRecoilValue } from 'recoil';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 
+import userAPI from '../../services/user';
+import useModal from '../../hooks/useModal';
+
 export default function Profile({ setEditProfileMode }) {
   const { setNavbarHidden } = useOutletContext();
   const { email, nickname, profileImageSrc } = useRecoilValue(userState);
@@ -14,6 +17,9 @@ export default function Profile({ setEditProfileMode }) {
   const [profileImg, setProfileImg] = useState('');
   const imgRef = useRef(null);
   const nicknameRef = useRef(null);
+
+  const { openModal } = useModal();
+  const [newNickname, setNewNickname] = useState('');
 
   useLayoutEffect(() => {
     setNavbarHidden(true);
@@ -26,7 +32,7 @@ export default function Profile({ setEditProfileMode }) {
   useEffect(() => {
     if (nickname || profileImageSrc) {
       setProfileImg(profileImageSrc);
-      nicknameRef.current.value = nickname;
+      setNewNickname(nickname);
     }
   }, [nickname, profileImageSrc]);
 
@@ -37,6 +43,48 @@ export default function Profile({ setEditProfileMode }) {
     const fileInput = e.target.files[0];
     const url = URL.createObjectURL(fileInput);
     setProfileImg(url);
+  };
+
+  //닉네임 중복 체크
+  const handleCheckNickname = async () => {
+    await userAPI
+      .checkNickname({ nickname: newNickname })
+      .then(() => {
+        openModal({ message: `사용할 수 있는 닉네임입니다.` });
+      })
+      .catch((error) => {
+        switch (error?.status) {
+          case 409: {
+            openModal({ message: `이미 사용중인 닉네임 입니다.` });
+            break;
+          }
+          default: {
+            console.log(error.message);
+            openModal({ message: `닉네임 중복 확인 중 오류가 발생했습니다.` });
+            break;
+          }
+        }
+      });
+  };
+
+  // 회원 정보 수정
+  const handleInfoModify = async () => {
+    await userAPI
+      .userInfoModify({ nickname: newNickname })
+      .then(() => {
+        openModal({
+          message: nickname === newNickname ? `수정된 정보가 없습니다.` : `회원 정보가 수정되었습니다.`,
+        });
+        setEditProfileMode((prev) => !prev);
+      })
+      .catch((error) => {
+        switch (error.response?.status) {
+          case 400: {
+            openModal({ message: `정보 수정을 실패하였습니다.` });
+            break;
+          }
+        }
+      });
   };
 
   return (
@@ -64,25 +112,34 @@ export default function Profile({ setEditProfileMode }) {
 
       <div className="px-[23px] mt-[50px] flex flex-col gap-[16px]">
         <label htmlFor="email" className="text-[14px] font-bold flex items-center">
-          <span className="w-[175px]">이메일</span>
-          <input
-            value={email}
-            type="email"
-            name="email"
-            id="email"
-            className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium disabled:bg-white"
-            disabled
-          />
+          <span className="w-[150px]">이메일</span>
+          <div className=" flex flex-1">
+            <input
+              value={email}
+              type="email"
+              name="email"
+              id="email"
+              className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium disabled:bg-white"
+              disabled
+            />
+          </div>
         </label>
         <label htmlFor="nickname" className="text-[14px] font-bold flex items-center">
-          <span className="w-[175px]">이름</span>
-          <input
-            type="nickname"
-            name="nickname"
-            id="nickname"
-            className="w-full border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"
-            ref={nicknameRef}
-          />
+          <span className="w-[150px]">이름</span>
+          <div className="flex">
+            <input
+              type="nickname"
+              name="nickname"
+              id="nickname"
+              className="w-full mr-5 border-b border-gray-4 focus:outline-none p-[5px] text-[14px] font-medium"
+              ref={nicknameRef}
+              value={newNickname}
+              onChange={(e) => setNewNickname(e.target.value)}
+            />
+            <Button type="default" size={'medium'} onClick={handleCheckNickname}>
+              중복 확인
+            </Button>
+          </div>
         </label>
         {/* <label htmlFor="email" className="text-[14px] font-bold flex items-center">
           <span className="w-[175px]">비밀번호</span>
@@ -105,7 +162,7 @@ export default function Profile({ setEditProfileMode }) {
         </label> */}
       </div>
       <div className="mt-auto flex flex-col gap-[11px] px-[24px] w-full">
-        <Button type="primary" size={'large'} text={'bold'}>
+        <Button type="primary" size={'large'} text={'bold'} onClick={handleInfoModify}>
           <span className="font-bold text-[14px]">회원 정보 수정</span>
         </Button>
         <Button type={'kakao'} size={'large'} text={'bold'}>
