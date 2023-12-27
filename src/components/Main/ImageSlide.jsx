@@ -1,36 +1,23 @@
-import { useState } from 'react';
 import { useImageSlide } from '../../hooks/useImageSlide';
 
 import PropTypes from 'prop-types';
-
-import { IoEllipseSharp, IoHeartOutline, IoHeartSharp } from 'react-icons/io5';
+// import { useRecoilValue } from 'recoil';
+// import { userState } from '../../recoils/userAtom';
+import { IoEllipseSharp } from 'react-icons/io5';
 
 export default function ImageSlide({ images }) {
   const { onMouseDown, onMouseUp, onTouchStart, onTouchEnd, transformValue, currentPage } = useImageSlide(images);
+
+  // const user = useRecoilValue(userState);
+  // console.log(user);
 
   // ul의 width길이 동적으로 변환
   function widthSize(images) {
     return `${images.length * 100}%`;
   }
 
-  // 찜하기
-  const [isHeartClicked, setIsHeartClicked] = useState(false);
-
-  // 버블링 방지
-  function onClickHandler(e) {
-    e.preventDefault();
-    setIsHeartClicked((prev) => !prev);
-  }
-
   return (
     <div className="w-[327px] h-[303px] rounded-[10px] mb-[14px] overflow-hidden relative">
-      <button onClick={onClickHandler} className="absolute z-[10] top-[16px] right-[16px]">
-        {isHeartClicked ? (
-          <IoHeartSharp size="36" className="text-red" />
-        ) : (
-          <IoHeartOutline size="36" color="#ffffff" />
-        )}
-      </button>
       <ul
         className={`flex transition-transform duration-300 ease-in-out`}
         onTouchEnd={onTouchEnd}

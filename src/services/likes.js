@@ -8,11 +8,7 @@ const likesAPI = {
   },
 
   async postLike(userId, postId) {
-    const requestBody = {
-      userId: userId,
-      postId: postId,
-    };
-    return await api.post(`API_URL ${postId}`, requestBody);
+    return await api.post(API_URL, { userId, postId });
   },
 
   async removeAll(payload) {

@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { ModalContext } from '../../pages/Detail';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useRecoilValue } from 'recoil';
@@ -10,11 +10,14 @@ import 'moment/locale/ko';
 import Comment from './Comment';
 import Input from './Input';
 import Background from './Background';
+import commentAPI from '../../services/comment';
 
 export default function Modal() {
   //   const reply = true;
   const user = useRecoilValue(userState);
   const [inputValue, setInputValue] = useState('');
+
+  console.log(user);
 
   // 댓글 작성 시간
   const nowTime = moment().format('YYYY년 MM월 DD일');
@@ -41,6 +44,16 @@ export default function Modal() {
     setNewComment({ ...newComment, content: '' });
     setInputValue('');
   }
+
+  useEffect(() => {
+    commentAPI.getAllCommentByPost('658a48032ff84d1ceb775afd').then((comment) => {
+      comments(comment);
+    });
+  }, [comments]);
+
+  useEffect(() => {
+    console.log(comments);
+  });
 
   return (
     <div>
@@ -71,6 +84,7 @@ export default function Modal() {
             inputValue={inputValue}
             addCommentHandler={addCommentHandler}
             setInputValue={setInputValue}
+            disabled={!user}
           />
         </div>
       </div>

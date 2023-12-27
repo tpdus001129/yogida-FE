@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
 import { IoOptionsOutline, IoSearchOutline } from 'react-icons/io5';
-
-import { getPostsAllList } from '../services/posts';
 
 import Header from '../components/Main/Header';
 import PostItem from '../components/Main/PostItem';
 import Search from './Search';
 import Filter from './Filter';
 import NotFound from '../components/Search/NotFound';
+import postsAPI from '../services/posts';
+import { filterState } from '../recoils/filterAtom';
 
 export default function Main() {
   const [data, setData] = useState([]);
@@ -20,6 +21,7 @@ export default function Main() {
   const tagValue = queryParams.get('tag');
   const sortValue = queryParams.get('sort');
 
+  // 디코딩
   const keyword = decodeURI(location.search);
 
   // 검색어 모드
@@ -47,7 +49,7 @@ export default function Main() {
   const [notFound, setNotFound] = useState(false);
 
   //  체크된 값을 담을 배열
-  const [checkedList, setCheckedList] = useState([]);
+  const [checkedList, setCheckedList] = useRecoilState(filterState);
   const oneValue = ['최신순', '오래된순', '찜많은순'];
 
   // 배열에 값 넣기
@@ -79,30 +81,27 @@ export default function Main() {
     if (oneValue.includes(checkedList[0])) {
       if (checkedList.length === 1) {
         const queryString = checkedList[0];
-        navigate(`filter?sort=${queryString}`);
+        navigate(`?sort=${queryString}`);
       }
       const sortStr = checkedList[0];
       const queryString = checkedList.slice(1).join(',');
-      navigate(`filter?tag=${queryString}&sort=${sortStr}`);
+      navigate(`?tag=${queryString}&sort=${sortStr}`);
     } else {
       const queryString = checkedList.join(',');
-      navigate(`filter?tag=${queryString}`);
+      navigate(`?tag=${queryString}`);
     }
     filterModeOff();
   }
 
-  // 키워드가 있냐 없냐에 따라 부르는 API가 달라지게 구현해야함
-  // [전체 검색]: 여기만 useEffect사용, [키워드], [필터+검색] 으로 나눠짐 -> useEffect에 전부다 들어가 있으면 안됨(따로)
-  // API: 전체 Post OR 검색 Post
   useEffect(() => {
-    getPostsAllList(tagValue, sortValue).then((Posts) => {
-      setData(Posts);
-    });
-  }, [keyword, cityValue, tagValue, sortValue, checkedList]);
+    postsAPI.getAllPosts({ tag: tagValue, sort: sortValue, city: cityValue }).then((Posts) => {
+      const receivedData = Posts.data.posts;
+      setData(receivedData);
 
-  useEffect(() => {
-    console.log('태그전달값', checkedList);
-  }, [checkedList]);
+      // 데이터가 없는 경우 notFound 상태를 true로 설정
+      setNotFound(receivedData.length === 0);
+    });
+  }, [checkedList, keyword]);
 
   return (
     <>
@@ -149,11 +148,11 @@ export default function Main() {
                     ) : (
                       <button
                         className={`w-[52px] h-[52px] ${
-                          checkedList ? 'bg-primary' : 'border-gray-2'
+                          tagValue ? 'bg-primary' : 'border-gray-2'
                         } rounded-full flex justify-center items-center`}
                         onClick={filterModeOn}
                       >
-                        <IoOptionsOutline className={`text-[20px] ${checkedList ? 'text-white' : ''}`} />
+                        <IoOptionsOutline className={`text-[20px] ${tagValue ? 'text-white' : ''}`} />
                       </button>
                     )}
                   </div>

@@ -27,7 +27,7 @@ export default function CourseMap({ data }) {
           lng: centerLng,
         }}
         className="w-full h-full"
-        level={8}
+        level={2}
       >
         <Polyline
           path={placeData.map((place) => ({ lat: place[0], lng: place[1] }))}
