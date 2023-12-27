@@ -14,7 +14,7 @@ export default function PostItem({ data }) {
   const user = useRecoilValue(userState);
 
   // 유저가 좋아요 누른 데이터
-  const [meLikeId, setMyLikeId] = useState([]);
+  const [myLikeId, setMyLikeId] = useState([]);
   const [myLikes, setMyLikes] = useState([]);
 
   // 좋아요 get
@@ -35,12 +35,12 @@ export default function PostItem({ data }) {
   async function handleClickLike(e, userId, postId) {
     e.stopPropagation();
     e.preventDefault();
-    location.reload();
+    // location.reload();
 
     const isLiked = myLikes.includes(postId);
 
     if (isLiked) {
-      await handleRemoveLike(meLikeId.find((like) => like.postId));
+      await handleRemoveLike(myLikeId.find((item) => item.postId._id === postId));
     } else {
       await likesAPI.postLike(userId, postId);
     }
