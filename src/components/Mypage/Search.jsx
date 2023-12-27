@@ -47,22 +47,46 @@ export function SearchTravelDestination({ handleDestinationClick, onClose }) {
 }
 
 export function SearchPlace({ onClose }) {
+  const [keyword, setKeyword] = useState('');
+  const [places, setPlaces] = useState([]);
+  // const [map, setMap] = useState();
+
+  useEffect(() => {
+    const ps = new kakao.maps.services.Places();
+    ps.keywordSearch(keyword, (data, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        setPlaces(data);
+      }
+    });
+  }, [keyword]);
+
   return (
     <div className="w-full">
       <Header title={'검색'} onClick={onClose} />
       {/* 검색 */}
-      <form className="w-full h-[74px] flex relative items-center px-[24px]">
+      <form className="w-full h-[74px] flex relative items-center px-[24px]" onSubmit={(e) => e.preventDefault()}>
         <input
-          className="w-full h-[48px] pl-[20px] rounded-[24px] focus:outline-none bg-gray-3 opacity-30 placeholder-gray-1 placeholder-opacity-100"
+          className="w-full h-[48px] pl-[20px] rounded-[24px] focus:outline-none bg-gray-4 placeholder-gray-1 placeholder-opacity-100"
           type="text"
           placeholder="장소를 검색해보세요."
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
         />
         <button className="absolute right-[40px] top-[35%]" type="submit">
           <IoSearchOutline size="22" />
         </button>
       </form>
 
-      <p className="text-center text-gray-1 text-[14px] mt-[20px]">최근 검색어 내역이 없습니다.</p>
+      {places?.length === 0 && <p className="text-center text-gray-1 text-[14px] mt-[20px]">검색어 내역이 없습니다.</p>}
+      {places?.length !== 0 && (
+        <ul className="w-full px-[24px]">
+          {places?.map((place) => (
+            <li key={place?.id}>
+              <PlaceItem {...place} keyword={keyword} />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
@@ -177,6 +201,29 @@ function DestinationItem({ name, onClick }) {
   );
 }
 
+function PlaceItem({ keyword, place_name, category_name, address_name, onClick }) {
+  const category = category_name?.split(' > ').slice(0, 2).join('>');
+  const address = address_name?.split(' ').slice(0, 2).join(' ');
+  const name = place_name?.split(keyword);
+  return (
+    <div className="flex items-center justify-between py-4">
+      <div className="flex flex-col gap-1">
+        <span>
+          {name[0]}
+          {name?.length !== 1 && <strong className="text-primary">{keyword}</strong>}
+          {name[1]}
+        </span>
+        <span className="text-xs text-gray-2 tracking-tight">
+          {category} · {address}
+        </span>
+      </div>
+      <button className="bg-gray-4 text-sm px-3 py-1 rounded-2xl" onClick={onClick}>
+        선택
+      </button>
+    </div>
+  );
+}
+
 SearchPlace.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
@@ -197,4 +244,11 @@ Header.propTypes = {
 DestinationItem.propTypes = {
   name: PropTypes.string.isRequired,
   onClick: PropTypes.func,
+};
+PlaceItem.propTypes = {
+  place_name: PropTypes.string,
+  category_name: PropTypes.string,
+  address_name: PropTypes.string,
+  onClick: PropTypes.func,
+  keyword: PropTypes.string,
 };

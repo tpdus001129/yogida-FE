@@ -35,9 +35,9 @@ export default function ModalWithOk() {
           <div className="fixed top-0 left-0 w-screen h-screen bg-gray-1 opacity-50 !m-0 !p-0 z-10"></div>
           <div className="fixed top-0 left-0 w-screen h-screen !m-0 !p-0 flex justify-center items-center z-20 ">
             <div className={calendarStyle}>
-              <p className="w-full text-center break-keep whitespace-pre-wrap grow flex justify-center items-center">
+              <div className="w-full text-center break-keep whitespace-pre-wrap grow flex justify-center items-center">
                 {modal.message}
-              </p>
+              </div>
               <Button type={'primary'} onClick={closeModal}>
                 확인
               </Button>

@@ -30,6 +30,8 @@ import ScheduleCalendar from './Calendar';
 import useModal from '../../hooks/useModal';
 import { convertSimpleDate } from '../../utils/convertSimpleDate';
 
+// import { Map, MapMarker, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
+
 export default function Schedule() {
   const { openModal } = useModal();
   const navigate = useNavigate();
@@ -49,12 +51,16 @@ export default function Schedule() {
   const peopleCountRef = useRef(); //인원수
   const costRef = useRef(); //예산
   const [isPublic, setIsPublic] = useState('true'); //게시글 공개 여부
-  // const schedulesRef = useRef(); // 코스 등록
+  // const [schedules, setSchedules] = useState([]); // 코스 등록
   const [tag, setTag] = useState([]); //태그
   // const distancesRef = useRef(); //거리
 
   const [dayTitle, setDayTitle] = useState('');
   // const [index, setIndex] = useState(0);
+
+  // const [info, setInfo] = useState();
+  // const [markers, setMarkers] = useState([]);
+  // const [map, setMap] = useState();
 
   // 날짜 계산기 커스텀 훅 사용
   const dayCalculation = useDayCalculation(startDate, endDate);
@@ -77,6 +83,10 @@ export default function Schedule() {
       toast.success('게시글이 등록되었습니다.');
       navigate(`${PATH.post}/${result?._id}`);
     }
+  };
+
+  const onTempSave = () => {
+    console.log('Temp save : ');
   };
 
   //여행지 검색
@@ -223,6 +233,29 @@ export default function Schedule() {
           </div>
         </ScheduleItem>
         <ScheduleItem icon={<IoMap color="#589BF7" size={20} />} title="코스 등록" id="map"></ScheduleItem>
+
+        {/* <Map
+          center={{
+            lat: 37.566826,
+            lng: 126.9786567,
+          }}
+          style={{
+            width: '100%',
+            height: '350px',
+          }}
+          level={3}
+          onCreate={setMap}
+        >
+          {markers.map((marker) => (
+            <MapMarker
+              key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
+              position={marker.position}
+              onClick={() => setInfo(marker)}
+            >
+              {info && info.content === marker.content && <div style={{ color: '#000' }}>{marker.content}</div>}
+            </MapMarker>
+          ))}
+        </Map> */}
       </ul>
 
       {!startDate && !endDate && (
@@ -233,10 +266,10 @@ export default function Schedule() {
 
       {startDate && endDate && (
         <>
-          <div className="overflow-scroll mb-[30px] scrollbar-hide">
+          <div className="overflow-scroll  scrollbar-hide">
             <DayButton startDate={startDate} dayCount={dayCalculation} dayTitle={setDayTitle} />
-            <p className="text-center text-[14px] font-bold ">{dayTitle}</p>
           </div>
+          <p className="text-center text-[14px] font-bold mb-[30px]">{dayTitle}</p>
 
           <section className="px-[26px] pb-[16px]">
             <Button onClick={() => setAddPlan(true)}>장소 추가</Button>
@@ -273,9 +306,14 @@ export default function Schedule() {
           )}
         </div>
 
-        <Button type={'primary'} onClick={onSubmit}>
-          작성완료
-        </Button>
+        <div className="flex flex-col gap-3">
+          <Button type={'secondary'} onClick={onTempSave}>
+            임시저장
+          </Button>
+          <Button type={'primary'} onClick={onSubmit}>
+            작성완료
+          </Button>
+        </div>
       </section>
     </>
   );

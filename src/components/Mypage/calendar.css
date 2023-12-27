@@ -67,7 +67,8 @@ abbr[title] {
   background-color: #f8f8fa;
 }
 .react-calendar__tile--range {
-  background: #f8f8fa !important;
+  /* background: #f8f8fa !important; */
+  background: #e7e7e7 !important;
   color: #589bf7;
   border-radius: 0;
 }
