@@ -1,15 +1,10 @@
 import { useImageSlide } from '../../hooks/useImageSlide';
 
 import PropTypes from 'prop-types';
-// import { useRecoilValue } from 'recoil';
-// import { userState } from '../../recoils/userAtom';
 import { IoEllipseSharp } from 'react-icons/io5';
 
 export default function ImageSlide({ images }) {
   const { onMouseDown, onMouseUp, onTouchStart, onTouchEnd, transformValue, currentPage } = useImageSlide(images);
-
-  // const user = useRecoilValue(userState);
-  // console.log(user);
 
   // ul의 width길이 동적으로 변환
   function widthSize(images) {

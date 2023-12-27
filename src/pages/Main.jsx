@@ -16,6 +16,7 @@ export default function Main() {
   const queryParams = new URLSearchParams(location.search);
   const cityValue = queryParams.get('city');
   const tagValue = queryParams.get('tag');
+  const sortValue = queryParams.get('sort');
   const navigate = useNavigate();
 
   // 디코딩
@@ -88,11 +89,10 @@ export default function Main() {
   // 키워드가 있냐 없냐에 따라 부르는 API가 달라지게 구현해야함
   // [전체 검색]: 여기만 useEffect사용, [키워드], [필터+검색] 으로 나눠짐 -> useEffect에 전부다 들어가 있으면 안됨(따로)
   useEffect(() => {
-    postsAPI.getAllPosts({ sort: '최신순', city: '서울' }).then((Posts) => {
-      console.log(Posts.data.posts);
+    postsAPI.getAllPosts({ sort: sortValue, tag: tagValue, city: cityValue }).then((Posts) => {
       setData(Posts.data.posts);
     });
-  }, [data]);
+  }, [data, sortValue, tagValue, cityValue]);
 
   // if (keyword) {
   //   getPostSearchCity(cityValue).then((posts) => {

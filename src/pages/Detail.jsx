@@ -18,7 +18,6 @@ export const ModalContext = createContext();
 
 export default function Detail() {
   const user = useRecoilValue(userState);
-  // const location = useLocation();
   const { id: postId } = useParams();
   const [data, setData] = useState([]);
   const [dayTitle, setDayTitle] = useState('');
@@ -26,6 +25,7 @@ export default function Detail() {
   const [comments, setComments] = useState([]);
 
   console.log(comments);
+
   // 댓글 모드
   const [commentModalMode, setCommentModalMode] = useState(false);
 
@@ -38,7 +38,7 @@ export default function Detail() {
     const fetchData = async () => {
       try {
         const posts = await postsAPI.getPostById(postId);
-        setData(posts);
+        setData(posts.data);
       } catch (error) {
         console.error('Error: ', error);
       }
@@ -48,17 +48,6 @@ export default function Detail() {
 
   // comment API
   useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const comments = await commentAPI.getAllCommentByPost(postId);
-    //     console.log('comments', comments);
-    //     setData(comments);
-    //   } catch (error) {
-    //     console.error('Error: ', error);
-    //   }
-    // };
-    // fetchData();
-
     commentAPI
       .getAllCommentByPost(postId)
       .then((comment) => {
