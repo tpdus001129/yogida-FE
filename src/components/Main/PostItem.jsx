@@ -40,7 +40,10 @@ export default function PostItem({ data }) {
     const isLiked = myLikes.includes(postId);
 
     if (isLiked) {
-      await handleRemoveLike(myLikeId.find((item) => item.postId._id === postId));
+      // await handleRemoveLike(myLikeId.find((item) => item.postId._id === postId));
+
+      //찜 삭제할때 배열에 담아서 보내야함
+      await handleRemoveLike([myLikeId.find((item) => item.postId._id === postId)._id]);
     } else {
       await likesAPI.postLike(userId, postId);
     }

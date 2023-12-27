@@ -19,20 +19,22 @@ import {
   IoStar,
   IoStarOutline,
   IoPricetag,
-  IoCamera,
 } from 'react-icons/io5';
 import { SearchPlace, SearchTravelDestination, SelectTag } from './Search';
-import { useMypagePostsQuery } from '../../pages/mypage/queries';
-import toast from 'react-hot-toast';
-import { PATH } from '../../constants/path';
+// import { useMypagePostsQuery } from '../../pages/mypage/queries';
+// import toast from 'react-hot-toast';
+// import { PATH } from '../../constants/path';
 import useDayCalculation from '../../hooks/useDayCalculation';
 import ScheduleCalendar from './Calendar';
 import useModal from '../../hooks/useModal';
 import { convertSimpleDate } from '../../utils/convertSimpleDate';
+import Course from './Course';
 
 // import { Map, MapMarker, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
 
+let count = 0;
 export default function Schedule() {
+  console.log('render', count++);
   const { openModal } = useModal();
   const navigate = useNavigate();
 
@@ -40,7 +42,7 @@ export default function Schedule() {
   const [addPlan, setAddPlan] = useState(false); //장소 추가
   const [addTag, setAddTag] = useState(false); //태그 선택
 
-  const { addPost } = useMypagePostsQuery();
+  // const { addPost } = useMypagePostsQuery();
 
   const [startDate, setStartDate] = useState(null); //시작 날짜
   const [endDate, setEndDate] = useState(null); //종료 날짜
@@ -56,7 +58,7 @@ export default function Schedule() {
   // const distancesRef = useRef(); //거리
 
   const [dayTitle, setDayTitle] = useState('');
-  const [index, setIndex] = useState(0); //선택한 day
+  const [selectDay, setSelectDay] = useState(0); //선택한 day
 
   // 날짜 계산기 커스텀 훅 사용
   const dayCalculation = useDayCalculation(startDate, endDate);
@@ -67,6 +69,7 @@ export default function Schedule() {
 
   useEffect(() => {
     if (startDate && endDate && dayCalculation > 0) {
+      console.log('render');
       const days = Array.from(Array(Math.ceil(dayCalculation)), () => new Array());
       setSchedules(days);
     }
@@ -83,15 +86,16 @@ export default function Schedule() {
       placePosition: [Number(option?.x), Number(option?.y)],
     };
 
-    setSchedules((prev) => prev.map((day, i) => (index === i ? [...day, singleSchedule] : day)));
-    console.log('singleSchedule:', singleSchedule);
+    setSchedules((prev) => prev.map((day, i) => (selectDay === i ? [...day, singleSchedule] : day)));
   };
+  console.log('schedules:', schedules);
 
   // 장소 이미지 추가
   const handleAddPlaceImgClick = ({ id, img }) => {
+    console.log('id', id);
     setSchedules((prev) =>
       prev.map((day, i) =>
-        index === i ? day.map((place) => (place?.id === id ? { ...place, placeImageSrc: img } : place)) : day,
+        selectDay === i ? day.map((place) => (place?.id === id ? { ...place, placeImageSrc: img } : place)) : day,
       ),
     );
   };
@@ -109,13 +113,13 @@ export default function Schedule() {
   const onSubmit = async () => {
     console.log('submit : ');
 
-    const result = await addPost();
-    if (result?.status === 200) {
-      toast.success('게시글이 등록되었습니다.');
-      // URL.revokeObjectURL(img);
+    // const result = await addPost();
+    // if (result?.status === 200) {
+    //   toast.success('게시글이 등록되었습니다.');
+    //   // URL.revokeObjectURL(img);
 
-      navigate(`${PATH.post}/${result?._id}`);
-    }
+    //   navigate(`${PATH.post}/${result?._id}`);
+    // }
   };
 
   const onTempSave = () => {
@@ -301,22 +305,25 @@ export default function Schedule() {
       {startDate && endDate && (
         <>
           <div className="overflow-scroll  scrollbar-hide">
-            <DayButton startDate={startDate} dayCount={dayCalculation} dayTitle={setDayTitle} setIndex={setIndex} />
+            <DayButton startDate={startDate} dayCount={dayCalculation} dayTitle={setDayTitle} setIndex={setSelectDay} />
           </div>
           <p className="text-center text-[14px] font-bold mb-[30px]">{dayTitle}</p>
 
           <section className="px-[26px] pb-[16px]">
             <Button onClick={() => setAddPlan(true)}>장소 추가</Button>
 
-            <ul className="mt-5 flex flex-col gap-5">
-              {schedules[index]?.map((schedule, index) => {
-                return (
-                  <li key={schedule?.placeName + index}>
-                    <Card {...schedule} handleAddPlaceImgClick={handleAddPlaceImgClick} />
-                  </li>
-                );
-              })}
-            </ul>
+            <Course
+              schedules={schedules[selectDay]}
+              selectDay={selectDay}
+              handleAddPlaceImgClick={handleAddPlaceImgClick}
+            />
+            {/* <ul className="mt-5 flex flex-col gap-5">
+              {schedules[index]?.map((schedule) => (
+                <li key={schedule?.id}>
+                  <Card {...schedule} handleAddPlaceImgClick={handleAddPlaceImgClick} />
+                </li>
+              ))}
+            </ul> */}
           </section>
           <ul role="list">
             <ScheduleItem icon={<IoStar color="#589BF7" size={20} />} title="나의 평점" id="stars">
@@ -374,43 +381,44 @@ function ScheduleItem({ icon, title, id, width, children, onClick }) {
   );
 }
 
-function Card(props) {
-  const { category, placeName, placeImageSrc, handleAddPlaceImgClick, id } = props;
-  const imgRef = useRef(null);
+// function Card(props) {
+//   const { id, category, placeName, placeImageSrc, handleAddPlaceImgClick } = props;
+//   const imgRef = useRef(null);
 
-  const handleChangeImage = (e) => {
-    if (!e.target.files) {
-      return;
-    }
-    const fileInput = e.target.files[0];
-    const url = URL.createObjectURL(fileInput);
+//   console.log('Card id : ', id);
+//   const handleChangeImage = (e) => {
+//     if (!e.target.files) {
+//       return;
+//     }
+//     const fileInput = e.target.files[0];
+//     const url = URL.createObjectURL(fileInput);
 
-    handleAddPlaceImgClick({ id, img: url });
-  };
+//     handleAddPlaceImgClick({ id, img: url });
+//   };
 
-  return (
-    <div className="w-full bg-[#ffffff] rounded-[20px] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-      <div className="h-[43px] flex justify-between items-center mx-[16px] rounded-t-[20px]">
-        <div className="flex">
-          <p className="text-[14px] mr-[4px] font-bold">{placeName || ''}</p>
-          <p className="text-[12px] mt-[2px] line-height-[14px]">{category || ''}</p>
-        </div>
-      </div>
-      <label
-        htmlFor="placeImg"
-        className="h-[130px] rounded-b-[20px] bg-[#d9d9d9] overflow-hidden flex items-center justify-center"
-      >
-        {placeImageSrc && <img src={placeImageSrc} alt="place-img" />}
-        {!placeImageSrc && (
-          <span className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center" type="button">
-            <IoCamera size={24} color="white" />
-          </span>
-        )}
-        <input type="file" name="placeImg" id="placeImg" className="hidden" ref={imgRef} onChange={handleChangeImage} />
-      </label>
-    </div>
-  );
-}
+//   return (
+//     <div className="w-full bg-[#ffffff] rounded-[20px] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+//       <div className="h-[43px] flex justify-between items-center mx-[16px] rounded-t-[20px]">
+//         <div className="flex">
+//           <p className="text-[14px] mr-[4px] font-bold">{placeName || ''}</p>
+//           <p className="text-[12px] mt-[2px] line-height-[14px]">{category || ''}</p>
+//         </div>
+//       </div>
+//       <label
+//         htmlFor="placeImg"
+//         className="h-[130px] rounded-b-[20px] bg-[#d9d9d9] overflow-hidden flex items-center justify-center"
+//       >
+//         {placeImageSrc && <img src={placeImageSrc} alt="place-img" />}
+//         {!placeImageSrc && (
+//           <span className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center" type="button">
+//             <IoCamera size={24} color="white" />
+//           </span>
+//         )}
+//         <input type="file" name="placeImg" id="placeImg" className="hidden" ref={imgRef} onChange={handleChangeImage} />
+//       </label>
+//     </div>
+//   );
+// }
 
 ScheduleItem.propTypes = {
   icon: PropTypes.element,
@@ -421,10 +429,10 @@ ScheduleItem.propTypes = {
   onClick: PropTypes.func,
 };
 
-Card.propTypes = {
-  category: PropTypes.string,
-  placeName: PropTypes.string,
-  placeImageSrc: PropTypes.string,
-  handleAddPlaceImgClick: PropTypes.func,
-  id: PropTypes.string,
-};
+// Card.propTypes = {
+//   category: PropTypes.string,
+//   placeName: PropTypes.string,
+//   placeImageSrc: PropTypes.string,
+//   handleAddPlaceImgClick: PropTypes.func,
+//   id: PropTypes.string,
+// };
