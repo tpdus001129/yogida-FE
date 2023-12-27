@@ -4,10 +4,23 @@ import api from '.';
 const API_URL = '/api/v1/posts';
 
 // 메인 페이지 GET
-export async function getPostsAllList() {
+export async function getPostsAllList(tagValue, sortValue) {
   try {
-    const result = await axios.get('/api/v1/posts');
-    return result.data.posts;
+    console.log(tagValue);
+    if (tagValue) {
+      const result = await axios.get(`${API_URL}?tag=${tagValue}`);
+      return result.data.posts;
+    } else if (sortValue) {
+      const result = await axios.get(`${API_URL}?sort=${sortValue}`);
+      return result.data.posts;
+    } else if (tagValue && sortValue) {
+      const result = await axios.get(`${API_URL}?sort=${sortValue}&tag=${tagValue}`);
+      return result.data.posts;
+    } else {
+      console.log('악');
+      const result = await axios.get(`${API_URL}`);
+      return result.data.posts;
+    }
   } catch (error) {
     console.error('Error: ', error);
     throw error;
@@ -25,27 +38,27 @@ export async function getPostByPostId(postId) {
   }
 }
 
-// 검색 페이지 GET
-export async function getPostSearchCity(city) {
-  try {
-    const result = await axios.get(`/api/v1/posts/search?city=${city}`);
-    return result.data.posts;
-  } catch (error) {
-    console.error('Error: ', error);
-    throw error;
-  }
-}
+// // 검색 페이지 GET
+// export async function getPostSearchCity(city) {
+//   try {
+//     const result = await axios.get(`/api/v1/posts/?city=${city}`);
+//     return result.data.posts;
+//   } catch (error) {
+//     console.error('Error: ', error);
+//     throw error;
+//   }
+// }
 
-// 필터 페이지 GET
-export async function getPostTag(tag) {
-  try {
-    const result = await axios.get(`/api/v1/posts/?tag=${tag}`);
-    return result.data.posts;
-  } catch (error) {
-    console.error('Error: ', error);
-    throw error;
-  }
-}
+// // 필터 페이지 GET
+// export async function getPostTag(tag) {
+//   try {
+//     const result = await axios.get(`/api/v1/posts/?tag=${tag}`);
+//     return result.data.posts;
+//   } catch (error) {
+//     console.error('Error: ', error);
+//     throw error;
+//   }
+// }
 
 const postsAPI = {
   async getAllPosts() {

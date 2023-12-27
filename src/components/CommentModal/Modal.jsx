@@ -29,8 +29,8 @@ export default function Modal() {
 
   // 새로운 댓글
   const [newComment, setNewComment] = useState({
-    image: user.profileImageSrc,
-    nickname: user.nickname,
+    image: user && user.profileImageSrc,
+    nickname: user && user.nickname,
     date: nowTime,
     content: '',
   });
