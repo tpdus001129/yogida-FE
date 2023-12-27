@@ -19,7 +19,7 @@ export default function useNickname() {
         setIsNicknameAvailable(true);
       })
       .catch((error) => {
-        switch (error?.response?.status) {
+        switch (error?.status) {
           case 409: {
             openModal({ message: `이미 사용중인 닉네임 입니다.` });
             break;

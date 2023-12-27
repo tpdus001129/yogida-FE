@@ -31,7 +31,7 @@ export default function Notification() {
             type={notification.alarmType}
             nickname={notification.senderId.nickname}
             message={''}
-            updatedAt={notification.updatedAt}
+            createdAt={notification.createdAt}
             url={notification.postId}
             isRead={notification.isRead}
             alarmId={notification._id}

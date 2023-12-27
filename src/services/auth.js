@@ -16,8 +16,8 @@ const authAPI = {
     return await api.post(API_URL + '/logout');
   },
 
-  async getEmailVerifyCode({ email }) {
-    return await api.post(API_URL + '/signup/auth-mail', { email });
+  async getEmailVerifyCode({ email, type }) {
+    return await api.post(API_URL + '/signup/auth-mail', { email, type });
   },
 
   async checkEmailVerifyCode({ email, authCode }) {
@@ -30,6 +30,10 @@ const authAPI = {
 
   async verify() {
     return await api.get(API_URL + '/me');
+  },
+
+  async changePassword({ email, password }) {
+    return await api.post(API_URL + '/change-password', { email, password });
   },
 };
 
