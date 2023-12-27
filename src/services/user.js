@@ -11,8 +11,8 @@ const userAPI = {
     return await api.post(API_URL + '/check/nickname', { nickname });
   },
 
-  async userInfoModify({ nickname }) {
-    return await api.patch(API_URL + '/', { nickname });
+  async userInfoModify(formData) {
+    return await api.put(API_URL + '/', formData);
   },
 };
 
