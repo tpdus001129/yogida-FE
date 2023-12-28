@@ -12,8 +12,6 @@ export default function Notification() {
   const { data, deleteAllAlarm, lastItemId, setLastItemId, refetch } = useNotificationQuery();
   const { handleObserver, hasNextPage, setHasNextPage } = useInfinityPaging({
     callback: () => refetch(),
-    store: notificationList,
-    setStore: setNotificationList,
   });
 
   const { setTarget } = useIntersectionObserver({ onIntersect: handleObserver });
