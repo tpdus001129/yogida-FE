@@ -38,9 +38,18 @@ export default function ModalWithOk() {
               <div className="w-full text-center break-keep whitespace-pre-wrap grow flex justify-center items-center">
                 {modal.message}
               </div>
-              <Button type={'primary'} onClick={closeModal}>
-                확인
-              </Button>
+              {modal.type === 'calendar' ? (
+                <button
+                  className="bg-primary text-white border-transparent text-base h-button cursor-pointer rounded-b-md disabled:cursor-not-allowed border flex justify-center items-center disabled:bg-gray-2 disabled:opacity-50 disabled:text-black disabled:border-black"
+                  onClick={closeModal}
+                >
+                  확인
+                </button>
+              ) : (
+                <Button type={'primary'} onClick={closeModal}>
+                  확인
+                </Button>
+              )}
             </div>
           </div>
         </>

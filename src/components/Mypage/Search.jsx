@@ -36,7 +36,9 @@ export function SearchTravelDestination({ handleDestinationClick, onClose }) {
       </form>
 
       <ul className="w-full px-[24px]">
-        {TRAVEL_DESTINATION.filter((destination) => convertToHangulJamo(destination).includes(keyword)).map((item) => (
+        {TRAVEL_DESTINATION.filter(
+          (destination) => convertToHangulJamo(destination).includes(keyword) || destination.includes(keyword),
+        ).map((item) => (
           <li key={item}>
             <DestinationItem name={item} onClick={() => handleDestinationClick(item)} />
           </li>
@@ -51,6 +53,7 @@ export function SearchPlace({ handleSingleScheduleClick, onClose }) {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
+    if (!keyword) return;
     const ps = new kakao.maps.services.Places();
     ps.keywordSearch(keyword, (data, status) => {
       if (status === kakao.maps.services.Status.OK) {

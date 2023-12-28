@@ -1,6 +1,7 @@
-import PropTypes from 'prop-types';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
+import PropTypes from 'prop-types';
 
 import DayButton from '../Detail/DayButton';
 import Button from '../commons/Button';
@@ -16,25 +17,22 @@ import {
   IoWallet,
   IoBagRemove,
   IoMap,
-  IoStar,
-  IoStarOutline,
   IoPricetag,
 } from 'react-icons/io5';
+
+import { PATH } from '../../constants/path';
 import { SearchPlace, SearchTravelDestination, SelectTag } from './Search';
-// import { useMypagePostsQuery } from '../../pages/mypage/queries';
-// import toast from 'react-hot-toast';
-// import { PATH } from '../../constants/path';
 import useDayCalculation from '../../hooks/useDayCalculation';
 import ScheduleCalendar from './Calendar';
 import useModal from '../../hooks/useModal';
 import { convertSimpleDate } from '../../utils/convertSimpleDate';
 import Course from './Course';
+import CourseMap from '../KakaoMaps/CourseMap';
+import getDistance from '../../utils/getDistance';
 
-// import { Map, MapMarker, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
+import { useMypagePostsQuery } from '../../pages/mypage/queries';
 
-let count = 0;
 export default function Schedule() {
-  console.log('render', count++);
   const { openModal } = useModal();
   const navigate = useNavigate();
 
@@ -42,62 +40,91 @@ export default function Schedule() {
   const [addPlan, setAddPlan] = useState(false); //장소 추가
   const [addTag, setAddTag] = useState(false); //태그 선택
 
-  // const { addPost } = useMypagePostsQuery();
+  const { addPost } = useMypagePostsQuery();
 
   const [startDate, setStartDate] = useState(null); //시작 날짜
   const [endDate, setEndDate] = useState(null); //종료 날짜
   const [title, setTitle] = useState(''); // 제목
   const titleSize = useMemo(() => title.length, [title]); //제목 길이
-  const reviewTextRef = useRef(); // 간단 리뷰
+  const [reviewText, setReviewText] = useState(''); // 간단 리뷰
   const [destination, setDestination] = useState(''); // 여행지
-  const peopleCountRef = useRef(); //인원수
-  const costRef = useRef(); //예산
+  const [peopleCount, setPeopleCount] = useState(0); //인원수
+  const [cost, setCost] = useState(0); //예산
   const [isPublic, setIsPublic] = useState('true'); //게시글 공개 여부
   const [schedules, setSchedules] = useState([]); // 코스 등록
   const [tag, setTag] = useState([]); //태그
-  // const distancesRef = useRef(); //거리
 
   const [dayTitle, setDayTitle] = useState('');
   const [selectDay, setSelectDay] = useState(0); //선택한 day
 
+  const schedulePerDay = useMemo(() => schedules[selectDay], [schedules, selectDay]);
+
   // 날짜 계산기 커스텀 훅 사용
   const dayCalculation = useDayCalculation(startDate, endDate);
 
-  // const [info, setInfo] = useState();
-  // const [markers, setMarkers] = useState([]);
-  // const [map, setMap] = useState();
-
   useEffect(() => {
     if (startDate && endDate && dayCalculation > 0) {
-      console.log('render');
       const days = Array.from(Array(Math.ceil(dayCalculation)), () => new Array());
       setSchedules(days);
     }
   }, [dayCalculation, startDate, endDate]);
+
+  console.log('schedules : ', schedules);
 
   // day별 장소 추가
   const handleSingleScheduleClick = (option) => {
     const singleSchedule = {
       id: option?.id,
       placeName: option?.place_name,
-      placeImageSrc: '',
+      placeImageSrc: 'default',
       star: 0,
       category: option?.category,
-      placePosition: [Number(option?.x), Number(option?.y)],
+      placePosition: [Number(option?.y), Number(option?.x)],
     };
 
     setSchedules((prev) => prev.map((day, i) => (selectDay === i ? [...day, singleSchedule] : day)));
   };
-  console.log('schedules:', schedules);
+
+  //day별 장소 삭제
+  const handleRemoveSingleScheduleClick = (id) => {
+    setSchedules((prev) =>
+      prev.map((day, i) => (selectDay === i ? day.filter((singleSchedule) => singleSchedule.id !== id) : day)),
+    );
+  };
 
   // 장소 이미지 추가
   const handleAddPlaceImgClick = ({ id, img }) => {
-    console.log('id', id);
     setSchedules((prev) =>
       prev.map((day, i) =>
         selectDay === i ? day.map((place) => (place?.id === id ? { ...place, placeImageSrc: img } : place)) : day,
       ),
     );
+  };
+
+  // 장소 별점 추가
+  const handleAddScoreClick = ({ id, star }) => {
+    setSchedules((prev) =>
+      prev.map((day, i) =>
+        selectDay === i ? day.map((place) => (place?.id === id ? { ...place, star } : place)) : day,
+      ),
+    );
+  };
+
+  //장소별 거리 계산
+  const caclulateDistance = () => {
+    const arr = [];
+    for (let i = 0; i < schedules.length; i++) {
+      arr.push([]);
+      const day = schedules[i];
+      for (let j = 0; j < day.length - 1; j++) {
+        if (!day) return;
+        const currentPlace = day[j].placePosition;
+        const nextPlace = day[j + 1].placePosition;
+        const distance = getDistance(currentPlace[0], currentPlace[1], nextPlace[0], nextPlace[1]);
+        arr[i].push(distance);
+      }
+    }
+    return arr;
   };
 
   const handleDestinationClick = (text) => {
@@ -111,15 +138,39 @@ export default function Schedule() {
   };
 
   const onSubmit = async () => {
-    console.log('submit : ');
+    const payload = {
+      title,
+      destination,
+      startDate,
+      endDate,
+      tag,
+      schedules: schedules.map((schedule) =>
+        schedule.map((place) => {
+          // eslint-disable-next-line no-unused-vars
+          const { id, ...rest } = place;
+          return rest;
+        }),
+      ),
+      distances: caclulateDistance(),
+      cost,
+      peopleCount,
+      isPublic,
+      reviewText,
+    };
 
-    // const result = await addPost();
-    // if (result?.status === 200) {
-    //   toast.success('게시글이 등록되었습니다.');
-    //   // URL.revokeObjectURL(img);
+    //   const formData = new FormData();
+    //   formData.append("data", new Blob([JSON.stringify(payload)], { type: 'application/json' }))
 
-    //   navigate(`${PATH.post}/${result?._id}`);
-    // }
+    //   Object.entries(payload).forEach(([key, value]) => {
+    //     if (value.type === 'file') {
+    //        formData.append(key, value.value);
+    //     }
+    //  });
+    const result = await addPost(payload);
+    if (result?.status === 200) {
+      toast.success('게시글이 등록되었습니다.');
+      navigate(`${PATH.post}/${result?._id}`);
+    }
   };
 
   const onTempSave = () => {
@@ -192,13 +243,14 @@ export default function Schedule() {
         </ScheduleItem>
         <ScheduleItem id="review" width={'w-[0%]'}>
           <textarea
-            name=""
-            id=""
+            name="reviewText"
+            id="reviewText"
             cols="30"
             rows="10"
             placeholder="내용을 입력해 주세요."
             className="w-full focus:outline-none text-[14px] font-medium placeholder:text-[14px]"
-            ref={reviewTextRef}
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
           ></textarea>
         </ScheduleItem>
         <ScheduleItem
@@ -221,9 +273,9 @@ export default function Schedule() {
             type="number"
             name="count"
             id="count"
-            defaultValue={0}
             className="w-full focus:outline-none text-[14px] font-medium text-right placeholder:text-[14px]"
-            ref={peopleCountRef}
+            value={peopleCount}
+            onChange={(e) => setPeopleCount(e.target.value)}
           />
         </ScheduleItem>
         <ScheduleItem icon={<IoWallet color="#589BF7" size={20} />} title="예산" id="budget">
@@ -231,9 +283,9 @@ export default function Schedule() {
             type="number"
             name="budget"
             id="budget"
-            defaultValue={0}
             className="w-full focus:outline-none text-[14px] font-medium text-right placeholder:text-[14px]"
-            ref={costRef}
+            value={cost}
+            onChange={(e) => setCost(e.target.value)}
           />
         </ScheduleItem>
         <ScheduleItem
@@ -271,29 +323,6 @@ export default function Schedule() {
           </div>
         </ScheduleItem>
         <ScheduleItem icon={<IoMap color="#589BF7" size={20} />} title="코스 등록" id="map"></ScheduleItem>
-
-        {/* <Map
-          center={{
-            lat: 37.566826,
-            lng: 126.9786567,
-          }}
-          style={{
-            width: '100%',
-            height: '350px',
-          }}
-          level={3}
-          onCreate={setMap}
-        >
-          {markers.map((marker) => (
-            <MapMarker
-              key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
-              position={marker.position}
-              onClick={() => setInfo(marker)}
-            >
-              {info && info.content === marker.content && <div style={{ color: '#000' }}>{marker.content}</div>}
-            </MapMarker>
-          ))}
-        </Map> */}
       </ul>
 
       {!startDate && !endDate && (
@@ -304,6 +333,12 @@ export default function Schedule() {
 
       {startDate && endDate && (
         <>
+          {schedulePerDay && schedulePerDay.length >= 1 && (
+            <div className="w-full h-64 mb-5">
+              <CourseMap data={schedulePerDay} />
+            </div>
+          )}
+
           <div className="overflow-scroll  scrollbar-hide">
             <DayButton startDate={startDate} dayCount={dayCalculation} dayTitle={setDayTitle} setIndex={setSelectDay} />
           </div>
@@ -313,34 +348,19 @@ export default function Schedule() {
             <Button onClick={() => setAddPlan(true)}>장소 추가</Button>
 
             <Course
-              schedules={schedules[selectDay]}
+              schedules={schedulePerDay}
               selectDay={selectDay}
               handleAddPlaceImgClick={handleAddPlaceImgClick}
+              handleAddScoreClick={handleAddScoreClick}
+              handleRemoveSingleScheduleClick={handleRemoveSingleScheduleClick}
             />
-            {/* <ul className="mt-5 flex flex-col gap-5">
-              {schedules[index]?.map((schedule) => (
-                <li key={schedule?.id}>
-                  <Card {...schedule} handleAddPlaceImgClick={handleAddPlaceImgClick} />
-                </li>
-              ))}
-            </ul> */}
           </section>
-          <ul role="list">
-            <ScheduleItem icon={<IoStar color="#589BF7" size={20} />} title="나의 평점" id="stars">
-              <div className="flex gap-1">
-                <IoStarOutline size={20} color="#FFDB5F" />
-                <IoStarOutline size={20} color="#FFDB5F" />
-                <IoStarOutline size={20} color="#FFDB5F" />
-                <IoStarOutline size={20} color="#FFDB5F" />
-                <IoStarOutline size={20} color="#FFDB5F" />
-              </div>
-            </ScheduleItem>
-            <ScheduleItem icon={<IoPricetag color="#589BF7" size={20} />} title="태그" id="tag"></ScheduleItem>
-          </ul>
         </>
       )}
 
       {/* 필터 */}
+      <ScheduleItem icon={<IoPricetag color="#589BF7" size={20} />} title="태그" id="tag"></ScheduleItem>
+
       <section className="px-[26px] pb-[16px]">
         <Button onClick={() => setAddTag(true)}>태그 선택하기</Button>
         <div className="mb-7 mt-4">
@@ -381,45 +401,6 @@ function ScheduleItem({ icon, title, id, width, children, onClick }) {
   );
 }
 
-// function Card(props) {
-//   const { id, category, placeName, placeImageSrc, handleAddPlaceImgClick } = props;
-//   const imgRef = useRef(null);
-
-//   console.log('Card id : ', id);
-//   const handleChangeImage = (e) => {
-//     if (!e.target.files) {
-//       return;
-//     }
-//     const fileInput = e.target.files[0];
-//     const url = URL.createObjectURL(fileInput);
-
-//     handleAddPlaceImgClick({ id, img: url });
-//   };
-
-//   return (
-//     <div className="w-full bg-[#ffffff] rounded-[20px] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-//       <div className="h-[43px] flex justify-between items-center mx-[16px] rounded-t-[20px]">
-//         <div className="flex">
-//           <p className="text-[14px] mr-[4px] font-bold">{placeName || ''}</p>
-//           <p className="text-[12px] mt-[2px] line-height-[14px]">{category || ''}</p>
-//         </div>
-//       </div>
-//       <label
-//         htmlFor="placeImg"
-//         className="h-[130px] rounded-b-[20px] bg-[#d9d9d9] overflow-hidden flex items-center justify-center"
-//       >
-//         {placeImageSrc && <img src={placeImageSrc} alt="place-img" />}
-//         {!placeImageSrc && (
-//           <span className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center" type="button">
-//             <IoCamera size={24} color="white" />
-//           </span>
-//         )}
-//         <input type="file" name="placeImg" id="placeImg" className="hidden" ref={imgRef} onChange={handleChangeImage} />
-//       </label>
-//     </div>
-//   );
-// }
-
 ScheduleItem.propTypes = {
   icon: PropTypes.element,
   title: PropTypes.string,
@@ -428,11 +409,3 @@ ScheduleItem.propTypes = {
   children: PropTypes.element,
   onClick: PropTypes.func,
 };
-
-// Card.propTypes = {
-//   category: PropTypes.string,
-//   placeName: PropTypes.string,
-//   placeImageSrc: PropTypes.string,
-//   handleAddPlaceImgClick: PropTypes.func,
-//   id: PropTypes.string,
-// };

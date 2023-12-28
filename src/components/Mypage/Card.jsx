@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { IoCamera } from 'react-icons/io5';
+import { IoCamera, IoClose } from 'react-icons/io5';
 
 export default function Card(props) {
-  const { id, category, placeName, placeImageSrc, handleAddPlaceImgClick } = props;
+  const { id, category, placeName, placeImageSrc, handleAddPlaceImgClick, handleRemoveSingleScheduleClick } = props;
 
   const handleChangeImage = (e) => {
     if (!e.target.files) {
@@ -20,6 +20,7 @@ export default function Card(props) {
           <p className="text-[14px] mr-[4px] font-bold">{placeName || ''}</p>
           <p className="text-[12px] mt-[2px] line-height-[14px]">{category || ''}</p>
         </div>
+        <IoClose size={20} onClick={() => handleRemoveSingleScheduleClick(id)} />
       </div>
       <label
         htmlFor={`${id}`}
@@ -42,5 +43,6 @@ Card.propTypes = {
   placeName: PropTypes.string,
   placeImageSrc: PropTypes.string,
   handleAddPlaceImgClick: PropTypes.func,
+  handleRemoveSingleScheduleClick: PropTypes.func,
   id: PropTypes.string,
 };
