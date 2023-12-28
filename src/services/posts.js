@@ -4,7 +4,6 @@ const API_URL = '/api/v1/posts';
 
 const postsAPI = {
   async getAllPosts({ tag, sort, city }) {
-    console.log(tag);
     return await api.get(API_URL, { params: { tag, sort, city } });
   },
 

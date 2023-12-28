@@ -81,14 +81,14 @@ export default function Main() {
     if (oneValue.includes(checkedList[0])) {
       if (checkedList.length === 1) {
         const queryString = checkedList[0];
-        navigate(`?sort=${queryString}`);
+        navigate(`/filter?sort=${queryString}`);
       }
       const sortStr = checkedList[0];
       const queryString = checkedList.slice(1).join(',');
-      navigate(`?tag=${queryString}&sort=${sortStr}`);
+      navigate(`/filter?tag=${queryString}&sort=${sortStr}`);
     } else {
       const queryString = checkedList.join(',');
-      navigate(`?tag=${queryString}`);
+      navigate(`/filter?tag=${queryString}`);
     }
     filterModeOff();
   }
@@ -101,7 +101,7 @@ export default function Main() {
       // 데이터가 없는 경우 notFound 상태를 true로 설정
       setNotFound(receivedData.length === 0);
     });
-  }, [checkedList, keyword]);
+  }, [tagValue, sortValue]);
 
   return (
     <>
