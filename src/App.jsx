@@ -3,7 +3,6 @@ import Main from './pages/Main';
 import Notfound from './pages/Notfound';
 import Layout from './components/commons/Layout';
 import Mypage from './pages/mypage/Mypage';
-import Filter from './pages/Filter';
 import Login from './pages/Login';
 import Schedule from './components/Mypage/Schedule';
 import Signup from './pages/SignUp';
@@ -28,7 +27,7 @@ function App() {
         </Route>
         <Route path={PATH.post} element={<Detail />} />
         <Route path={PATH.notfound} element={<Notfound />} />
-        <Route path={PATH.filter} element={<Filter />} />
+        <Route path={PATH.filter} element={<Main />} />
         <Route path={PATH.schedule} element={<Schedule />} />
         <Route path={PATH.signup} element={<Signup />} />
         <Route path={PATH.findPassword} element={<FindPassword />} />

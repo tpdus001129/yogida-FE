@@ -3,8 +3,8 @@ import api from '.';
 const API_URL = '/api/v1/posts';
 
 const postsAPI = {
-  async getAllPosts({ sort, tag, city }) {
-    return await api.get(API_URL, { params: { sort, tag, city } });
+  async getAllPosts({ tag, sort, city }) {
+    return await api.get(API_URL, { params: { tag, sort, city } });
   },
 
   async getPostById(postId) {

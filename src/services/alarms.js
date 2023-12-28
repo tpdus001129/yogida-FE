@@ -3,8 +3,8 @@ import api from '.';
 const API_URL = '/api/v1/alarms';
 
 const alarmsAPI = {
-  async getAllAlarms() {
-    const response = await api.get(API_URL + '/');
+  async getAllAlarms({ perPage, lastItemId }) {
+    const response = await api.get(API_URL + `?perPage=${perPage}${lastItemId ? `&lastItemId=${lastItemId}` : ''}`);
     return response.data.alarms;
   },
 

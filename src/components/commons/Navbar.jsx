@@ -1,39 +1,37 @@
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { IoHomeOutline } from 'react-icons/io5';
 // import { IoHomeSharp ,IoNotificationsSharp} from 'react-icons/io5';
 import { IoNotificationsOutline } from 'react-icons/io5';
 
 import { IoPersonCircleOutline } from 'react-icons/io5';
 import { PiNotePencil } from 'react-icons/pi';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../../recoils/userAtom';
 import { PATH } from '../../constants/path';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import useNotification from '../../hooks/useNotification';
-import { useAuth } from '../../hooks/useAuth';
 import { useNotificationQuery } from '../../pages/notification/queries';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { isValidUser } from '../../utils/isValidUser';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoils/userAtom';
 
 export default function Navbar() {
   //recoil에 저장된 user정보 가져오기
   const user = useRecoilValue(userState);
-  const { loginUserInfo } = useAuth();
-
-  const { setNotificationList, notificationCount } = useNotification();
+  const { notificationCount, setNotificationList } = useNotification();
   const { data, refetch } = useNotificationQuery();
+  const location = useLocation();
+  const isInit = useRef(true);
 
   useEffect(() => {
-    if (loginUserInfo && user) {
-      refetch();
+    if (location.pathname !== '/notification' && isValidUser(user)) {
+      if (isInit.current) {
+        refetch();
+        setNotificationList(data);
+        isInit.current = false;
+      }
     }
-  }, [user, loginUserInfo, refetch]);
-
-  useEffect(() => {
-    if (loginUserInfo && user) {
-      setNotificationList(data);
-    }
-  }, [user, data, loginUserInfo, setNotificationList]);
+  }, [data, location.pathname, refetch, setNotificationList, isInit, user]);
 
   return (
     <nav className="border-t-[1px] border-solid border-gray w-full fixed bottom-0 left-0 h-navbar bg-white z-10">

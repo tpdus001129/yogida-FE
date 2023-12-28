@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 
 import Button from '../commons/Button';
 import useModal from '../../hooks/useModal';
-import { useEffect } from 'react';
 
 ModalWithOk.propTypes = {
   message: PropTypes.string,
@@ -15,14 +14,6 @@ ModalWithOk.defaultProps = {
 
 export default function ModalWithOk() {
   const { modal, closeModal } = useModal();
-
-  useEffect(() => {
-    return () => {
-      if (modal.callback) {
-        modal.callback();
-      }
-    };
-  });
 
   const calendarStyle =
     modal.type === 'calendar'
@@ -46,7 +37,13 @@ export default function ModalWithOk() {
                   확인
                 </button>
               ) : (
-                <Button type={'primary'} onClick={closeModal}>
+                <Button
+                  type={'primary'}
+                  onClick={() => {
+                    closeModal();
+                    modal.callback();
+                  }}
+                >
                   확인
                 </Button>
               )}

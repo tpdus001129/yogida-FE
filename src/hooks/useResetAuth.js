@@ -21,3 +21,16 @@ export const useResetAuth = () => {
     resetNotification();
   };
 };
+
+export const useWithdraw = () => {
+  const navigate = useNavigate();
+  const resetAuthToken = useResetRecoilState(userState);
+  const { resetNotification } = useNotification();
+
+  return () => {
+    toast.success('탈퇴되었습니다.');
+    navigate(PATH.root);
+    resetAuthToken();
+    resetNotification();
+  };
+};
