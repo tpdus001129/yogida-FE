@@ -55,7 +55,7 @@ export default function Mypage() {
             <button onClick={logout}>로그아웃</button>
             <IoLogOutOutline size={17} />
           </div>
-          <button onClick={() => setEditProfileMode((prev) => !prev)}>프로필 편집</button>
+          <button onClick={() => setEditProfileMode((prev) => !prev)}>설정</button>
         </div>
         <div className="flex flex-col items-center justify-center h-[140px] ">
           <img
