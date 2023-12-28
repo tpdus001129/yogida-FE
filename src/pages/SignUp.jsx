@@ -60,7 +60,7 @@ export default function Signup() {
         openModal({ message: '회원가입이 완료되었습니다.', callback: () => navigate('/') });
       })
       .catch((error) => {
-        switch (error.response.status) {
+        switch (error?.status) {
           case 409: {
             openModal({ message: `이미 존재하는 이메일로 회원가입을 요청했습니다.` });
             break;
@@ -96,7 +96,7 @@ export default function Signup() {
                 isButtonDisabled={emailValidationMessage !== '' || !isAvailableEmailInput}
                 isInputDisabled={!isAvailableEmailInput}
                 isValid={emailValidationMessage === ''}
-                onClick={handleSendValidationCode}
+                onClick={() => handleSendValidationCode({ type: 'signup' })}
               />
             }
             validateMessage={emailValidationMessage}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoils/userAtom';
+import { useRecoilValue } from 'recoil';
 import PropTypes from 'prop-types';
 
 import { IoChatbubbleOutline, IoHeartOutline, IoHeartSharp } from 'react-icons/io5';
@@ -12,16 +12,21 @@ import likesAPI from '../../services/likes';
 
 export default function PostItem({ data }) {
   const user = useRecoilValue(userState);
-  const [isLiked, setIsLiked] = useState([]);
-  // const [isNotLike, setIsNotLike] = useState(data);
+
+  // 유저가 좋아요 누른 데이터
+  const [myLikeId, setMyLikeId] = useState([]);
   const [myLikes, setMyLikes] = useState([]);
 
   // 좋아요 get
   useEffect(() => {
     const fetchLikes = async () => {
-      const likes = await likesAPI.getAllLikesByMe();
-      setMyLikes(likes.data.likedPosts);
-      setIsLiked(likes);
+      try {
+        const likes = await likesAPI.getAllLikesByMe();
+        setMyLikeId(likes.data.likedPosts);
+        setMyLikes(likes.data.likedPosts.flatMap((post) => post.postId).flatMap((it) => it._id));
+      } catch (error) {
+        console.error('Error fetching likes:', error);
+      }
     };
     fetchLikes();
   }, []);
@@ -30,38 +35,47 @@ export default function PostItem({ data }) {
   async function handleClickLike(e, userId, postId) {
     e.stopPropagation();
     e.preventDefault();
+    // location.reload();
 
-    if (!isLiked.includes(postId)) {
+    const isLiked = myLikes.includes(postId);
+
+    if (isLiked) {
+      await handleRemoveLike(myLikeId.find((item) => item.postId._id === postId));
+    } else {
       await likesAPI.postLike(userId, postId);
     }
   }
 
-  // async function handleRemoveLike() {
-  //   await likesAPI.removeAll();
-  // }
+  // 좋아요 patch
+  async function handleRemoveLike(payload) {
+    await likesAPI.removeAll(payload);
+  }
 
   return (
-    <div className="relative">
+    <div>
       {data.map((item) => (
         <Link to={`/posts/${item._id}`} key={item._id}>
           <div>
             <div className="pb-[20px]">
               <div>
-                <button
-                  onClick={(e) => {
-                    handleClickLike(e, user._id, item._id);
-                  }}
-                  className="absolute z-[10] top-[16px] right-[16px]"
-                >
-                  {myLikes === item._id ? (
-                    <IoHeartSharp size="36" className="text-red" />
-                  ) : (
-                    <IoHeartOutline size="36" color="#ffffff" />
-                  )}
-                </button>
-                <ImageSlide
-                  images={item.schedules.flatMap((schedule) => schedule.flatMap((place) => place.placeImageSrc))}
-                />
+                <div className="relative">
+                  <button
+                    onClick={(e) => handleClickLike(e, user._id, item._id)}
+                    className="absolute z-[10] top-[16px] right-[16px]"
+                  >
+                    {myLikes.includes(item._id) ? (
+                      <IoHeartSharp size="36" className="text-red" />
+                    ) : (
+                      <IoHeartOutline size="36" color="#ffffff" />
+                    )}
+                  </button>
+                  <ImageSlide
+                    images={item.schedules.flatMap((schedule) => schedule.flatMap((place) => place.placeImageSrc))}
+                    myLikes={myLikes}
+                    item={item}
+                    handleClickLike={handleClickLike}
+                  />
+                </div>
               </div>
               <div className="flex justify-between">
                 <p className="mb-[6px]">{item.destination}</p>

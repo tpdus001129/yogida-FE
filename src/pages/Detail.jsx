@@ -12,20 +12,16 @@ import CourseMap from '../components/KakaoMaps/CourseMap';
 import Modal from '../components/CommentModal/Modal';
 import useDayCalculation from '../hooks/useDayCalculation';
 import postsAPI from '../services/posts';
-import commentAPI from '../services/comment';
 
 export const ModalContext = createContext();
 
 export default function Detail() {
   const user = useRecoilValue(userState);
-  // const location = useLocation();
   const { id: postId } = useParams();
   const [data, setData] = useState([]);
   const [dayTitle, setDayTitle] = useState('');
   const [index, setIndex] = useState(0);
-  const [comments, setComments] = useState([]);
 
-  console.log(comments);
   // 댓글 모드
   const [commentModalMode, setCommentModalMode] = useState(false);
 
@@ -33,46 +29,18 @@ export default function Detail() {
   const [mouseDownClientY, setMouseDownClientY] = useState(0);
   const [mouseUpClientY, setMouseUpClientY] = useState(0);
 
-  // post API
+  // 상세페이지 GET API
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const posts = await postsAPI.getPostById(postId);
-        setData(posts);
-      } catch (error) {
-        console.error('Error: ', error);
-      }
-    };
-    fetchData();
-  }, [postId]);
-
-  // comment API
-  useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const comments = await commentAPI.getAllCommentByPost(postId);
-    //     console.log('comments', comments);
-    //     setData(comments);
-    //   } catch (error) {
-    //     console.error('Error: ', error);
-    //   }
-    // };
-    // fetchData();
-
-    commentAPI
-      .getAllCommentByPost(postId)
-      .then((comment) => {
-        setComments(comment);
+    postsAPI
+      .getPostById(postId)
+      .then((post) => {
+        setData(post.data);
       })
       .catch((error) => {
         console.error(error);
-        throw new Error('댓글을 불러오는 중에 오류가 생겼습니다.');
+        throw new Error('상세 게시글을 불러오는 중에 오류가 생겼습니다.');
       });
   }, [postId]);
-
-  // useEffect(() => {
-  //   console.log('api get', comments);
-  // }, [postId]);
 
   // 드래그 종료 시 처리
   useEffect(() => {
@@ -138,7 +106,7 @@ export default function Detail() {
   if (!data) return <p>loading...</p>;
   return (
     <ModalContext.Provider value={{ commentModalMode, setCommentModalMode }}>
-      {commentModalMode && <Modal onMouseDown={onMouseDown} onMouseUp={onMouseUp} user={user} />}
+      {commentModalMode && <Modal onMouseDown={onMouseDown} onMouseUp={onMouseUp} user={user} postId={postId} />}
       <div className={commentModalMode ? 'w-full h-screen overflow-hidden' : ''}>
         <Header headerData={data} />
         <div className="w-full h-[160px] mb-[22px]">
