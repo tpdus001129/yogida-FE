@@ -34,7 +34,7 @@ export default function Detail() {
     postsAPI
       .getPostById(postId)
       .then((post) => {
-        setData(post.data.post);
+        setData(post.data);
       })
       .catch((error) => {
         console.error(error);

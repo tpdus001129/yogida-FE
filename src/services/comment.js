@@ -12,8 +12,8 @@ const commentAPI = {
   async postComment(postId, content) {
     return await api.post(API_URL, { postId, content });
   },
-  async updateComment(commentId) {
-    return await api.post(API_URL + `?commentId=${commentId}`);
+  async updateComment({ commentId, content }) {
+    return await api.patch(API_URL + `/${commentId}`, { content });
   },
   async removeOne(id) {
     console.log(id);

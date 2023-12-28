@@ -35,6 +35,14 @@ const authAPI = {
   async changePassword({ email, password }) {
     return await api.post(API_URL + '/change-password', { email, password });
   },
+
+  async kakaoUnlink() {
+    return await api.post(API_URL + '/kakao/unlink');
+  },
+
+  async withdraw() {
+    return await api.delete(API_URL + '/withdraw');
+  },
 };
 
 export default authAPI;

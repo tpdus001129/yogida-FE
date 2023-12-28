@@ -27,7 +27,13 @@ export default function Modal({ postId }) {
   // 대댓글 모드
   const [replyMode, setReplyMode] = useState(true);
 
-  console.log(replyMode);
+  // function replyOn() {
+  //   setReplyMode(true);
+  // }
+
+  function replyOff() {
+    setReplyMode(false);
+  }
 
   // 새로운 댓글
   const [newComment, setNewComment] = useState({
@@ -62,23 +68,6 @@ export default function Modal({ postId }) {
     commentAPI.postComment(postId, inputValue);
   }
 
-  // reply delete API
-  function deleteComment({ id: id }) {
-    commentAPI.removeOne({ id });
-  }
-
-  useEffect(() => {
-    console.log(comments);
-  });
-
-  // function replyOn() {
-  //   setReplyMode(true);
-  // }
-
-  function replyOff() {
-    setReplyMode(false);
-  }
-
   return (
     <div>
       <Background commentModalMode={commentModalMode} setCommentModalMode={setCommentModalMode} />
@@ -100,9 +89,10 @@ export default function Modal({ postId }) {
                   nickname={comment.authorId.nickname}
                   date={comment.createdAt.slice(0, 10)}
                   content={comment.content}
-                  deleteComment={deleteComment}
                   commentId={comment._id}
                   setGetReplyId={comment.authorId.nickname}
+                  authorId={comment.authorId._id}
+                  newComment={newComment}
                 />
               ))
             )}

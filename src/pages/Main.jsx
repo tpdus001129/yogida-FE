@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
 import { IoOptionsOutline, IoSearchOutline } from 'react-icons/io5';
 
@@ -9,15 +10,16 @@ import Search from './Search';
 import Filter from './Filter';
 import NotFound from '../components/Search/NotFound';
 import postsAPI from '../services/posts';
+import { filterState } from '../recoils/filterAtom';
 
 export default function Main() {
   const [data, setData] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const cityValue = queryParams.get('city');
   const tagValue = queryParams.get('tag');
   const sortValue = queryParams.get('sort');
-  const navigate = useNavigate();
 
   // 디코딩
   const keyword = decodeURI(location.search);
@@ -46,8 +48,9 @@ export default function Main() {
 
   const [notFound, setNotFound] = useState(false);
 
-  // 체크된 값을 담을 배열
-  const [checkedList, setCheckedList] = useState([]);
+  //  체크된 값을 담을 배열
+  const [checkedList, setCheckedList] = useRecoilState(filterState);
+  const oneValue = ['최신순', '오래된순', '찜많은순'];
 
   // 배열에 값 넣기
   function checkedValue(value) {
@@ -58,16 +61,13 @@ export default function Main() {
       }
 
       // 최신순, 오래된순, 찜많은순이 이미 선택되어 있다면 해당 값을 해제 후 값을 바꿈
-      const oneValue = ['최신순', '오래된순', '찜많은순'];
       if (oneValue.includes(value)) {
-        const changeValue = prevList.filter((item) => oneValue.includes(item));
-        if (changeValue.length > 0) {
-          return [...prevList.filter((item) => !oneValue.includes(item)), value];
-        }
+        const updatedList = [value, ...prevList.filter((item) => item !== value && !oneValue.includes(item))];
+        return updatedList.slice(0, 5);
       }
 
       // 길이가 5미만이면 값을 배열에 추가
-      if (prevList.length < 5) {
+      if (prevList.length < 6) {
         return [...prevList, value];
       }
 
@@ -78,40 +78,30 @@ export default function Main() {
 
   // 쿼리스트링 만들기
   function makeQueryString() {
-    if (Array.isArray(checkedList)) {
+    if (oneValue.includes(checkedList[0])) {
+      if (checkedList.length === 1) {
+        const queryString = checkedList[0];
+        navigate(`/filter?sort=${queryString}`);
+      }
+      const sortStr = checkedList[0];
+      const queryString = checkedList.slice(1).join(',');
+      navigate(`/filter?tag=${queryString}&sort=${sortStr}`);
+    } else {
       const queryString = checkedList.join(',');
-      navigate(`?tag=${queryString}`);
-      filterModeOff();
-      setNotFound(true); //삭제
+      navigate(`/filter?tag=${queryString}`);
     }
+    filterModeOff();
   }
 
-  // 키워드가 있냐 없냐에 따라 부르는 API가 달라지게 구현해야함
-  // [전체 검색]: 여기만 useEffect사용, [키워드], [필터+검색] 으로 나눠짐 -> useEffect에 전부다 들어가 있으면 안됨(따로)
   useEffect(() => {
-    postsAPI.getAllPosts({ sort: sortValue, tag: tagValue, city: cityValue }).then((Posts) => {
-      setData(Posts.data.posts);
+    postsAPI.getAllPosts({ tag: tagValue, sort: sortValue, city: cityValue }).then((Posts) => {
+      const receivedData = Posts.data.posts;
+      setData(receivedData);
+
+      // 데이터가 없는 경우 notFound 상태를 true로 설정
+      setNotFound(receivedData.length === 0);
     });
-  }, [data, sortValue, tagValue, cityValue]);
-
-  // if (keyword) {
-  //   getPostSearchCity(cityValue).then((posts) => {
-  //     if (posts.length === 0) {
-  //       setNotFound(true);
-  //     } else {
-  //       setData(posts);
-  //     }
-  //   });
-  // }
-  // if (checkedList.length > 0) {
-  //   getPostTag(checkedList).then((posts) => {
-  //     setData(posts);
-  //   });
-  // }
-
-  useEffect(() => {
-    console.log('태그전달값', checkedList);
-  }, [checkedList]);
+  }, [cityValue, tagValue, sortValue]);
 
   return (
     <>
