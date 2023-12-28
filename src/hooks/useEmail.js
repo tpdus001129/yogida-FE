@@ -20,18 +20,18 @@ export default function useEmail() {
     setIsVerificationVisible(false);
   };
 
-  const handleSendValidationCode = async () => {
-    await authAPI
-      .getEmailVerifyCode({ email })
+  const handleSendValidationCode = async ({ type }) => {
+    return await authAPI
+      .getEmailVerifyCode({ email, type })
       .then(() => {
         openModal({ message: `메일이 전송되었습니다.\n5분 안에 인증번호를 입력해주세요.` });
         setIsAvailableEmailInput(false);
         setIsVerificationVisible(true);
       })
       .catch((error) => {
-        switch (error?.response?.status) {
+        switch (error?.status) {
           case 400: {
-            openModal({ message: error.response?.data?.message ?? '에러가 발생했습니다. (400)' });
+            openModal({ message: error?.message ?? '메일 전송 중 오류가 발생했습니다' });
             break;
           }
           case 500: {
@@ -47,17 +47,18 @@ export default function useEmail() {
   };
 
   const handleCheckValidationCode = async () => {
-    await authAPI
+    return await authAPI
       .checkEmailVerifyCode({ email, authCode: verificationCode })
-      .then(() => {
+      .then((data) => {
         openModal({ message: `인증번호가 일치합니다.` });
         setIsVerificationVisible(false);
         setIsEmailCertificated(true);
+        return data;
       })
       .catch((error) => {
-        switch (error?.response?.status) {
+        switch (error?.status) {
           case 400: {
-            openModal({ message: error.response?.data?.message ?? '에러가 발생했습니다. (400)' });
+            openModal({ message: error?.message ?? '인증번호 확인 중 오류가 발생했습니다.' });
             break;
           }
           case 500: {

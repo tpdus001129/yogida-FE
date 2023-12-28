@@ -10,7 +10,7 @@ import SearchInput from '../components/commons/SearchInput';
 
 export default function Search({ searchModeOff }) {
   const close = true;
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // 검색 데이터
   const [newKeyword, setNewKeyword] = useState('');
@@ -24,6 +24,8 @@ export default function Search({ searchModeOff }) {
       setKeywords(JSON.parse(result));
     }
   }, []);
+
+  console.log(searchParams);
 
   // 검색어를 최근 검색어 목록에 추가(중복 안됨)
   function handleAddKeyword(e) {

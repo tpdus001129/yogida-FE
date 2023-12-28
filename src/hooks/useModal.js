@@ -12,9 +12,10 @@ export default function useModal() {
   }, [setModal]);
 
   const openModal = useCallback(
-    ({ message, callback }) => {
+    ({ message, callback, type }) => {
       setModal({
         isOpen: true,
+        type,
         message: message,
         callback: callback !== undefined ? callback : () => {},
       });
