@@ -148,6 +148,7 @@ export default function Schedule() {
         schedule.map((place) => {
           // eslint-disable-next-line no-unused-vars
           const { id, ...rest } = place;
+          // const { id, placeImageSrc, ...resxt } = place;
           return rest;
         }),
       ),
@@ -157,16 +158,44 @@ export default function Schedule() {
       isPublic,
       reviewText,
     };
+    // const payload = {
+    //   title,
+    //   destination,
+    //   startDate,
+    //   endDate,
+    //   tag,
 
-    //   const formData = new FormData();
-    //   formData.append("data", new Blob([JSON.stringify(payload)], { type: 'application/json' }))
+    //   distances: caclulateDistance(),
+    //   cost,
+    //   peopleCount,
+    //   isPublic,
+    //   reviewText,
+    // };
 
-    //   Object.entries(payload).forEach(([key, value]) => {
-    //     if (value.type === 'file') {
-    //        formData.append(key, value.value);
-    //     }
-    //  });
-    const result = await addPost(payload);
+    console.log('payload: ', payload);
+
+    const formData = new FormData();
+
+    Object.entries(payload).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    // for (let i = 0; i < schedules.length; i++) {
+    //   for (let j = 0; j < schedules[i].length; j++) {
+    //     formData.append(`schedules[${i}][${j}].category`, schedules[i][j].category);
+    //     formData.append(`schedules[${i}][${j}].placeImageSrc`, schedules[i][j].placeImageSrc);
+    //     formData.append(`schedules[${i}][${j}].placeName`, schedules[i][j].placeName);
+    //     formData.append(`schedules[${i}][${j}].star`, schedules[i][j].star);
+    //     formData.append(`schedules[${i}][${j}].placePosition[0]`, schedules[i][j].placePosition[0]);
+    //     formData.append(`schedules[${i}][${j}].placePosition[1]`, schedules[i][j].placePosition[1]);
+    //   }
+    // }
+
+    // const imgArr = schedules.map((schedule) => schedule.map((place) => place.placeImageSrc));
+
+    // formData.append('images', imgArr);
+
+    const result = await addPost(formData);
     if (result?.status === 200) {
       toast.success('게시글이 등록되었습니다.');
       navigate(`${PATH.post}/${result?._id}`);
