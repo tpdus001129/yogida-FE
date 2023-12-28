@@ -8,7 +8,11 @@ import { useRecoilValue } from 'recoil';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 
 import userAPI from '../../services/user';
+import authAPI from '../../services/auth';
 import useModal from '../../hooks/useModal';
+
+import { useMutation } from 'react-query';
+import { useWithdraw } from '../../hooks/useResetAuth';
 
 export default function Profile({ setEditProfileMode }) {
   const { setNavbarHidden } = useOutletContext();
@@ -90,6 +94,50 @@ export default function Profile({ setEditProfileMode }) {
       });
   };
 
+  // 회원 탈퇴
+  const { mutate: withdraw } = useMutation(authAPI.withdraw, {
+    onSuccess: useWithdraw(),
+  });
+
+  // const handleWithdraw = async () => {
+  //   const userString = localStorage.getItem('user');
+  //   const user = JSON.parse(userString);
+  //   const userId = user.info._id;
+  //   const provider = user.info.provider;
+
+  //   if (provider === 'kakao') {
+  //     await authAPI
+  //       .kakaoUnlink()
+  //       .then(() => {
+  //         openModal({ message: `탈퇴되었습니다.` });
+  //         navigate('/');
+  //       })
+  //       .catch((error) => {
+  //         switch (error.response?.status) {
+  //           case 400: {
+  //             openModal({ message: `탈퇴를 실패하였습니다.` });
+  //             break;
+  //           }
+  //         }
+  //       });
+  //   } else {
+  //     await authAPI
+  //       .withdraw({ _id: userId })
+  //       .then(() => {
+  //         openModal({ message: `탈퇴되었습니다.` });
+  //         navigate('/');
+  //       })
+  //       .catch((error) => {
+  //         switch (error.response?.status) {
+  //           case 400: {
+  //             openModal({ message: `탈퇴를 실패하였습니다.` });
+  //             break;
+  //           }
+  //         }
+  //       });
+  //   }
+  // };
+
   return (
     <div className="flex flex-col pb-[20px] h-screen items-center">
       <section className="w-full top-0 border-gray-4 border-b-[1px]">
@@ -169,7 +217,7 @@ export default function Profile({ setEditProfileMode }) {
         <Button type="primary" size={'large'} text={'bold'} onClick={handleInfoModify}>
           <span className="font-bold text-[14px]">회원 정보 수정</span>
         </Button>
-        <Button type={'kakao'} size={'large'} text={'bold'}>
+        <Button type={'kakao'} size={'large'} text={'bold'} onClick={withdraw}>
           <span className="font-bold text-[14px]">탈퇴하기</span>
         </Button>
       </div>
