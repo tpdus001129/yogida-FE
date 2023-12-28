@@ -50,7 +50,7 @@ export default function Schedule() {
   const [destination, setDestination] = useState(''); // 여행지
   const [peopleCount, setPeopleCount] = useState(0); //인원수
   const [cost, setCost] = useState(0); //예산
-  const [isPublic, setIsPublic] = useState('true'); //게시글 공개 여부
+  const [isPublic, setIsPublic] = useState(true); //게시글 공개 여부
   const [schedules, setSchedules] = useState([]); // 코스 등록
   const [tag, setTag] = useState([]); //태그
 
@@ -68,8 +68,6 @@ export default function Schedule() {
       setSchedules(days);
     }
   }, [dayCalculation, startDate, endDate]);
-
-  console.log('schedules : ', schedules);
 
   // day별 장소 추가
   const handleSingleScheduleClick = (option) => {
@@ -111,7 +109,7 @@ export default function Schedule() {
   };
 
   //장소별 거리 계산
-  const caclulateDistance = () => {
+  const calculateDistance = () => {
     const arr = [];
     for (let i = 0; i < schedules.length; i++) {
       arr.push([]);
@@ -152,48 +150,28 @@ export default function Schedule() {
           return rest;
         }),
       ),
-      distances: caclulateDistance(),
+      distances: calculateDistance(),
       cost,
       peopleCount,
       isPublic,
       reviewText,
     };
-    // const payload = {
-    //   title,
-    //   destination,
-    //   startDate,
-    //   endDate,
-    //   tag,
-
-    //   distances: caclulateDistance(),
-    //   cost,
-    //   peopleCount,
-    //   isPublic,
-    //   reviewText,
-    // };
-
-    console.log('payload: ', payload);
-
-    const formData = new FormData();
-
-    Object.entries(payload).forEach(([key, value]) => {
-      formData.append(key, value);
+    const placeImages = schedules.map((subArray) => {
+      return subArray.map((item) => item.placeImageSrc);
     });
 
-    // for (let i = 0; i < schedules.length; i++) {
-    //   for (let j = 0; j < schedules[i].length; j++) {
-    //     formData.append(`schedules[${i}][${j}].category`, schedules[i][j].category);
-    //     formData.append(`schedules[${i}][${j}].placeImageSrc`, schedules[i][j].placeImageSrc);
-    //     formData.append(`schedules[${i}][${j}].placeName`, schedules[i][j].placeName);
-    //     formData.append(`schedules[${i}][${j}].star`, schedules[i][j].star);
-    //     formData.append(`schedules[${i}][${j}].placePosition[0]`, schedules[i][j].placePosition[0]);
-    //     formData.append(`schedules[${i}][${j}].placePosition[1]`, schedules[i][j].placePosition[1]);
-    //   }
-    // }
+    // console.log(placeImages);
 
-    // const imgArr = schedules.map((schedule) => schedule.map((place) => place.placeImageSrc));
+    const formData = new FormData();
+    formData.append('payload', JSON.stringify(payload));
 
-    // formData.append('images', imgArr);
+    for (let i = 0; i < placeImages.length; i++) {
+      for (let j = 0; j < placeImages[i].length; j++) {
+        if (placeImages[i][j] instanceof File) {
+          formData.append(`image`, placeImages[i][j], `${i + 1}-${j + 1}`);
+        }
+      }
+    }
 
     const result = await addPost(formData);
     if (result?.status === 200) {
@@ -330,9 +308,9 @@ export default function Schedule() {
                 name="secret"
                 id="show"
                 className="w-[20px] h-[20px]"
-                value={'true'}
-                checked={isPublic === 'true'}
-                onChange={(e) => setIsPublic(e.target.value)}
+                checked={isPublic === true}
+                // onChange={(e) => setIsPublic(e.target.value)}
+                onClick={() => setIsPublic(true)}
               />
               공개
             </label>
@@ -343,9 +321,9 @@ export default function Schedule() {
                 name="secret"
                 id="hidden"
                 className="w-[20px] h-[20px]"
-                value={'false'}
-                checked={isPublic === 'false'}
-                onChange={(e) => setIsPublic(e.target.value)}
+                checked={isPublic === false}
+                // onChange={(e) => setIsPublic(e.target.value)}
+                onClick={() => setIsPublic(false)}
               />
               비공개
             </label>
@@ -359,7 +337,6 @@ export default function Schedule() {
           날짜(여행 일정)를 먼저 선택해 주세요!
         </section>
       )}
-
       {startDate && endDate && (
         <>
           {schedulePerDay && schedulePerDay.length >= 1 && (
@@ -386,7 +363,6 @@ export default function Schedule() {
           </section>
         </>
       )}
-
       {/* 필터 */}
       <ScheduleItem icon={<IoPricetag color="#589BF7" size={20} />} title="태그" id="tag"></ScheduleItem>
 
