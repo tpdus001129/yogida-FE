@@ -29,7 +29,7 @@ export default function CourseMap({ data }) {
           lng: centerLng,
         }}
         className="w-full h-full"
-        level={2}
+        level={10}
       >
         <Polyline path={paths} strokeWeight={5} strokeColor={'#FB6363'} strokeOpacity={1} strokeStyle={'dashed'} />
 

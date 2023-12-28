@@ -8,8 +8,8 @@ export default function Card(props) {
     if (!e.target.files) {
       return;
     }
-    const fileInput = e.target.files[0];
-    const img = URL.createObjectURL(fileInput);
+    const img = e.target.files[0];
+    // const img = URL.createObjectURL(fileInput);
     handleAddPlaceImgClick({ id, img });
   };
 
@@ -26,7 +26,9 @@ export default function Card(props) {
         htmlFor={`${id}`}
         className="h-[130px] rounded-b-[20px] bg-[#d9d9d9] overflow-hidden flex items-center justify-center"
       >
-        {placeImageSrc && <img src={placeImageSrc} alt="place-img" />}
+        {placeImageSrc && (
+          <img src={placeImageSrc === 'default' ? '' : URL.createObjectURL(placeImageSrc)} alt="place-img" />
+        )}
         {!placeImageSrc && (
           <span className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center" type="button">
             <IoCamera size={24} color="white" />

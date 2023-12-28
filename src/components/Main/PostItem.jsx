@@ -16,7 +16,6 @@ export default function PostItem({ data }) {
   // 유저가 좋아요 누른 데이터
   const [myLikeId, setMyLikeId] = useState([]);
   const [myLikes, setMyLikes] = useState([]);
-
   // 좋아요 get
   useEffect(() => {
     const fetchLikes = async () => {
@@ -25,7 +24,7 @@ export default function PostItem({ data }) {
         setMyLikeId(likes.data.likedPosts);
         setMyLikes(likes.data.likedPosts.flatMap((post) => post.postId).flatMap((it) => it._id));
       } catch (error) {
-        console.error('Error fetching likes:', error);
+        console.error('likes Error:', error);
       }
     };
     fetchLikes();
@@ -35,17 +34,17 @@ export default function PostItem({ data }) {
   async function handleClickLike(e, userId, postId) {
     e.stopPropagation();
     e.preventDefault();
-    // location.reload();
 
+    // console.log(myLikeId);
     const isLiked = myLikes.includes(postId);
 
+    // console.log('?????', myLikeId.find((item) => item.postId._id === postId)._id);
     if (isLiked) {
-      // await handleRemoveLike(myLikeId.find((item) => item.postId._id === postId));
-
-      //찜 삭제할때 배열에 담아서 보내야함
       await handleRemoveLike([myLikeId.find((item) => item.postId._id === postId)._id]);
+      setMyLikes((prev) => prev.filter((item) => item._id !== postId));
     } else {
-      await likesAPI.postLike(userId, postId);
+      const updateResult = await likesAPI.postLike(userId, postId);
+      setMyLikes((prev) => [...prev, updateResult.data.postId]);
     }
   }
 
