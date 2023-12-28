@@ -101,7 +101,7 @@ export default function Main() {
       // 데이터가 없는 경우 notFound 상태를 true로 설정
       setNotFound(receivedData.length === 0);
     });
-  }, [tagValue, sortValue]);
+  }, [cityValue, tagValue, sortValue]);
 
   return (
     <>

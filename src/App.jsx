@@ -3,7 +3,6 @@ import Main from './pages/Main';
 import Notfound from './pages/Notfound';
 import Layout from './components/commons/Layout';
 import Mypage from './pages/mypage/Mypage';
-import Filter from './pages/Filter';
 import Login from './pages/Login';
 import Schedule from './components/Mypage/Schedule';
 import Signup from './pages/SignUp';
