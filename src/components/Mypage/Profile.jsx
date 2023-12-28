@@ -72,14 +72,13 @@ export default function Profile({ setEditProfileMode }) {
     const formData = new FormData();
     formData.append('nickname', newNickname);
     formData.append('profile', imgRef.current.files[0]);
-    console.log('업데이트될 닉네임은?', newNickname);
     await userAPI
       .userInfoModify(formData)
       .then(() => {
         openModal({
           message: nickname === newNickname ? `수정된 정보가 없습니다.` : `회원 정보가 수정되었습니다.`,
+          callback: () => setEditProfileMode((prev) => !prev),
         });
-        setEditProfileMode((prev) => !prev);
       })
       .catch((error) => {
         switch (error.response?.status) {
@@ -107,6 +106,7 @@ export default function Profile({ setEditProfileMode }) {
             src={profileImg || defaultProfile}
             alt="profile"
             className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]"
+            onClick={() => imgRef.current.click()}
           />
           <label htmlFor="profile" className="text-primary text-[14px] font-medium tracking-tight">
             사진 수정
