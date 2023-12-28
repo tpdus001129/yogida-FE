@@ -87,9 +87,9 @@ export function SearchPlace({ handleSingleScheduleClick, onClose }) {
       {places?.length === 0 && <p className="text-center text-gray-1 text-[14px] mt-[20px]">검색어 내역이 없습니다.</p>}
       {places?.length !== 0 && (
         <ul className="w-full px-[24px]">
-          {places?.map((place) => (
+          {places?.map((place, index) => (
             <li key={place?.id}>
-              <PlaceItem {...place} keyword={keyword} onClick={onClick} />
+              <PlaceItem {...place} keyword={keyword} index={index} onClick={onClick} />
             </li>
           ))}
         </ul>
@@ -208,7 +208,7 @@ function DestinationItem({ name, onClick }) {
   );
 }
 
-function PlaceItem({ id, keyword, place_name, category_name, address_name, x, y, onClick }) {
+function PlaceItem({ id, index, keyword, place_name, category_name, address_name, x, y, onClick }) {
   const category = category_name?.split(' > ').slice(0, 2).join('>');
   const address = address_name?.split(' ').slice(0, 2).join(' ');
   const name = place_name?.split(keyword);
@@ -226,7 +226,7 @@ function PlaceItem({ id, keyword, place_name, category_name, address_name, x, y,
       </div>
       <button
         className="bg-gray-4 text-sm px-3 py-1 rounded-2xl"
-        onClick={() => onClick({ id, category, address, place_name, x, y })}
+        onClick={() => onClick({ id: id + index, category, address, place_name, x, y })}
       >
         선택
       </button>
@@ -265,4 +265,5 @@ PlaceItem.propTypes = {
   keyword: PropTypes.string,
   x: PropTypes.string,
   y: PropTypes.string,
+  index: PropTypes.number,
 };
