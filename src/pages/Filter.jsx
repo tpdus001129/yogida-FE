@@ -82,7 +82,7 @@ Filter.propTypes = {
   filterModeOff: PropTypes.func,
   handleCheckList: PropTypes.func,
   makeQueryString: PropTypes.func,
-  checkedValue: PropTypes.func,
   checkedList: PropTypes.array,
+  checkedValue: PropTypes.func,
   setCheckedList: PropTypes.func,
 };
