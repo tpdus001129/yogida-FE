@@ -148,11 +148,11 @@ export default function Main() {
                     ) : (
                       <button
                         className={`w-[52px] h-[52px] ${
-                          tagValue ? 'bg-primary' : 'border-gray-2'
+                          checkedList ? 'bg-primary' : 'border-gray-2'
                         } rounded-full flex justify-center items-center`}
                         onClick={filterModeOn}
                       >
-                        <IoOptionsOutline className={`text-[20px] ${tagValue ? 'text-white' : ''}`} />
+                        <IoOptionsOutline className={`text-[20px] ${checkedList ? 'text-white' : ''}`} />
                       </button>
                     )}
                   </div>
