@@ -11,7 +11,7 @@ export const useMypagePostsQuery = () => {
     queryKey: [queryKeys.mypagePost],
     queryFn: postsAPI.getAllPostsByMe,
     useErrorBoundary: false,
-    select: (data) => ({ list: data.data.posts, totalCount: data.data.posts.length }),
+    select: (data) => ({ list: data.data.posts, totalCount: data.data.posts?.length }),
   });
 
   const { data: post } = useQuery({

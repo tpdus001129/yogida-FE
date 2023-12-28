@@ -20,7 +20,7 @@ export default function Search({ searchModeOff }) {
 
   useEffect(() => {
     const result = localStorage.getItem('keywords');
-    if (result.length !== 0) {
+    if (result?.length !== 0) {
       setKeywords(JSON.parse(result));
     }
   }, []);
@@ -110,11 +110,11 @@ export default function Search({ searchModeOff }) {
             전체삭제
           </button>
         </div>
-        {keywords.map((keyword) => (
+        {keywords?.map((keyword) => (
           <SearchItem key={keyword} keyword={keyword} onRemove={handleRemoveKeywords} />
         ))}
       </div>
-      {keywords.length === 0 && (
+      {keywords?.length === 0 && (
         <p className="text-center text-gray-1 text-[14px] mt-[20px]">최근 검색어 내역이 없습니다.</p>
       )}
     </div>
