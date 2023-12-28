@@ -64,8 +64,8 @@ export default function Header({ headerData }) {
 
   if (!headerData) return <p>loading...</p>;
   return (
-    <div className={`w-full h-[290px] bg-primary`}>
-      <div className="flex justify-between items-center h-[74px] mx-[24px]">
+    <div className={`w-full h-[270px] bg-primary`}>
+      <div className="flex justify-between items-center h-[70px] mx-[24px]">
         <IconButton iconName={'prev'} buttonType={buttonType} />
         <div className="flex gap-[16px] space-x-[6px]">
           {headerIcon.map((icon) => (
@@ -84,7 +84,7 @@ export default function Header({ headerData }) {
         <div className="pt-[14px]">
           {headerData && headerData.tag && <Tag tags={headerData.tag} whiteMode={whiteMode} />}
         </div>
-        <div className="flex justify-between mt-[20px]">
+        <div className="flex justify-between mt-[14px]">
           {infoData.map((info) => (
             <div
               className="flex flex-col items-center gap-[6px] drop-shadow-[0_2px_0px_rgba(0,0,0,0.25)]"
