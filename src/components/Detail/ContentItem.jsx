@@ -1,28 +1,64 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
-import { IoBookmarkOutline, IoBookmark, IoStar, IoCar, IoWalkOutline } from 'react-icons/io5';
+import { IoStar, IoCar, IoWalkOutline } from 'react-icons/io5';
 
-import bookmarkAPI from '../../services/bookmarks';
+// import bookmarkAPI from '../../services/bookmarks';
 import NoImage from './NoImage';
 
-export default function ContentItem({ distanceIndex, schedulesData, distancesData, postId }) {
-  const [isClickedBookmark, setIsClickedBookmark] = useState(new Array(schedulesData.length).fill(false));
+export default function ContentItem({ distanceIndex, schedulesData, distancesData }) {
+  // const [isClickedBookmark, setIsClickedBookmark] = useState(new Array(schedulesData.length).fill(false));
+
+  // 내 북마크 목록
+  // const [myBookmark, setMyBookmark] = useState([]);
 
   // 북마크 저장
-  function bookmarkHandleClick(index) {
-    const singleScheduleId = schedulesData[index];
+  // function bookmarkHandleClick(index) {
+  //   const singleScheduleId = schedulesData[index];
 
-    console.log(singleScheduleId._id);
+  //   const newBookmark = [...isClickedBookmark];
+  //   newBookmark[index] = !newBookmark[index];
+  //   setIsClickedBookmark(newBookmark);
+  // }
 
-    const newBookmark = [...isClickedBookmark];
-    newBookmark[index] = !newBookmark[index];
-    setIsClickedBookmark(newBookmark);
+  // 북마크 get
+  // useEffect(() => {
+  //   const fetchLikes = async () => {
+  //     try {
+  //       const bookmarks = await bookmarkAPI.getAllBookmarksByMe();
+  //       setMyBookmark(bookmarks);
+  //     } catch (error) {
+  //       console.error('bookmark Error:', error);
+  //     }
+  //   };
+  //   fetchLikes();
+  // }, []);
 
-    bookmarkAPI.getAllBookmarksByMe(postId, singleScheduleId._id);
-  }
+  // useEffect(() => {
+  //   console.log();
+  // });
+
+  // 좋아요 post
+  // async function handleClickLike(e, userId, postId) {
+  //   e.stopPropagation();
+  //   e.preventDefault();
+  //   location.reload();
+
+  //   const isLiked = myLikes.includes(postId);
+
+  //   if (isLiked) {
+  //     await handleRemoveLike([myLikeId.find((item) => item.postId._id === postId)]);
+  //   } else {
+  //     await likesAPI.postLike(userId, postId);
+  //   }
+  // }
+
+  // // 좋아요 patch
+  // async function handleRemoveLike(payload) {
+  //   await likesAPI.removeAll(payload);
+  // }
 
   // 거리별 아이콘 타입
   function distanceIconType(distance) {
@@ -81,12 +117,12 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                     <p className="text-[14px] mr-[4px] font-bold">{places.placeName}</p>
                     <p className="text-[12px] mt-[2px] line-height-[14px]">{places.category}</p>
                   </div>
-                  <button onClick={() => bookmarkHandleClick(index)} className="absolute right-[14px]">
-                    {isClickedBookmark[index] ? (
+                  <button className="absolute right-[14px]">
+                    {/* {isClickedBookmark[index] ? (
                       <IoBookmark className="text-secondary" size="22" />
                     ) : (
                       <IoBookmarkOutline className="text-secondary" size="22" />
-                    )}
+                    )} */}
                   </button>
                 </div>
                 <div className="h-[87px] rounded-b-[20px] bg-gray-3 relative overflow-hidden">

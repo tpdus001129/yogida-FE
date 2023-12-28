@@ -4,7 +4,7 @@ const API_URL = '/api/v1/comments';
 
 const commentAPI = {
   async getAllCommentsByMe() {
-    return await api.get(API_URL + '/my-page');
+    return await api.get(API_URL + '/mine');
   },
   async getAllCommentByPost(postId) {
     return await api.get(API_URL + `?postId=${postId}`);
@@ -12,7 +12,11 @@ const commentAPI = {
   async postComment(postId, content) {
     return await api.post(API_URL, { postId, content });
   },
-  async removeOne({ id }) {
+  async updateComment(commentId) {
+    return await api.post(API_URL + `?commentId=${commentId}`);
+  },
+  async removeOne(id) {
+    console.log(id);
     return await api.delete(API_URL + `/${id}`);
   },
 };

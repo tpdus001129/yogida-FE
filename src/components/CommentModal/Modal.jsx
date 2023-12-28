@@ -5,9 +5,6 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoils/userAtom';
 import PropTypes from 'prop-types';
 
-import moment from 'moment';
-import 'moment/locale/ko';
-
 import Comment from './Comment';
 import Input from './Input';
 import Background from './Background';
@@ -18,9 +15,6 @@ export default function Modal({ postId }) {
   const [inputValue, setInputValue] = useState('');
   const [comments, setComments] = useState([]);
 
-  // 댓글 작성 시간
-  const nowTime = moment().format('YYYY년 MM월 DD일');
-
   const { commentModalMode, setCommentModalMode } = useContext(ModalContext);
 
   const { handleTouchStart, handleTouchMove, handleTouchEnd } = useBottomSheet(() => {
@@ -30,11 +24,16 @@ export default function Modal({ postId }) {
   // 댓글 목록
   const [commentsData, setCommentsData] = useState(comments);
 
+  // 대댓글 모드
+  const [replyMode, setReplyMode] = useState(true);
+
+  console.log(replyMode);
+
   // 새로운 댓글
   const [newComment, setNewComment] = useState({
     image: user && user.profileImageSrc,
     nickname: user && user.nickname,
-    date: nowTime,
+    date: '',
     content: '',
   });
 
@@ -63,6 +62,23 @@ export default function Modal({ postId }) {
     commentAPI.postComment(postId, inputValue);
   }
 
+  // reply delete API
+  function deleteComment({ id: id }) {
+    commentAPI.removeOne({ id });
+  }
+
+  useEffect(() => {
+    console.log(comments);
+  });
+
+  // function replyOn() {
+  //   setReplyMode(true);
+  // }
+
+  function replyOff() {
+    setReplyMode(false);
+  }
+
   return (
     <div>
       <Background commentModalMode={commentModalMode} setCommentModalMode={setCommentModalMode} />
@@ -71,18 +87,22 @@ export default function Modal({ postId }) {
           <div className="flex justify-center">
             <div className="w-1/6 h-[4px] bg-gray-3 rounded-[8px] mt-[16px]"></div>
           </div>
-          <hr className="border-gray-3 mt-[64px] mb-[18px]" />
+          <p className="text-[14px] font-bold text-center mt-[40px] mb-[10px]">댓글</p>
+          <hr className="border-gray-3  mb-[18px]" />
           <div className="w-full h-[50vh] overflow-scroll scrollbar-hide">
             {comments.length === 0 ? (
               <p className="text-[14px] text-gray-1 text-center">작성된 댓글이 없습니다.</p>
             ) : (
-              comments.map((comment, index) => (
+              comments.map((comment) => (
                 <Comment
-                  key={index}
+                  key={comment._id}
                   image={comment.authorId.profileImageSrc}
                   nickname={comment.authorId.nickname}
-                  date={nowTime}
+                  date={comment.createdAt.slice(0, 10)}
                   content={comment.content}
+                  deleteComment={deleteComment}
+                  commentId={comment._id}
+                  setGetReplyId={comment.authorId.nickname}
                 />
               ))
             )}
@@ -95,6 +115,9 @@ export default function Modal({ postId }) {
             disabled={!user}
             createComment={createComment}
             postId={postId}
+            authorNickname={'집에 가고 싶다'}
+            replyMode={replyMode}
+            replyOff={replyOff}
           />
         </div>
       </div>
