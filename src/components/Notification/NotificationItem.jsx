@@ -5,7 +5,7 @@ import { getTime } from '../../utils/getTime';
 import { Link } from 'react-router-dom';
 import { useNotificationQuery } from '../../pages/notification/queries';
 
-export default function NotificationItem({ type, nickname, message, updatedAt, url, alarmId, isRead }) {
+export default function NotificationItem({ type, nickname, message, createdAt, url, alarmId, isRead }) {
   const { readAlarm, deleteAlarm } = useNotificationQuery();
 
   // 메시지 타입
@@ -29,7 +29,7 @@ export default function NotificationItem({ type, nickname, message, updatedAt, u
             <span className="font-bold">{nickname}</span>
             <span>{messageType}</span>
             <span>{`${message}`}</span>
-            <span className="text-gray-2 ml-[4px]">{getTime(updatedAt)}</span>
+            <span className="text-gray-2 ml-[4px]">{getTime(createdAt)}</span>
           </p>
         </div>
       </Link>
@@ -45,7 +45,7 @@ NotificationItem.propTypes = {
   nickname: PropTypes.string.isRequired,
   message: PropTypes.string,
   url: PropTypes.string.isRequired,
-  updatedAt: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
   alarmId: PropTypes.string.isRequired,
   isRead: PropTypes.bool.isRequired,
 };

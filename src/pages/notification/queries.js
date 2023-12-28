@@ -1,18 +1,22 @@
 import { useQuery, useMutation } from 'react-query';
 import { queryKeys, queryClient } from '../../store/reactQuery';
 import alarmsAPI from '../../services/alarms';
-import { useAuth } from '../../hooks/useAuth';
+import { useState } from 'react';
+import { isValidUser } from '../../utils/isValidUser';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoils/userAtom';
 
 export const useNotificationQuery = () => {
-  const { loginUserInfo } = useAuth();
+  const user = useRecoilValue(userState);
+  const [lastItemId, setLastItemId] = useState(null);
   const { data, refetch } = useQuery({
     queryKey: [queryKeys.notification],
     queryFn: () => {
-      if (loginUserInfo) {
-        return alarmsAPI.getAllAlarms();
+      if (isValidUser(user)) {
+        return alarmsAPI.getAllAlarms({ perPage: 10, lastItemId });
       }
     },
-    refetchInterval: loginUserInfo ? 1000 * 60 * 2 : false,
+    refetchInterval: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
@@ -38,5 +42,13 @@ export const useNotificationQuery = () => {
     onSuccess: invalidateMatchQuery,
   }).mutateAsync;
 
-  return { data, refetch, readAlarm, deleteAlarm, deleteAllAlarm };
+  return {
+    data: data?.data,
+    refetch,
+    lastItemId: data?.lastItemId,
+    setLastItemId,
+    readAlarm,
+    deleteAlarm,
+    deleteAllAlarm,
+  };
 };

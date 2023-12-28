@@ -6,34 +6,26 @@ import { IoNotificationsOutline } from 'react-icons/io5';
 
 import { IoPersonCircleOutline } from 'react-icons/io5';
 import { PiNotePencil } from 'react-icons/pi';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../../recoils/userAtom';
 import { PATH } from '../../constants/path';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import useNotification from '../../hooks/useNotification';
-import { useAuth } from '../../hooks/useAuth';
 import { useNotificationQuery } from '../../pages/notification/queries';
 import { useEffect } from 'react';
+import { isValidUser } from '../../utils/isValidUser';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoils/userAtom';
 
 export default function Navbar() {
   //recoil에 저장된 user정보 가져오기
   const user = useRecoilValue(userState);
-  const { loginUserInfo } = useAuth();
-
-  const { setNotificationList, notificationCount } = useNotification();
-  const { data, refetch } = useNotificationQuery();
+  const { notificationCount } = useNotification();
+  const { refetch } = useNotificationQuery();
 
   useEffect(() => {
-    if (loginUserInfo) {
+    if (isValidUser(user)) {
       refetch();
     }
-  }, [loginUserInfo, refetch]);
-
-  useEffect(() => {
-    if (loginUserInfo) {
-      setNotificationList(data);
-    }
-  }, [data, loginUserInfo, setNotificationList]);
+  }, [user, refetch]);
 
   return (
     <nav className="border-t-[1px] border-solid border-gray w-full fixed bottom-0 left-0 h-navbar bg-white z-10">
