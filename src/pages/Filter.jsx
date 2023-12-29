@@ -52,7 +52,9 @@ export default function Filter() {
         setTag((prevTag) => prevTag.filter((item) => item !== value)); // 태그 상태 업데이트
       } else {
         if (tag.length >= 5) {
-          toast.error('필터의 갯수는 최대 5개 입니다.');
+          toast('태그는 최대 5개까지 선택할 수 있습니다.', {
+            icon: '👏',
+          });
           return;
         }
         setCheckedList((prevList) => [...prevList, value]);

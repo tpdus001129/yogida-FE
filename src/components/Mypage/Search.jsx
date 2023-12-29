@@ -110,23 +110,22 @@ export function SelectTag({ tag, handleTagsClick, onClose }) {
 
   // 배열에 값 넣기
   function checkedValue(value) {
-    setCheckedList((prevList) => {
-      // 선택된 값이 있으면 해당 값을 해제(배열에서 삭제)
-      if (prevList.includes(value)) {
-        return prevList.filter((item) => item !== value);
-      }
+    // 체크 해제하는 경우
+    if (checkedList.includes(value)) {
+      setCheckedList((prevList) => prevList.filter((item) => item !== value));
+      return;
+    }
 
-      // 길이가 5미만이면 값을 배열에 추가
-      if (prevList.length < 5) {
-        return [...prevList, value];
-      }
+    // 6개 이상 체크하지 못하도록 제한
+    if (checkedList.length >= 5) {
       toast('태그는 최대 5개까지 선택할 수 있습니다.', {
         icon: '👏',
       });
+      return;
+    }
 
-      // 길이가 5를 넘으면 이전 값 유지
-      return [...prevList];
-    });
+    // 새 값을 추가
+    setCheckedList((prevList) => [...prevList, value]);
   }
 
   // 필터 초기화
