@@ -16,6 +16,7 @@ export default function PostItem({ data }) {
   // 유저가 좋아요 누른 데이터
   const [myLikeId, setMyLikeId] = useState([]);
   const [myLikes, setMyLikes] = useState([]);
+
   // 좋아요 get
   useEffect(() => {
     const fetchLikes = async () => {

@@ -3,6 +3,7 @@ import { ModalContext } from '../../pages/Detail';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoils/userAtom';
+
 import PropTypes from 'prop-types';
 
 import Comment from './Comment';
@@ -11,25 +12,30 @@ import Background from './Background';
 import commentAPI from '../../services/comment';
 
 export default function Modal({ postId }) {
+  // 유저정보
   const user = useRecoilValue(userState);
+  const { commentModalMode, setCommentModalMode } = useContext(ModalContext);
+  const commentPostId = postId;
   const [inputValue, setInputValue] = useState('');
   const [comments, setComments] = useState([]);
-
-  const { commentModalMode, setCommentModalMode } = useContext(ModalContext);
-
-  const { handleTouchStart, handleTouchMove, handleTouchEnd } = useBottomSheet(() => {
-    setCommentModalMode(false);
-  });
+  const [commentReplyContent, setCommentReplyContent] = useState('');
+  const [commentNickname, setCommentNickname] = useState('');
+  const [commentParentsComment, setCommentParentsComment] = useState('');
 
   // 댓글 목록
   const [commentsData, setCommentsData] = useState(comments);
 
   // 대댓글 모드
-  const [replyMode, setReplyMode] = useState(true);
+  const [replyMode, setReplyMode] = useState(false);
 
-  // function replyOn() {
-  //   setReplyMode(true);
-  // }
+  // bottom sheet
+  const { handleTouchStart, handleTouchMove, handleTouchEnd } = useBottomSheet(() => {
+    setCommentModalMode(false);
+  });
+
+  function replyOn() {
+    setReplyMode(true);
+  }
 
   function replyOff() {
     setReplyMode(false);
@@ -48,6 +54,7 @@ export default function Modal({ postId }) {
     setCommentsData([...commentsData, { ...newComment, content: inputValue }]);
     setNewComment({ ...newComment, content: '' });
     setInputValue('');
+    replyOff();
   }
 
   // comment get API
@@ -63,10 +70,17 @@ export default function Modal({ postId }) {
       });
   }, [postId]);
 
-  // comment post API
-  function createComment(postId, inputValue) {
-    commentAPI.postComment(postId, inputValue);
+  // comment & reply post API
+  async function createCommentReply(commentParentsComment, commentPostId, commentReplyContent) {
+    await commentAPI.postComment(commentParentsComment, commentPostId, commentReplyContent);
+    setCommentReplyContent('');
   }
+
+  // 자식 컴포넌트에서 다른 자식 컴포넌트로 전달
+  const getAuthorId = (nickname, parentsCommentId) => {
+    setCommentNickname(nickname);
+    setCommentParentsComment(parentsCommentId);
+  };
 
   return (
     <div>
@@ -83,17 +97,21 @@ export default function Modal({ postId }) {
               <p className="text-[14px] text-gray-1 text-center">작성된 댓글이 없습니다.</p>
             ) : (
               comments.map((comment) => (
-                <Comment
-                  key={comment._id}
-                  image={comment.authorId.profileImageSrc}
-                  nickname={comment.authorId.nickname}
-                  date={comment.createdAt.slice(0, 10)}
-                  content={comment.content}
-                  commentId={comment._id}
-                  setGetReplyId={comment.authorId.nickname}
-                  authorId={comment.authorId._id}
-                  newComment={newComment}
-                />
+                <div key={comment._id}>
+                  <Comment
+                    image={comment.authorId.profileImageSrc}
+                    nickname={comment.authorId.nickname}
+                    date={comment.createdAt.slice(0, 10)}
+                    content={comment.content}
+                    commentId={comment._id}
+                    setGetReplyId={comment.authorId.nickname}
+                    authorId={comment.authorId._id}
+                    newComment={newComment}
+                    replyOn={replyOn}
+                    getAuthorId={getAuthorId}
+                    reply={comment.reply}
+                  />
+                </div>
               ))
             )}
           </div>
@@ -103,11 +121,15 @@ export default function Modal({ postId }) {
             addCommentHandler={addCommentHandler}
             setInputValue={setInputValue}
             disabled={!user}
-            createComment={createComment}
+            createCommentReply={createCommentReply}
             postId={postId}
-            authorNickname={'집에 가고 싶다'}
+            authorNickname={commentNickname}
             replyMode={replyMode}
             replyOff={replyOff}
+            setCommentReplyContent={setCommentReplyContent}
+            commentReplyContent={commentReplyContent}
+            commentParentsComment={commentParentsComment}
+            commentPostId={commentPostId}
           />
         </div>
       </div>
