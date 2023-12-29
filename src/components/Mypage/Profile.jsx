@@ -171,8 +171,8 @@ export default function Profile({ setEditProfileMode }) {
       </section>
 
       <div className="px-[23px] mt-[50px] flex flex-col gap-[16px]">
-        <label htmlFor="email" className="text-[14px] font-bold flex items-center">
-          <span className="w-[150px]">이메일</span>
+        <label htmlFor="email" className="text-[14px] font-bold flex items-center w-full justify-between">
+          <span className="w-[100px]">이메일</span>
           <div className=" flex flex-1">
             <input
               value={email}
@@ -184,8 +184,8 @@ export default function Profile({ setEditProfileMode }) {
             />
           </div>
         </label>
-        <label htmlFor="nickname" className="text-[14px] font-bold flex items-center">
-          <span className="w-[150px]">이름</span>
+        <label htmlFor="nickname" className="text-[14px] font-bold flex items-center w-full justify-between">
+          <span className="w-[100px]">이름</span>
           <div className="flex">
             <input
               type="nickname"
