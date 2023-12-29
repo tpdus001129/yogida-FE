@@ -433,7 +433,12 @@ export default function Schedule() {
           )}
 
           <div className="overflow-scroll  scrollbar-hide">
-            <DayButton startDate={startDate} dayCount={dayCalculation} dayTitle={setDayTitle} setIndex={setSelectDay} />
+            <DayButton
+              startDate={{ startDate }}
+              dayCount={dayCalculation}
+              dayTitle={setDayTitle}
+              setIndex={setSelectDay}
+            />
           </div>
           <p className="text-center text-[14px] font-bold mb-[30px]">{dayTitle}</p>
 

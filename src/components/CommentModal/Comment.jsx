@@ -182,7 +182,7 @@ function Profile({ img }) {
 }
 
 Comment.propTypes = {
-  reply: PropTypes.bool.isRequired,
+  reply: PropTypes.array.isRequired,
   nickname: PropTypes.string,
   content: PropTypes.string,
   date: PropTypes.string,
@@ -192,7 +192,7 @@ Comment.propTypes = {
   CommentMenuToggle: PropTypes.func,
   authorId: PropTypes.string,
   replyOn: PropTypes.func,
-  getAuthorId: PropTypes.string,
+  getAuthorId: PropTypes.func,
 };
 
 Comment.defaultProps = {

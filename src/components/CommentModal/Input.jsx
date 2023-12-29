@@ -106,5 +106,5 @@ Input.propTypes = {
   commentReplyContent: PropTypes.string,
   commentPostId: PropTypes.string,
   commentParentsComment: PropTypes.string,
-  setCommentReplyContent: PropTypes.string,
+  setCommentReplyContent: PropTypes.func,
 };

@@ -38,8 +38,8 @@ export function SearchTravelDestination({ handleDestinationClick, onClose }) {
       <ul className="w-full px-[24px]">
         {TRAVEL_DESTINATION.filter(
           (destination) => convertToHangulJamo(destination).includes(keyword) || destination.includes(keyword),
-        ).map((item) => (
-          <li key={item}>
+        ).map((item, index) => (
+          <li key={`${item}-${index}`}>
             <DestinationItem name={item} onClick={() => handleDestinationClick(item)} />
           </li>
         ))}
@@ -88,7 +88,7 @@ export function SearchPlace({ handleSingleScheduleClick, onClose }) {
       {places?.length !== 0 && (
         <ul className="w-full px-[24px]">
           {places?.map((place, index) => (
-            <li key={place?.id}>
+            <li key={`${place}-${place?.id}`}>
               <PlaceItem {...place} keyword={keyword} index={index} onClick={onClick} />
             </li>
           ))}
