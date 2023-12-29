@@ -1,23 +1,71 @@
-import PropTypes from 'prop-types';
-
-import Header from '../components/Search/Header';
+import toast from 'react-hot-toast';
+import Header from '../components/Filter/Header.jsx';
 import Title from '../components/Filter/Title';
 import Button from '../components/commons/Button';
-import FilterCategory from '../components/Filter/FilterCategory';
+import FILTER_CATEGORIES from '../constants/filterCategories.js';
 
 import { IoReloadOutline } from 'react-icons/io5';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-export default function Filter({ filterModeOff, checkedValue, makeQueryString, checkedList, setCheckedList }) {
-  const close = true;
+const sortArray = ['최신순', '오래된순', '찜많은순'];
+const initialCheckList = ['최신순'];
+export default function Filter() {
+  //  체크된 값을 담을 배열
+  const [checkedList, setCheckedList] = useState(initialCheckList);
+  const [sort, setSort] = useState('최신순');
+  // 태그 상태 추가
+  const [tag, setTag] = useState([]);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // 배열에 값 넣기
+  function handleCheckboxChange(value) {
+    if (sortArray.includes(value)) {
+      setSort(value);
+      setCheckedList((prevList) => {
+        return [value, ...prevList.filter((item) => !sortArray.includes(item))];
+      });
+    } else {
+      if (checkedList.includes(value)) {
+        setCheckedList((prevList) => prevList.filter((item) => item !== value));
+        setTag((prevTag) => prevTag.filter((item) => item !== value)); // 태그 상태 업데이트
+      } else {
+        if (tag.length >= 5) {
+          toast.error('필터의 갯수는 최대 5개 입니다.');
+          return;
+        }
+        setCheckedList((prevList) => [...prevList, value]);
+        if (!sortArray.includes(value)) {
+          setTag((prevTag) => [...prevTag, value]); // 태그 상태 업데이트
+        }
+      }
+    }
+  }
 
   // 필터 초기화
   function filterResetHandler() {
-    setCheckedList([]);
+    setCheckedList(initialCheckList);
+    setSort('최신순');
+  }
+
+  function testSubmit() {
+    const searchQuery = location.state ? `/search?city=${location.state}` : '';
+    const tagQuery = location.state ? '&tag=' + tag.toString() : '/filter?tag=' + tag.toString();
+    const sortQuery = location.state ? '&sort=' + sort : '/filter?sort=' + sort;
+
+    let query = '';
+
+    if (tag.length > 0) {
+      query += tagQuery;
+    }
+
+    navigate(searchQuery + query + sortQuery);
   }
 
   return (
     <>
-      <Header title={'필터'} close={close} filterModeOff={filterModeOff} />
+      <Header title={'필터'} />
       <div className="mx-[24px]">
         <section>
           <div className="flex justify-end">
@@ -27,7 +75,7 @@ export default function Filter({ filterModeOff, checkedValue, makeQueryString, c
             </button>
           </div>
           <section>
-            {FilterCategory.map((item, outerIndex) => (
+            {FILTER_CATEGORIES.map((item, outerIndex) => (
               <div key={outerIndex} className="mb-[20px]">
                 <Title title={item.title} className="mb-[32px]" />
                 <div className="flex flex-wrap gap-[4px]">
@@ -38,7 +86,7 @@ export default function Filter({ filterModeOff, checkedValue, makeQueryString, c
                         id={`${item.title}-${innerIndex}`}
                         value={content}
                         className="hidden"
-                        onClick={(e) => checkedValue(e.target.value)}
+                        onClick={(e) => handleCheckboxChange(e.target.value)}
                       />
                       <label
                         htmlFor={`${item.title}-${innerIndex}`}
@@ -57,18 +105,7 @@ export default function Filter({ filterModeOff, checkedValue, makeQueryString, c
             ))}
           </section>
           <section className="mt-[30px]">
-            <Button
-              type={checkedList ? 'primary' : 'gray'}
-              text={'description'}
-              onClick={(e) => {
-                e.preventDefault();
-                if (checkedList) {
-                  makeQueryString();
-                } else {
-                  return;
-                }
-              }}
-            >
+            <Button type={checkedList ? 'primary' : 'gray'} text={'description'} onClick={testSubmit}>
               필터 적용하기
             </Button>
           </section>
@@ -77,12 +114,3 @@ export default function Filter({ filterModeOff, checkedValue, makeQueryString, c
     </>
   );
 }
-
-Filter.propTypes = {
-  filterModeOff: PropTypes.func,
-  handleCheckList: PropTypes.func,
-  makeQueryString: PropTypes.func,
-  checkedList: PropTypes.array,
-  checkedValue: PropTypes.func,
-  setCheckedList: PropTypes.func,
-};
