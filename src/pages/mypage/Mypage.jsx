@@ -51,12 +51,15 @@ export default function Mypage() {
     <>
       <section className="top-0">
         <div className="h-header px-[23px] flex items-center justify-between text-[14px] text-black">
-          <div className="flex gap-[1px] items-center cursor-pointer">
-            <button onClick={logout}>로그아웃</button>
+          <div className="flex gap-[1px] items-center cursor-pointer" onClick={logout}>
+            <button>로그아웃</button>
             <IoLogOutOutline size={17} className="ml-1" />
           </div>
-          <div className="flex gap-[1px] items-center cursor-pointer">
-            <button onClick={() => setEditProfileMode((prev) => !prev)}>설정</button>
+          <div
+            className="flex gap-[1px] items-center cursor-pointer"
+            onClick={() => setEditProfileMode((prev) => !prev)}
+          >
+            <button>설정</button>
             <IoSettingsOutline size={17} className="ml-1" />
           </div>
         </div>
