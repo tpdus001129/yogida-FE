@@ -157,7 +157,7 @@ export default function Detail() {
       <div className={commentModalMode ? 'w-full h-screen overflow-hidden' : ''}>
         <Header headerData={data} />
         <div className="w-full h-[160px] mb-[22px]">
-          {dayClickedSchedulesData() && <CourseMap data={dayClickedSchedulesData()} />}
+          {dayClickedSchedulesData() && !commentModalMode && <CourseMap data={dayClickedSchedulesData()} />}
         </div>
         <div className="overflow-scroll scrollbar-hide">
           {data.startDate && (

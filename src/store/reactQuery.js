@@ -29,4 +29,5 @@ export const queryKeys = {
   kakaoUser: 'KAKAO_USER',
   loginStatus: 'LOGiN_STATUS',
   notification: 'NOTIFICATION',
+  comment: 'COMMENT',
 };
