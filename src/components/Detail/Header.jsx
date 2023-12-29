@@ -16,7 +16,7 @@ const whiteMode = true;
 // 헤더 아이콘
 const headerIcon = ['share', 'comment', 'heart'];
 
-export default function Header({ headerData }) {
+export default function Header({ headerData, postId }) {
   // 날짜 계산기 커스텀 훅 사용
   const dayCalculation = useDayCalculation(headerData.startDate, headerData.endDate);
 
@@ -69,7 +69,7 @@ export default function Header({ headerData }) {
         <IconButton iconName={'prev'} buttonType={buttonType} />
         <div className="flex gap-[16px] space-x-[6px]">
           {headerIcon.map((icon) => (
-            <IconButton iconName={icon} buttonType={buttonType} key={icon} />
+            <IconButton iconName={icon} buttonType={buttonType} key={icon} postId={postId} />
           ))}
         </div>
       </div>
@@ -104,4 +104,5 @@ export default function Header({ headerData }) {
 
 Header.propTypes = {
   headerData: PropTypes.any.isRequired,
+  postId: PropTypes.string,
 };

@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import Main from './pages/Main';
+import Main from './pages/main/Main';
 import Notfound from './pages/Notfound';
 import Layout from './components/commons/Layout';
 import Mypage from './pages/mypage/Mypage';
@@ -8,7 +8,7 @@ import Schedule from './components/Mypage/Schedule';
 import Signup from './pages/SignUp';
 import FindPassword from './pages/FindPassword';
 import CommentModal from './components/CommentModal/CommentModal';
-import Detail from './pages/Detail';
+import Detail from './pages/detail/Detail';
 import ChangePassword from './pages/ChangePassword';
 import Notification from './pages/notification/Notification';
 import Map from './pages/Map';

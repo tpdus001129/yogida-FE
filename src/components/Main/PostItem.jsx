@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { userState } from '../../recoils/userAtom';
 import { useRecoilValue } from 'recoil';
@@ -8,50 +7,32 @@ import { IoChatbubbleOutline, IoHeartOutline, IoHeartSharp } from 'react-icons/i
 
 import Tag from '../commons/Tag';
 import ImageSlide from './ImageSlide';
-import likesAPI from '../../services/likes';
+import { useLikeQuery } from '../../pages/main/queries';
+import { isValidUser } from '../../utils/isValidUser';
+import { useEffect } from 'react';
 
 export default function PostItem({ data }) {
   const user = useRecoilValue(userState);
 
   // 유저가 좋아요 누른 데이터
-  const [myLikeId, setMyLikeId] = useState([]);
-  const [myLikes, setMyLikes] = useState([]);
+  const { likeList, removeLikes, postLikes, refetch } = useLikeQuery();
 
-  // 좋아요 get
   useEffect(() => {
-    const fetchLikes = async () => {
-      try {
-        const likes = await likesAPI.getAllLikesByMe();
-        setMyLikeId(likes.data.likedPosts);
-        setMyLikes(likes.data.likedPosts.flatMap((post) => post.postId).flatMap((it) => it._id));
-      } catch (error) {
-        console.error('likes Error:', error);
-      }
-    };
-    fetchLikes();
-  }, []);
+    refetch();
+  }, [user, refetch]);
 
   // 좋아요 post
   async function handleClickLike(e, userId, postId) {
     e.stopPropagation();
     e.preventDefault();
 
-    // console.log(myLikeId);
-    const isLiked = myLikes.includes(postId);
+    const isLiked = likeList?.myLikePostId.includes(postId);
 
-    // console.log('?????', myLikeId.find((item) => item.postId._id === postId)._id);
     if (isLiked) {
-      await handleRemoveLike([myLikeId.find((item) => item.postId._id === postId)._id]);
-      setMyLikes((prev) => prev.filter((item) => item._id !== postId));
+      removeLikes([likeList?.myLikePost.find((item) => item.postId._id === postId)._id]);
     } else {
-      const updateResult = await likesAPI.postLike(userId, postId);
-      setMyLikes((prev) => [...prev, updateResult.data.postId]);
+      postLikes({ userId, postId });
     }
-  }
-
-  // 좋아요 patch
-  async function handleRemoveLike(payload) {
-    await likesAPI.removeAll(payload);
   }
 
   return (
@@ -66,15 +47,19 @@ export default function PostItem({ data }) {
                     onClick={(e) => handleClickLike(e, user._id, item._id)}
                     className="absolute z-[10] top-[16px] right-[16px]"
                   >
-                    {myLikes.includes(item._id) ? (
-                      <IoHeartSharp size="36" className="text-red" />
-                    ) : (
-                      <IoHeartOutline size="36" color="#ffffff" />
+                    {isValidUser(user) && (
+                      <>
+                        {likeList?.myLikePostId.includes(item._id) ? (
+                          <IoHeartSharp size="36" className="text-red" />
+                        ) : (
+                          <IoHeartOutline size="36" color="#ffffff" />
+                        )}
+                      </>
                     )}
                   </button>
                   <ImageSlide
                     images={item.schedules.flatMap((schedule) => schedule.flatMap((place) => place.placeImageSrc))}
-                    myLikes={myLikes}
+                    myLikes={likeList?.myLikePostId}
                     item={item}
                     handleClickLike={handleClickLike}
                   />
