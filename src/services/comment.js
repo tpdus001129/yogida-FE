@@ -9,15 +9,24 @@ const commentAPI = {
   async getAllCommentByPost(postId) {
     return await api.get(API_URL + `?postId=${postId}`);
   },
-  async postComment(postId, content) {
-    return await api.post(API_URL, { postId, content });
+  // 댓글, 대댓글 post
+  async postComment(parentComment, postId, content) {
+    const payload = parentComment ? { parentComment, postId, content } : { postId, content };
+    return await api.post(API_URL, payload);
   },
   async updateComment({ commentId, content }) {
     return await api.patch(API_URL + `/${commentId}`, { content });
   },
+  // 대댓글 수정
+  async updateReply({ commentId, content }) {
+    return await api.patch(API_URL + `/${commentId}`, { content });
+  },
   async removeOne(id) {
-    console.log(id);
     return await api.delete(API_URL + `/${id}`);
+  },
+  // 대댓글 삭제
+  async removeReply(id) {
+    return await api.delete(API_URL + `reply/${id}`);
   },
 };
 

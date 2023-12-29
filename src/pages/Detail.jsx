@@ -162,7 +162,7 @@ export default function Detail() {
         <div className="overflow-scroll scrollbar-hide">
           {data.startDate && (
             <DayButton
-              startDate={data.startDate}
+              startDate={{ startDate: data.startDate }}
               dayCount={dayCalculation}
               dayTitle={setDayTitle}
               setIndex={setIndex}
