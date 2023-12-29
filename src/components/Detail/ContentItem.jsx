@@ -8,6 +8,7 @@ import { IoBookmarkOutline, IoBookmark } from 'react-icons/io5';
 
 // import bookmarkAPI from '../../services/bookmarks';
 import NoImage from './NoImage';
+import defaultImg from '../../assets/images/noImage.png';
 import { useBookmarkQuery } from '../../pages/detail/queries';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoils/userAtom';
@@ -115,8 +116,16 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                     )} */}
                   </button>
                 </div>
-                <div className="h-[87px] rounded-b-[20px] bg-gray-3 relative overflow-hidden">
-                  <div>{places.placeImageSrc ? <img src={places.placeImageSrc} alt="img" /> : <NoImage />}</div>
+                <div className="h-[87px] rounded-b-[20px] bg-gray-3 relative">
+                  {places.placeImageSrc ? (
+                    <img
+                      src={places.placeImageSrc === 'default' ? defaultImg : places.placeImageSrc}
+                      alt="img"
+                      className="w-full h-full block object-cover rounded-b-[20px]"
+                    />
+                  ) : (
+                    <NoImage />
+                  )}
                   <div className="absolute bottom-[9px] right-[16px] flex">
                     {Array.from({ length: places.star }, (_, index) => (
                       <IoStar key={`star-icon-${index}`} className="text-secondary" />
