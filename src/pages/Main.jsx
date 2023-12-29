@@ -11,6 +11,7 @@ export default function Main() {
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
+
   const cityValue = queryParams.get('city');
   const tagValue = queryParams.get('tag');
   const sortValue = queryParams.get('sort');

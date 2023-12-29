@@ -17,6 +17,7 @@ export default function Filter() {
   // 태그 상태 추가
   const [tag, setTag] = useState([]);
   const location = useLocation();
+
   const navigate = useNavigate();
 
   // 배열에 값 넣기
@@ -59,6 +60,7 @@ export default function Filter() {
     if (tag.length > 0) {
       query += tagQuery;
     }
+    console.log(searchQuery + query + sortQuery);
 
     navigate(searchQuery + query + sortQuery);
   }
