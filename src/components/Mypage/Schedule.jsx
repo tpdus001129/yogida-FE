@@ -31,16 +31,21 @@ import CourseMap from '../KakaoMaps/CourseMap';
 import getDistance from '../../utils/getDistance';
 
 import { useMypagePostsQuery } from '../../pages/mypage/queries';
+import { useParams } from 'react-router-dom/dist';
+import postsAPI from '../../services/posts';
 
 export default function Schedule() {
+  const { id: postId } = useParams();
   const { openModal } = useModal();
   const navigate = useNavigate();
+
+  const editMode = useMemo(() => (postId ? true : false), [postId]);
 
   const [addTravelDestination, setAddTravelDestination] = useState(false); //여행지 설정
   const [addPlan, setAddPlan] = useState(false); //장소 추가
   const [addTag, setAddTag] = useState(false); //태그 선택
 
-  const { addPost } = useMypagePostsQuery();
+  const { addPost, updatePost } = useMypagePostsQuery();
 
   const [startDate, setStartDate] = useState(null); //시작 날짜
   const [endDate, setEndDate] = useState(null); //종료 날짜
@@ -57,24 +62,47 @@ export default function Schedule() {
   const [dayTitle, setDayTitle] = useState('');
   const [selectDay, setSelectDay] = useState(0); //선택한 day
 
+  // 상세페이지 GET API
+  useEffect(() => {
+    if (!postId) return;
+    postsAPI
+      .getPostById(postId)
+      .then((post) => {
+        const { startDate, endDate, title, reviewText, destination, peopleCount, cost, isPublic, schedules, tag } =
+          post.data;
+        setSchedules(schedules);
+        setStartDate(startDate);
+        setEndDate(endDate);
+        setTitle(title);
+        setReviewText(reviewText);
+        setDestination(destination);
+        setPeopleCount(peopleCount);
+        setCost(cost);
+        setIsPublic(`${isPublic}`);
+        setTag(tag);
+      })
+      .catch((error) => {
+        console.error(error);
+        throw new Error('상세 게시글을 불러오는 중에 오류가 생겼습니다.');
+      });
+  }, [postId]);
+
   const schedulePerDay = useMemo(() => schedules[selectDay], [schedules, selectDay]);
 
   // 날짜 계산기 커스텀 훅 사용
   const dayCalculation = useDayCalculation(startDate, endDate);
 
   useEffect(() => {
-    if (startDate && endDate && dayCalculation > 0) {
+    if (startDate && endDate && dayCalculation > 0 && !editMode) {
       const days = Array.from(Array(Math.ceil(dayCalculation)), () => new Array());
       setSchedules(days);
     }
-  }, [dayCalculation, startDate, endDate]);
-
-  console.log('schedules : ', schedules);
+  }, [dayCalculation, startDate, endDate, editMode]);
 
   // day별 장소 추가
   const handleSingleScheduleClick = (option) => {
     const singleSchedule = {
-      id: option?.id,
+      _id: option?.id,
       placeName: option?.place_name,
       placeImageSrc: 'default',
       star: 0,
@@ -86,36 +114,37 @@ export default function Schedule() {
   };
 
   //day별 장소 삭제
-  const handleRemoveSingleScheduleClick = (id) => {
+  const handleRemoveSingleScheduleClick = (_id) => {
     setSchedules((prev) =>
-      prev.map((day, i) => (selectDay === i ? day.filter((singleSchedule) => singleSchedule.id !== id) : day)),
+      prev.map((day, i) => (selectDay === i ? day.filter((singleSchedule) => singleSchedule._id !== _id) : day)),
     );
   };
 
   // 장소 이미지 추가
-  const handleAddPlaceImgClick = ({ id, img }) => {
+  const handleAddPlaceImgClick = ({ _id, img }) => {
     setSchedules((prev) =>
       prev.map((day, i) =>
-        selectDay === i ? day.map((place) => (place?.id === id ? { ...place, placeImageSrc: img } : place)) : day,
+        selectDay === i ? day.map((place) => (place?._id === _id ? { ...place, placeImageSrc: img } : place)) : day,
       ),
     );
   };
 
   // 장소 별점 추가
-  const handleAddScoreClick = ({ id, star }) => {
+  const handleAddScoreClick = ({ _id, star }) => {
     setSchedules((prev) =>
       prev.map((day, i) =>
-        selectDay === i ? day.map((place) => (place?.id === id ? { ...place, star } : place)) : day,
+        selectDay === i ? day.map((place) => (place?._id === _id ? { ...place, star } : place)) : day,
       ),
     );
   };
 
   //장소별 거리 계산
-  const caclulateDistance = () => {
+  const calculateDistance = () => {
     const arr = [];
     for (let i = 0; i < schedules.length; i++) {
-      arr.push([]);
       const day = schedules[i];
+      if (!day) return;
+      arr.push([]);
       for (let j = 0; j < day.length - 1; j++) {
         if (!day) return;
         const currentPlace = day[j].placePosition;
@@ -147,58 +176,43 @@ export default function Schedule() {
       schedules: schedules.map((schedule) =>
         schedule.map((place) => {
           // eslint-disable-next-line no-unused-vars
-          const { id, ...rest } = place;
-          // const { id, placeImageSrc, ...resxt } = place;
+          const { _id, ...rest } = place;
           return rest;
         }),
       ),
-      distances: caclulateDistance(),
+      distances: calculateDistance(),
       cost,
       peopleCount,
       isPublic,
       reviewText,
     };
-    // const payload = {
-    //   title,
-    //   destination,
-    //   startDate,
-    //   endDate,
-    //   tag,
-
-    //   distances: caclulateDistance(),
-    //   cost,
-    //   peopleCount,
-    //   isPublic,
-    //   reviewText,
-    // };
-
-    console.log('payload: ', payload);
-
-    const formData = new FormData();
-
-    Object.entries(payload).forEach(([key, value]) => {
-      formData.append(key, value);
+    const placeImages = schedules.map((subArray) => {
+      return subArray.map((item) => item.placeImageSrc);
     });
 
-    // for (let i = 0; i < schedules.length; i++) {
-    //   for (let j = 0; j < schedules[i].length; j++) {
-    //     formData.append(`schedules[${i}][${j}].category`, schedules[i][j].category);
-    //     formData.append(`schedules[${i}][${j}].placeImageSrc`, schedules[i][j].placeImageSrc);
-    //     formData.append(`schedules[${i}][${j}].placeName`, schedules[i][j].placeName);
-    //     formData.append(`schedules[${i}][${j}].star`, schedules[i][j].star);
-    //     formData.append(`schedules[${i}][${j}].placePosition[0]`, schedules[i][j].placePosition[0]);
-    //     formData.append(`schedules[${i}][${j}].placePosition[1]`, schedules[i][j].placePosition[1]);
-    //   }
-    // }
+    const formData = new FormData();
+    formData.append('payload', JSON.stringify(payload));
 
-    // const imgArr = schedules.map((schedule) => schedule.map((place) => place.placeImageSrc));
+    for (let i = 0; i < placeImages.length; i++) {
+      for (let j = 0; j < placeImages[i].length; j++) {
+        if (placeImages[i][j] instanceof File) {
+          formData.append(`image`, placeImages[i][j], `${i + 1}-${j + 1}`);
+        }
+      }
+    }
 
-    // formData.append('images', imgArr);
-
-    const result = await addPost(formData);
-    if (result?.status === 200) {
-      toast.success('게시글이 등록되었습니다.');
-      navigate(`${PATH.post}/${result?._id}`);
+    if (!editMode) {
+      const result = await addPost(formData);
+      if (result?.status === 201) {
+        toast.success('게시글이 등록되었습니다.');
+        navigate(PATH.root);
+      }
+    } else {
+      const result = await updatePost({ id: postId, payload: formData });
+      if (result?.status === 200) {
+        toast.success('게시글이 수정되었습니다.');
+        navigate(PATH.root);
+      }
     }
   };
 
@@ -330,8 +344,8 @@ export default function Schedule() {
                 name="secret"
                 id="show"
                 className="w-[20px] h-[20px]"
-                value={'true'}
                 checked={isPublic === 'true'}
+                value={'true'}
                 onChange={(e) => setIsPublic(e.target.value)}
               />
               공개
@@ -343,8 +357,8 @@ export default function Schedule() {
                 name="secret"
                 id="hidden"
                 className="w-[20px] h-[20px]"
-                value={'false'}
                 checked={isPublic === 'false'}
+                value={'false'}
                 onChange={(e) => setIsPublic(e.target.value)}
               />
               비공개
@@ -359,7 +373,6 @@ export default function Schedule() {
           날짜(여행 일정)를 먼저 선택해 주세요!
         </section>
       )}
-
       {startDate && endDate && (
         <>
           {schedulePerDay && schedulePerDay.length >= 1 && (
@@ -377,6 +390,7 @@ export default function Schedule() {
             <Button onClick={() => setAddPlan(true)}>장소 추가</Button>
 
             <Course
+              editMode={editMode}
               schedules={schedulePerDay}
               selectDay={selectDay}
               handleAddPlaceImgClick={handleAddPlaceImgClick}
@@ -386,7 +400,6 @@ export default function Schedule() {
           </section>
         </>
       )}
-
       {/* 필터 */}
       <ScheduleItem icon={<IoPricetag color="#589BF7" size={20} />} title="태그" id="tag"></ScheduleItem>
 
@@ -401,12 +414,21 @@ export default function Schedule() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <Button type={'secondary'} onClick={onTempSave}>
-            임시저장
-          </Button>
-          <Button type={'primary'} onClick={onSubmit}>
-            작성완료
-          </Button>
+          {editMode && (
+            <Button type={'primary'} onClick={onSubmit}>
+              수정완료
+            </Button>
+          )}
+          {!editMode && (
+            <>
+              <Button type={'secondary'} onClick={onTempSave}>
+                임시저장
+              </Button>
+              <Button type={'primary'} onClick={onSubmit}>
+                작성완료
+              </Button>
+            </>
+          )}
         </div>
       </section>
     </>

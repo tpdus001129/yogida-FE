@@ -8,6 +8,8 @@ export const useKakaoUserInfoQuery = () => {
     queryFn: authAPI.getKakaoUserInfo,
     suspense: true,
     useErrorBoundary: true,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 
   return { user };

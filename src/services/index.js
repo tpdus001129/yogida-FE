@@ -58,15 +58,14 @@ api.interceptors.response.use(
         http status가 200이 아닌 경우
         응답 에러 직전 호출됩니다.
     */
-
     if (isAxiosError(error)) {
-      if (error.response.status === HttpStatusCode.NotFound) {
+      if (error.response?.status === HttpStatusCode.NotFound) {
         console.log('404');
       }
-      if (error.response.status === HttpStatusCode.Unauthorized) {
+      if (error.response?.status === HttpStatusCode.Unauthorized) {
         console.log('401');
       }
-      if (error.response.status === HttpStatusCode.Forbidden) {
+      if (error.response?.status === HttpStatusCode.Forbidden) {
         console.log('403');
       }
       handleAxiosError(error.response);

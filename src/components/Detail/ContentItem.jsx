@@ -126,7 +126,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                   </button>
                 </div>
                 <div className="h-[87px] rounded-b-[20px] bg-gray-3 relative overflow-hidden">
-                  <div>{places.placeImageSrc ? places.placeImageSrc : <NoImage />}</div>
+                  <div>{places.placeImageSrc ? <img src={places.placeImageSrc} alt="img" /> : <NoImage />}</div>
                   <div className="absolute bottom-[9px] right-[16px] flex">
                     {Array.from({ length: places.star }, (_, index) => (
                       <IoStar key={`star-icon-${index}`} className="text-secondary" />

@@ -79,10 +79,18 @@ export default function Profile({ setEditProfileMode }) {
     await userAPI
       .userInfoModify(formData)
       .then(() => {
-        openModal({
-          message: nickname === newNickname ? `수정된 정보가 없습니다.` : `회원 정보가 수정되었습니다.`,
-          callback: () => setEditProfileMode((prev) => !prev),
-        });
+        if (nickname === newNickname || profileImg == profileImageSrc) {
+          openModal({ message: `수정된 정보가 없습니다.` });
+        }
+        if (nickname !== newNickname || profileImg !== profileImageSrc) {
+          openModal({
+            message: `회원 정보가 수정되었습니다.`,
+            callback: () => {
+              setEditProfileMode((prev) => !prev);
+              window.location.reload();
+            },
+          });
+        }
       })
       .catch((error) => {
         switch (error.response?.status) {
@@ -148,15 +156,15 @@ export default function Profile({ setEditProfileMode }) {
             onClick={() => setEditProfileMode((prev) => !prev)}
           />
         </header>
-        <div className="flex flex-col items-center justify-center h-[140px] ">
+        <div className="flex flex-col items-center justify-center h-[140px]">
           <input type="file" name="profile" id="profile" className="hidden" ref={imgRef} onChange={handleChangeImage} />
           <img
             src={profileImg || defaultProfile}
             alt="profile"
-            className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]"
+            className="w-[60px] h-[60px] rounded-full object-cover mb-[10px] cursor-pointer"
             onClick={() => imgRef.current.click()}
           />
-          <label htmlFor="profile" className="text-primary text-[14px] font-medium tracking-tight">
+          <label htmlFor="profile" className="text-primary text-[14px] font-medium tracking-tight cursor-pointer">
             사진 수정
           </label>
         </div>
