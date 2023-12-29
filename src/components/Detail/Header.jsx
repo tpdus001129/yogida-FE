@@ -4,7 +4,7 @@ import IconButton from './IconButton';
 import Tag from '../commons/Tag';
 import useDayCalculation from '../../hooks/useDayCalculation';
 
-// import { IoLockClosed } from 'react-icons/io5';
+import { IoLockClosed } from 'react-icons/io5';
 // import { IoCreateOutline } from "react-icons/io5";
 
 // 헤더 아이콘 버튼 타입
@@ -85,7 +85,7 @@ export default function Header({ headerData, postId }) {
           <div>
             <p className="text-[22px] font-bold">{headerData.title}</p>
           </div>
-          {/* {headerData.isPublic && <IoLockClosed className="text-secondary" size="18" />} */}
+          {headerData.isPublic && <IoLockClosed className="text-secondary" size="18" />}
         </div>
         <div className="pt-[14px]">
           {headerData && headerData.tag && <Tag tags={headerData.tag} whiteMode={whiteMode} />}
