@@ -19,7 +19,7 @@ export function SearchTravelDestination({ handleDestinationClick, onClose }) {
   }, []);
 
   return (
-    <div className="w-[calc(100%-24px)] absolute bg-white z-20 rounded-xl ">
+    <div className="w-full absolute bg-white z-20">
       <Header title={'검색'} onClick={onClose} />
       {/* 검색 */}
       <form className="w-full h-[74px] flex relative items-center px-[24px]">
@@ -68,7 +68,7 @@ export function SearchPlace({ handleSingleScheduleClick, onClose }) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full h-screen absolute bg-white z-20">
       <Header title={'검색'} onClick={onClose} />
       {/* 검색 */}
       <form className="w-full h-[74px] flex relative items-center px-[24px]" onSubmit={(e) => e.preventDefault()}>
@@ -135,7 +135,7 @@ export function SelectTag({ tag, handleTagsClick, onClose }) {
 
   return (
     <>
-      <div className="w-full h-screen flex flex-col items-center">
+      <div className="w-full absolute bg-white z-20 h-screen flex flex-col items-center">
         <Header title={'태그 선택'} onClick={onClose} />
         {/* 필터초기화 */}
         <div className="mx-[24px]">

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import authAPI from '../services/auth';
 import useModal from './useModal';
 
@@ -16,10 +16,10 @@ export default function useEmail() {
     return /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/.exec(email) === null ? '이메일 형식에 맞춰서 작성해주세요.' : '';
   }, [email]);
 
-  const handleExpire = () => {
+  const handleExpire = useCallback(() => {
     openModal({ message: `입력 시간이 지났습니다.\n다시 인증번호를 요청 해주세요.` });
     setIsVerificationVisible(false);
-  };
+  }, [openModal]);
 
   const handleSendValidationCode = async ({ type }) => {
     return await authAPI
