@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { IoCheckmarkCircle, IoBookmark } from 'react-icons/io5';
-import sample from '../../assets/images/sample.jpg';
 import Title from './Title';
 import DeleteAllCheckbox from './DeleteAllCheckbox';
 import { useMypageBookmarksQuery } from '../../pages/mypage/queries';
 import useCheckbox from '../../hooks/useCheckbox';
 import toast from 'react-hot-toast';
+import noImage from '../../assets/images/noImage.png';
 
 export default function Bookmarks() {
   const { bookmarksList, removeBookmarks } = useMypageBookmarksQuery();
@@ -41,7 +41,7 @@ export default function Bookmarks() {
             <Bookmark
               key={item._id}
               id={item._id}
-              img={item?.placeImageSrc || sample}
+              img={item?.placeImageSrc || noImage}
               title={item?.placeName}
               subTitle={item?.category}
               checkedIdsSet={checkedIdsSet}

@@ -6,6 +6,7 @@ export const PATH = {
   search: '/search',
   filter: '/filter',
   schedule: '/schedule',
+  editSchedule: '/schedule/:id',
   signup: '/signup',
   findPassword: 'find-password',
   detail: '/detail/',
