@@ -12,7 +12,7 @@ import CourseMap from '../../components/KakaoMaps/CourseMap';
 import Modal from '../../components/CommentModal/Modal';
 import useDayCalculation from '../../hooks/useDayCalculation';
 import postsAPI from '../../services/posts';
-import { useNavigate } from 'react-router-dom/dist';
+import { useNavigate, useOutletContext } from 'react-router-dom/dist';
 import { useMypagePostsQuery } from '../mypage/queries';
 import toast from 'react-hot-toast';
 import { PATH } from '../../constants/path';
@@ -26,6 +26,7 @@ export default function Detail() {
   const [data, setData] = useState([]);
   const [dayTitle, setDayTitle] = useState('');
   const [index, setIndex] = useState(0);
+  const { setNavbarHidden } = useOutletContext();
 
   const { removePost } = useMypagePostsQuery();
 
@@ -149,6 +150,16 @@ export default function Detail() {
       return distancesData;
     }
   }
+
+  useEffect(() => {
+    if (commentModalMode) {
+      setNavbarHidden(true);
+    }
+
+    return () => {
+      setNavbarHidden(false);
+    };
+  }, [commentModalMode, setNavbarHidden]);
 
   if (!data) return <p>loading...</p>;
   return (
