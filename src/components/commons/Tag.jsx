@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 export default function Tag({ tags, whiteMode, handleRemoveTag }) {
   return (
-    <div className='flex flex-wrap text-[14px]'>
+    <div className="flex flex-wrap text-[14px]">
       {tags.map((tag, index) => (
         <span
           key={'teg-' + index}

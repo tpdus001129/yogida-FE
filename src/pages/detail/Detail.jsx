@@ -66,22 +66,22 @@ export default function Detail() {
           t.visible ? 'animate-enter' : 'animate-leave'
         } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
       >
-        <div className='flex-1 w-0 p-4'>정말로 삭제하시겠습니까?</div>
-        <div className='flex border-l border-gray-200'>
+        <div className="flex-1 w-0 p-4">정말로 삭제하시겠습니까?</div>
+        <div className="flex border-l border-gray-200">
           <button
             onClick={() => toast.dismiss(t.id)}
-            className='w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500'
+            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             취소
           </button>
         </div>
-        <div className='flex border-l border-gray-200'>
+        <div className="flex border-l border-gray-200">
           <button
             onClick={async () => {
               toast.dismiss(t.id);
               remove();
             }}
-            className='w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500'
+            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             확인
           </button>
@@ -164,25 +164,14 @@ export default function Detail() {
   if (!data) return <p>loading...</p>;
   return (
     <ModalContext.Provider value={{ commentModalMode, setCommentModalMode }}>
-      <div className='pb-[40px]'>
-        {commentModalMode && (
-          <Modal
-            onMouseDown={onMouseDown}
-            onMouseUp={onMouseUp}
-            user={user}
-            postId={postId}
-          />
-        )}
-        <div
-          className={commentModalMode ? 'w-full h-screen overflow-hidden' : ''}
-        >
+      <div className="pb-[40px]">
+        {commentModalMode && <Modal onMouseDown={onMouseDown} onMouseUp={onMouseUp} user={user} postId={postId} />}
+        <div className={commentModalMode ? 'w-full h-screen overflow-hidden' : ''}>
           <Header headerData={data} postId={postId} />
-          <div className='w-full h-[160px] mb-[22px]'>
-            {dayClickedSchedulesData() && !commentModalMode && (
-              <CourseMap data={dayClickedSchedulesData()} />
-            )}
+          <div className="w-full h-[160px] mb-[22px]">
+            {dayClickedSchedulesData() && !commentModalMode && <CourseMap data={dayClickedSchedulesData()} />}
           </div>
-          <div className='overflow-scroll scrollbar-hide'>
+          <div className="overflow-scroll scrollbar-hide">
             {data.startDate && (
               <DayButton
                 startDate={data.startDate}
@@ -192,10 +181,8 @@ export default function Detail() {
               />
             )}
           </div>
-          <p className='text-center text-[14px] font-bold mb-[26px]'>
-            {dayTitle}
-          </p>
-          <div className='mb-[60px]'>
+          <p className="text-center text-[14px] font-bold mb-[26px]">{dayTitle}</p>
+          <div className="mb-[60px]">
             {dayClickedSchedulesData() && (
               <ContentItem
                 key={index}
@@ -206,34 +193,22 @@ export default function Detail() {
               />
             )}
           </div>
-          <div className='mx-[24px] mb-[60px]'>
-            <div className='flex gap-[6px] mb-[16px]'>
-              <div className='w-[40px] h-[40px] rounded-full border border-gray-4'></div>
-              <div className='flex flex-col'>
-                <p className='text-[12px] text-gray-2'>{createData}</p>
-                <p className='text-[14px] font-bold'>
-                  {nicknameData()}님의 여행 한마디
-                </p>
+          <div className="mx-[24px] mb-[60px]">
+            <div className="flex gap-[6px] mb-[16px]">
+              <div className="w-[40px] h-[40px] rounded-full border border-gray-4"></div>
+              <div className="flex flex-col">
+                <p className="text-[12px] text-gray-2">{createData}</p>
+                <p className="text-[14px] font-bold">{nicknameData()}님의 여행 한마디</p>
               </div>
             </div>
-            <div className='w-full bg-input rounded-[4px] text-[14px] p-[8px] break-all'>
-              {data.reviewText}
-            </div>
+            <div className="w-full bg-input rounded-[4px] text-[14px] p-[8px] break-all">{data.reviewText}</div>
           </div>
           {user?._id === data?.authorId?._id && (
-            <div className='w-full flex flex-col gap-[6px] justify-center pb-[60px] px-[24px]'>
-              <Button
-                type={'default'}
-                text={'description'}
-                onClick={() => navigate(`/schedule/${postId}`)}
-              >
+            <div className="w-full flex flex-col gap-[6px] justify-center pb-[60px] px-[24px]">
+              <Button type={'default'} text={'description'} onClick={() => navigate(`/schedule/${postId}`)}>
                 수정하기
               </Button>
-              <Button
-                type={'red'}
-                text={'description'}
-                onClick={handleRemoveClick}
-              >
+              <Button type={'red'} text={'description'} onClick={handleRemoveClick}>
                 삭제하기
               </Button>
             </div>

@@ -41,11 +41,18 @@ export default function Notification() {
     <div>
       <Header title={'알림'} />
       <div className="flex justify-end mr-[24px]">
-        <button className="text-[12px] text-gray-1 mb-[14px]" onClick={deleteAllAlarm}>
-          전체삭제
-        </button>
+        {notificationList?.length > 0 && (
+          <button className="text-[12px] text-gray-1 mb-[14px]" onClick={deleteAllAlarm}>
+            전체삭제
+          </button>
+        )}
       </div>
       <div className={`overflow-scroll h-[calc(100vh-160px)] scrollbar-hide`}>
+        {notificationList?.length === 0 && (
+          <div className="text-center mt-[150px]">
+            <p className="text-gary-3">알림이 존재하지 않습니다.</p>
+          </div>
+        )}
         {notificationList?.map((notification) => (
           <NotificationItem
             key={notification._id}

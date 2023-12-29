@@ -4,14 +4,7 @@ import { IoEllipseSharp } from 'react-icons/io5';
 import noImage from '../../assets/images/noImage.png';
 
 export default function ImageSlide({ images }) {
-  const {
-    onMouseDown,
-    onMouseUp,
-    onTouchStart,
-    onTouchEnd,
-    transformValue,
-    currentPage,
-  } = useImageSlide(images);
+  const { onMouseDown, onMouseUp, onTouchStart, onTouchEnd, transformValue, currentPage } = useImageSlide(images);
 
   // ul의 width길이 동적으로 변환
   function widthSize(images) {
@@ -23,7 +16,7 @@ export default function ImageSlide({ images }) {
   }
 
   return (
-    <div className='w-[327px] h-[303px] rounded-[10px] mb-[14px] overflow-hidden'>
+    <div className="w-[327px] h-[303px] rounded-[10px] mb-[14px] overflow-hidden">
       <ul
         className={`flex transition-transform duration-300 ease-in-out`}
         onTouchEnd={onTouchEnd}
@@ -36,37 +29,26 @@ export default function ImageSlide({ images }) {
         }}
       >
         {images.length === 0 ? (
-          <li className='w-[327px] h-[303px] bg-gray-3 border border-gray-3 '>
-            <img
-              src={noImage}
-              alt='thumbnail'
-              className='object-cover h-full w-full rounded-[10px]'
-            />
+          <li className="w-[327px] h-[303px] bg-gray-3 border border-gray-3 ">
+            <img src={noImage} alt="thumbnail" className="object-cover h-full w-full rounded-[10px]" />
           </li>
         ) : (
           images.map((image, index) => (
-            <li
-              key={index}
-              className='w-[327px] h-[303px] border bg-gray-3  border-gray-3'
-            >
+            <li key={index} className="w-[327px] h-[303px] border bg-gray-3  border-gray-3">
               <img
                 src={image === 'default' ? noImage : image || noImage}
-                alt='thumbnail'
-                className='object-cover h-full w-full  rounded-[10px]'
+                alt="thumbnail"
+                className="object-cover h-full w-full  rounded-[10px]"
               />
             </li>
           ))
         )}
       </ul>
-      <div className='absolute bottom-[14px] flex justify-center inset-x-0 items-center'>
+      <div className="absolute bottom-[14px] flex justify-center inset-x-0 items-center">
         {Array.from({ length: images.length }, (_, index) => (
           <IoEllipseSharp
             key={index}
-            className={` ${
-              currentPage === index
-                ? 'text-primary text-[12px]'
-                : 'text-white text-[8px]'
-            } inline mx-1`}
+            className={` ${currentPage === index ? 'text-primary text-[12px]' : 'text-white text-[8px]'} inline mx-1`}
           />
         ))}
       </div>

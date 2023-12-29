@@ -23,7 +23,7 @@ export default function Comments() {
       <div className="flex flex-col gap-[20px]">
         {commentList?.totalCount !== 0 &&
           commentList?.list?.map((item) => (
-            <Comment key={item._id} img={profileImageSrc} title={item?.content} postId={item?.postId} />
+            <Comment key={item._id} img={profileImageSrc} title={item?.content} postId={item?.postId?._id} />
           ))}
       </div>
     </>

@@ -4,7 +4,7 @@ import IconButton from './IconButton';
 import Tag from '../commons/Tag';
 import useDayCalculation from '../../hooks/useDayCalculation';
 
-import { IoLockClosed } from 'react-icons/io5';
+// import { IoLockClosed } from 'react-icons/io5';
 // import { IoCreateOutline } from "react-icons/io5";
 
 // 헤더 아이콘 버튼 타입
@@ -18,9 +18,7 @@ const headerIcon = ['share', 'comment', 'heart'];
 
 export default function Header({ headerData, postId }) {
   // 날짜 계산기 커스텀 훅 사용
-  const dayCalculation = Math.floor(
-    useDayCalculation(headerData.startDate, headerData.endDate)
-  );
+  const dayCalculation = Math.floor(useDayCalculation(headerData.startDate, headerData.endDate));
 
   // 비용 포맷
   const costFormat = (+headerData.cost).toLocaleString();
@@ -67,9 +65,9 @@ export default function Header({ headerData, postId }) {
   if (!headerData) return <p>loading...</p>;
   return (
     <div className={`w-full pb-[20px] bg-primary`}>
-      <div className='flex justify-between items-center h-[70px] mx-[24px]'>
+      <div className="flex justify-between items-center h-[70px] mx-[24px]">
         <IconButton iconName={'prev'} buttonType={buttonType} />
-        <div className='flex gap-[16px] space-x-[6px]'>
+        <div className="flex gap-[16px] space-x-[6px]">
           {headerIcon.map((icon) => (
             <IconButton
               iconName={icon}
@@ -81,31 +79,27 @@ export default function Header({ headerData, postId }) {
           ))}
         </div>
       </div>
-      <div className='mx-[24px] text-white'>
-        <p className='text-[14px]'>{period}</p>
-        <div className='flex justify-between mb-[6px] items-center'>
+      <div className="mx-[24px] text-white">
+        <p className="text-[14px]">{period}</p>
+        <div className="flex justify-between mb-[6px] items-center">
           <div>
-            <p className='text-[22px] font-bold'>{headerData.title}</p>
+            <p className="text-[22px] font-bold">{headerData.title}</p>
           </div>
-          {headerData.isPublic && (
-            <IoLockClosed className='text-secondary' size='18' />
-          )}
+          {/* {headerData.isPublic && <IoLockClosed className="text-secondary" size="18" />} */}
         </div>
-        <div className='pt-[14px]'>
-          {headerData && headerData.tag && (
-            <Tag tags={headerData.tag} whiteMode={whiteMode} />
-          )}
+        <div className="pt-[14px]">
+          {headerData && headerData.tag && <Tag tags={headerData.tag} whiteMode={whiteMode} />}
         </div>
-        <div className='flex justify-between mt-[14px]'>
+        <div className="flex justify-between mt-[14px]">
           {infoData.map((info) => (
             <div
-              className='flex flex-col items-center gap-[6px] drop-shadow-[0_2px_0px_rgba(0,0,0,0.25)]'
+              className="flex flex-col items-center gap-[6px] drop-shadow-[0_2px_0px_rgba(0,0,0,0.25)]"
               key={info[0]}
             >
-              <div className='w-[38px] h-[38px] bg-white rounded-full flex items-center justify-center'>
+              <div className="w-[38px] h-[38px] bg-white rounded-full flex items-center justify-center">
                 <IconButton iconName={info[0]} />
               </div>
-              <p className='text-[12px]'>{info[1]}</p>
+              <p className="text-[12px]">{info[1]}</p>
             </div>
           ))}
         </div>
