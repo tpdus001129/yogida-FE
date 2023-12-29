@@ -29,6 +29,7 @@ export default function Input({
   commentReplyContent,
   commentPostId,
   commentParentsComment,
+  setCommentParentsComment,
   setCommentReplyContent,
 }) {
   const nicknameLength = authorNickname.length;
@@ -38,6 +39,7 @@ export default function Input({
     addCommentHandler();
     createCommentReply(commentParentsComment, commentPostId, commentReplyContent);
     setInputValue('');
+    setCommentParentsComment('');
   }
 
   // 댓글 작성 버튼 클릭시
@@ -106,5 +108,6 @@ Input.propTypes = {
   commentReplyContent: PropTypes.string,
   commentPostId: PropTypes.string,
   commentParentsComment: PropTypes.string,
-  setCommentReplyContent: PropTypes.string,
+  setCommentReplyContent: PropTypes.func,
+  setCommentParentsComment: PropTypes.func,
 };

@@ -18,7 +18,6 @@ export const TRAVEL_DESTINATION = [
   '강릉·속초',
   '서울',
   '경주',
-  '부산',
   '대구',
   '대전',
   '울산',

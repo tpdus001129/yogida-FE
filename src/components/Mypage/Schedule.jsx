@@ -37,6 +37,7 @@ import postsAPI from '../../services/posts';
 export default function Schedule() {
   const { id: postId } = useParams();
   const { openModal } = useModal();
+
   const navigate = useNavigate();
 
   const editMode = useMemo(() => (postId ? true : false), [postId]);
@@ -61,6 +62,42 @@ export default function Schedule() {
 
   const [dayTitle, setDayTitle] = useState('');
   const [selectDay, setSelectDay] = useState(0); //선택한 day
+
+  // useEffect(() => {
+  //   const tempData = localStorage.getItem('temp-schedule');
+  //   console.log(tempData);
+  //   if (tempData) {
+  //     toast.custom((t) => (
+  //       <div
+  //         className={`${
+  //           t.visible ? 'animate-enter' : 'animate-leave'
+  //         } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+  //       >
+  //         <div className="flex-1 w-0 p-4">임시저장된 데이터가 있습니다. 가져오시겠습니까?</div>
+  //         <div className="flex w-full gap-2">
+  //           <button
+  //             onClick={() => toast.dismiss(t.id)}
+  //             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  //           >
+  //             임시데이터 삭제하기
+  //           </button>
+  //           <button
+  //             onClick={() => toast.dismiss(t.id)}
+  //             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  //           >
+  //             취소
+  //           </button>
+  //           <button
+  //             onClick={() => toast.dismiss(t.id)}
+  //             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  //           >
+  //             확인
+  //           </button>
+  //         </div>
+  //       </div>
+  //     ));
+  //   }
+  // }, []);
 
   // 상세페이지 GET API
   useEffect(() => {
@@ -217,7 +254,21 @@ export default function Schedule() {
   };
 
   const onTempSave = () => {
-    console.log('Temp save : ');
+    const payload = {
+      title,
+      destination,
+      startDate,
+      endDate,
+      tag,
+      schedules,
+      distances: calculateDistance(),
+      cost,
+      peopleCount,
+      isPublic,
+      reviewText,
+    };
+    localStorage.setItem('temp-schedule', JSON.stringify(payload));
+    toast.success('임시저장 되었습니다.');
   };
 
   //여행지 검색
@@ -382,7 +433,12 @@ export default function Schedule() {
           )}
 
           <div className="overflow-scroll  scrollbar-hide">
-            <DayButton startDate={startDate} dayCount={dayCalculation} dayTitle={setDayTitle} setIndex={setSelectDay} />
+            <DayButton
+              startDate={{ startDate }}
+              dayCount={dayCalculation}
+              dayTitle={setDayTitle}
+              setIndex={setSelectDay}
+            />
           </div>
           <p className="text-center text-[14px] font-bold mb-[30px]">{dayTitle}</p>
 
