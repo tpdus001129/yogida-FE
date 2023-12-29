@@ -1,13 +1,14 @@
 import { useImageSlide } from '../../hooks/useImageSlide';
 import PropTypes from 'prop-types';
 import { IoEllipseSharp } from 'react-icons/io5';
+import noImage from '../../assets/images/noImage.png';
 
 export default function ImageSlide({ images }) {
   const { onMouseDown, onMouseUp, onTouchStart, onTouchEnd, transformValue, currentPage } = useImageSlide(images);
 
   // ul의 width길이 동적으로 변환
   function widthSize(images) {
-    return `${images.length * 100}%`;
+    return `${(images.length || 1) * 100}%`;
   }
 
   return (
@@ -20,11 +21,17 @@ export default function ImageSlide({ images }) {
         onMouseUp={onMouseUp}
         style={{ transform: `translateX(${transformValue}px)`, width: widthSize(images) }}
       >
-        {images.map((image, index) => (
-          <li key={index} className="w-[327px] h-[303px] bg-gray-3">
-            {image}
+        {images.length === 0 ? (
+          <li className="w-[327px] h-[303px] bg-gray-3 border border-gray-3 ">
+            <img src={noImage} alt="thumbnail" className="object-cover h-full w-full rounded-[10px]" />
           </li>
-        ))}
+        ) : (
+          images.map((image, index) => (
+            <li key={index} className="w-[327px] h-[303px] bg-gray-3">
+              <img src={image || noImage} alt="thumbnail" className="object-cover h-full w-full" />
+            </li>
+          ))
+        )}
       </ul>
       <div className="absolute bottom-[14px] flex justify-center inset-x-0 items-center">
         {Array.from({ length: images.length }, (_, index) => (

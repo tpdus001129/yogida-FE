@@ -12,15 +12,22 @@ import CourseMap from '../components/KakaoMaps/CourseMap';
 import Modal from '../components/CommentModal/Modal';
 import useDayCalculation from '../hooks/useDayCalculation';
 import postsAPI from '../services/posts';
+import { useNavigate } from 'react-router-dom/dist';
+import { useMypagePostsQuery } from './mypage/queries';
+import toast from 'react-hot-toast';
+import { PATH } from '../constants/path';
 
 export const ModalContext = createContext();
 
 export default function Detail() {
+  const navigate = useNavigate();
   const user = useRecoilValue(userState);
   const { id: postId } = useParams();
   const [data, setData] = useState([]);
   const [dayTitle, setDayTitle] = useState('');
   const [index, setIndex] = useState(0);
+
+  const { removePost } = useMypagePostsQuery();
 
   // 댓글 모드
   const [commentModalMode, setCommentModalMode] = useState(false);
@@ -41,6 +48,46 @@ export default function Detail() {
         throw new Error('상세 게시글을 불러오는 중에 오류가 생겼습니다.');
       });
   }, [postId]);
+
+  const remove = async () => {
+    const result = await removePost(postId);
+    if (result?.status === 204) {
+      const instance = toast.success('게시글이 삭제되었습니다.');
+      setTimeout(() => toast.dismiss(instance.id), 2000);
+      navigate(PATH.root);
+    }
+  };
+
+  const handleRemoveClick = () => {
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? 'animate-enter' : 'animate-leave'
+        } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+      >
+        <div className="flex-1 w-0 p-4">정말로 삭제하시겠습니까?</div>
+        <div className="flex border-l border-gray-200">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            취소
+          </button>
+        </div>
+        <div className="flex border-l border-gray-200">
+          <button
+            onClick={async () => {
+              toast.dismiss(t.id);
+              remove();
+            }}
+            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            확인
+          </button>
+        </div>
+      </div>
+    ));
+  };
 
   // 드래그 종료 시 처리
   useEffect(() => {
@@ -145,12 +192,12 @@ export default function Detail() {
           </div>
           <div className="w-full bg-input rounded-[4px] text-[14px] p-[8px] break-all">{data.reviewText}</div>
         </div>
-        {user && (
+        {user?._id === data?.authorId?._id && (
           <div className="w-full flex flex-col gap-[6px] justify-center pb-[60px] px-[24px]">
-            <Button type={'default'} text={'description'}>
+            <Button type={'default'} text={'description'} onClick={() => navigate(`/schedule/${postId}`)}>
               수정하기
             </Button>
-            <Button type={'red'} text={'description'}>
+            <Button type={'red'} text={'description'} onClick={handleRemoveClick}>
               삭제하기
             </Button>
           </div>

@@ -5,6 +5,7 @@ import { Rating } from 'semantic-ui-react';
 
 import { IoStar } from 'react-icons/io5';
 export default function Course({
+  editMode,
   schedules,
   handleAddPlaceImgClick,
   handleAddScoreClick,
@@ -12,10 +13,11 @@ export default function Course({
 }) {
   return (
     <ul className="mt-5 flex flex-col gap-5">
-      {schedules?.map((schedule) => (
-        <li key={schedule?.id}>
+      {schedules?.map((schedule, i) => (
+        <li key={`${schedule?.id}-${i}`}>
           <Card
             {...schedule}
+            editMode={editMode}
             handleAddPlaceImgClick={handleAddPlaceImgClick}
             handleRemoveSingleScheduleClick={handleRemoveSingleScheduleClick}
           />
@@ -27,7 +29,7 @@ export default function Course({
                   rating={schedule?.star}
                   maxRating={5}
                   onRate={(e, { rating }) => {
-                    handleAddScoreClick({ id: schedule?.id, star: rating });
+                    handleAddScoreClick({ _id: schedule?._id, star: rating });
                   }}
                 />
               </div>
@@ -66,6 +68,7 @@ ScheduleItem.propTypes = {
 };
 
 Course.propTypes = {
+  editMode: PropTypes.bool,
   schedules: PropTypes.array,
   selectDay: PropTypes.number,
   handleAddPlaceImgClick: PropTypes.func,

@@ -18,6 +18,7 @@ export function useImageSlide(images) {
 
   // 다음 슬라이드로 이동
   const handleNextSlide = useCallback(() => {
+    if (images.length === 0) return;
     if (transformValue === -327 * (images.length - 1)) {
       return;
     }
@@ -30,6 +31,7 @@ export function useImageSlide(images) {
 
   // 이전 슬라이드로 이동
   const handlePrevSlide = useCallback(() => {
+    if (images.length === 0) return;
     if (transformValue === 0) {
       return;
     }
@@ -38,7 +40,7 @@ export function useImageSlide(images) {
       setCurrentPage(prevPage !== currentPage ? prevPage : currentPage);
       return prevTransform + 327;
     });
-  }, [currentPage, transformValue]);
+  }, [currentPage, images.length, transformValue]);
 
   // 데스크탑 드래그 시작 시 마우스의 x, y 좌표 저장
   function onMouseDown(e) {

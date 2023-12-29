@@ -21,6 +21,8 @@ export default function Main() {
   const tagValue = queryParams.get('tag');
   const sortValue = queryParams.get('sort');
 
+  const [newKeyword, setNewKeyword] = useState('');
+
   // 디코딩
   const keyword = decodeURI(location.search);
 
@@ -76,20 +78,31 @@ export default function Main() {
     });
   }
 
+  console.log('aaaa', tagValue);
+  console.log('bbbb', sortValue);
+  console.log('cccc', cityValue);
+
   // 쿼리스트링 만들기
   function makeQueryString() {
+    console.log('아아아', newKeyword);
+    console.log('checkedList', checkedList);
+    let queryString = '/'; // 기본 경로 설정
+
     if (oneValue.includes(checkedList[0])) {
       if (checkedList.length === 1) {
-        const queryString = checkedList[0];
-        navigate(`/filter?sort=${queryString}`);
+        queryString = `/filter?sort=${checkedList[0]}`;
+      } else {
+        const sortStr = checkedList[0];
+        const tagQueryString = checkedList.slice(1).join(',');
+        queryString = `/filter?tag=${tagQueryString}&sort=${sortStr}`;
       }
-      const sortStr = checkedList[0];
-      const queryString = checkedList.slice(1).join(',');
-      navigate(`/filter?tag=${queryString}&sort=${sortStr}`);
-    } else {
-      const queryString = checkedList.join(',');
-      navigate(`/filter?tag=${queryString}`);
+    } else if (checkedList.length > 0) {
+      const tagQueryString = checkedList.join(',');
+      queryString = `/filter?city=${newKeyword}&tag=${tagQueryString}`;
     }
+
+    navigate(queryString);
+
     filterModeOff();
   }
 
@@ -97,6 +110,8 @@ export default function Main() {
     postsAPI.getAllPosts({ tag: tagValue, sort: sortValue, city: cityValue }).then((Posts) => {
       const receivedData = Posts.data.posts;
       setData(receivedData);
+
+      console.log(data);
 
       // 데이터가 없는 경우 notFound 상태를 true로 설정
       setNotFound(receivedData.length === 0);
@@ -106,7 +121,12 @@ export default function Main() {
   return (
     <>
       {searchMode ? (
-        <Search searchModeOff={searchModeOff} />
+        <Search
+          searchModeOff={searchModeOff}
+          tagValue={tagValue}
+          setNewKeyword={setNewKeyword}
+          newKeyword={newKeyword}
+        />
       ) : filterMode ? (
         <Filter
           filterModeOff={filterModeOff}

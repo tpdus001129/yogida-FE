@@ -8,12 +8,12 @@ import Header from '../components/Search/Header';
 import SearchItem from '../components/Search/SearchItem';
 import SearchInput from '../components/commons/SearchInput';
 
-export default function Search({ searchModeOff }) {
+export default function Search({ searchModeOff, newKeyword, setNewKeyword }) {
   const close = true;
   const [searchParams, setSearchParams] = useSearchParams();
 
   // 검색 데이터
-  const [newKeyword, setNewKeyword] = useState('');
+  // const [newKeyword, setNewKeyword] = useState('');
 
   // 로컬스토리지에 배열로 담을 변수
   const [keywords, setKeywords] = useState([]);
@@ -25,14 +25,19 @@ export default function Search({ searchModeOff }) {
     }
   }, []);
 
-  console.log(searchParams);
+  // 현재 입력 검색어 저장
+  function onChangeHandler(e) {
+    setNewKeyword(e.target.value);
+  }
 
   // 검색어를 최근 검색어 목록에 추가(중복 안됨)
   function handleAddKeyword(e) {
     e.preventDefault();
 
     if (newKeyword) {
-      const updatedKeywords = Array.from(new Set([newKeyword, ...keywords])).slice(0, 5);
+      const keywordsWithoutNull = keywords ? keywords.filter((keyword) => keyword !== null) : [];
+      const updatedKeywords = Array.from(new Set([newKeyword, ...keywordsWithoutNull])).slice(0, 5);
+
       setKeywords(updatedKeywords);
       setNewKeyword('');
 
@@ -63,11 +68,6 @@ export default function Search({ searchModeOff }) {
     localStorage.setItem('keywords', JSON.stringify(updatedKeywords));
   }
 
-  // 현재 입력 검색어 저장
-  function onChangeHandler(e) {
-    setNewKeyword(e.target.value);
-  }
-
   // 검색
   function searchHandler() {
     if (newKeyword) {
@@ -83,9 +83,9 @@ export default function Search({ searchModeOff }) {
     }
   }
 
-  function handleRefresh() {
-    window.location.reload();
-  }
+  // function handleRefresh() {
+  //   window.location.reload();
+  // }
 
   return (
     <div className="w-full">
@@ -123,4 +123,6 @@ export default function Search({ searchModeOff }) {
 
 Search.propTypes = {
   searchModeOff: PropTypes.func,
+  newKeyword: PropTypes.string,
+  setNewKeyword: PropTypes.func,
 };
