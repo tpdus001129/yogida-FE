@@ -52,7 +52,8 @@ export default function PostItem({ data }) {
                         {likeList?.myLikePostId.includes(item._id) ? (
                           <IoHeartSharp size="36" className="text-red" />
                         ) : (
-                          <IoHeartOutline size="36" color="#ffffff" />
+                          // <IoHeartOutline size="36" color="#ffffff" />
+                          <IoHeartOutline size="36" color="#D9D9D9" />
                         )}
                       </>
                     )}
