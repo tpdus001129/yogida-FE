@@ -20,7 +20,6 @@ export const TRAVEL_DESTINATION = [
   '경주',
   '대구',
   '대전',
-  '부산',
   '울산',
   '광주',
   '충북·세종',
