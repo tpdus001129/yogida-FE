@@ -80,10 +80,16 @@ export default function Profile({ setEditProfileMode }) {
       .userInfoModify(formData)
       .then(() => {
         if (nickname === newNickname || profileImg == profileImageSrc) {
-          openModal({ message: `수정된 정보가 없습니다.`, callback: () => setEditProfileMode((prev) => !prev) });
+          openModal({ message: `수정된 정보가 없습니다.` });
         }
         if (nickname !== newNickname || profileImg !== profileImageSrc) {
-          openModal({ message: `회원 정보가 수정되었습니다.`, callback: () => setEditProfileMode((prev) => !prev) });
+          openModal({
+            message: `회원 정보가 수정되었습니다.`,
+            callback: () => {
+              setEditProfileMode((prev) => !prev);
+              window.location.reload();
+            },
+          });
         }
       })
       .catch((error) => {
