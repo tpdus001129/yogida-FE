@@ -19,7 +19,7 @@ export function SearchTravelDestination({ handleDestinationClick, onClose }) {
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-[calc(100%-24px)] absolute bg-white z-20 rounded-xl ">
       <Header title={'검색'} onClick={onClose} />
       {/* 검색 */}
       <form className="w-full h-[74px] flex relative items-center px-[24px]">

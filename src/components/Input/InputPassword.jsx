@@ -46,7 +46,7 @@ export default function InputPassword({ value, onChangeFunc, placeholder, name, 
       )}
       {!isPasswordVisible && (
         <Eye
-          className="w-4 h-4 text-darkgray absolute scale-150 right-3.5 top-3.5"
+          className="w-4 h-4 text-darkgray absolute scale-150 right-3.5 top-[16px]"
           onClick={() => {
             setInputType('text');
             setIsPasswordVisible(true);

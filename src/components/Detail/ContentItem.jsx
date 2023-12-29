@@ -55,11 +55,11 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
             <div className="flex mx-[24px] justify-between" key={index}>
               {/* 왼쪽 컨텐츠*/}
               <div className="flex flex-col items-center relative">
-                {index === 0 && (
+                {index === 0 && schedulesData.length > 1 && (
                   <p className="text-[12px] absolute w-[24px] text-center ml-[50px] leading-[24px]">출발</p>
                 )}
                 <div className="w-[24px] h-[24px] rounded-full bg-secondary">
-                  {index === schedulesData.length - 1 && (
+                  {index === schedulesData.length - 1 && schedulesData.length > 1 && (
                     <p className="text-[12px] absolute w-[24px] text-center ml-[26px] leading-[24px]">도착</p>
                   )}
                 </div>
@@ -109,11 +109,6 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                         )}
                       </>
                     )}
-                    {/* {isClickedBookmark[index] ? (
-                      <IoBookmark className="text-secondary" size="22" />
-                    ) : (
-                      <IoBookmarkOutline className="text-secondary" size="22" />
-                    )} */}
                   </button>
                 </div>
                 <div className="h-[87px] rounded-b-[20px] bg-gray-3 relative">
