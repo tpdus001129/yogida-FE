@@ -64,7 +64,6 @@ api.interceptors.response.use(
       }
       if (error.response?.status === HttpStatusCode.Unauthorized) {
         console.log('401');
-        window.location.href = '/login';
       }
       if (error.response?.status === HttpStatusCode.Forbidden) {
         console.log('403');
