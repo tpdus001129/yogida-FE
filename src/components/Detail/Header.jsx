@@ -85,7 +85,7 @@ export default function Header({ headerData, postId }) {
           <div>
             <p className="text-[22px] font-bold">{headerData.title}</p>
           </div>
-          {headerData.isPublic && <IoLockClosed className="text-secondary" size="18" />}
+          {!headerData?.isPublic && <IoLockClosed className="text-secondary" size="18" />}
         </div>
         <div className="pt-[14px]">
           {headerData && headerData.tag && <Tag tags={headerData.tag} whiteMode={whiteMode} />}

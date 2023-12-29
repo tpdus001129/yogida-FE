@@ -36,7 +36,11 @@ export default function Posts() {
             <Post
               key={item._id}
               id={item?._id}
-              img={item?.schedules[0][0]?.placeImageSrc || noImage}
+              img={
+                item?.schedules[0][0]?.placeImageSrc === 'default'
+                  ? noImage
+                  : item?.schedules[0][0]?.placeImageSrc || noImage
+              }
               title={item?.title}
               date={`${convertSimpleDate(item?.startDate)} ~ ${convertSimpleDate(item?.endDate)}`}
               isPublic={item?.isPublic}
