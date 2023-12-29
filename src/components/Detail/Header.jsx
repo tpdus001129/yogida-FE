@@ -64,7 +64,7 @@ export default function Header({ headerData, postId }) {
 
   if (!headerData) return <p>loading...</p>;
   return (
-    <div className={`w-full h-[270px] bg-primary`}>
+    <div className={`w-full pb-[20px] bg-primary`}>
       <div className="flex justify-between items-center h-[70px] mx-[24px]">
         <IconButton iconName={'prev'} buttonType={buttonType} />
         <div className="flex gap-[16px] space-x-[6px]">

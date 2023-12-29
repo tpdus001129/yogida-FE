@@ -11,6 +11,10 @@ export default function ImageSlide({ images }) {
     return `${(images.length || 1) * 100}%`;
   }
 
+  if (images.length > 5) {
+    images.splice(5);
+  }
+
   return (
     <div className="w-[327px] h-[303px] rounded-[10px] mb-[14px] overflow-hidden">
       <ul
@@ -19,7 +23,10 @@ export default function ImageSlide({ images }) {
         onTouchStart={onTouchStart}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
-        style={{ transform: `translateX(${transformValue}px)`, width: widthSize(images) }}
+        style={{
+          transform: `translateX(${transformValue}px)`,
+          width: widthSize(images),
+        }}
       >
         {images.length === 0 ? (
           <li className="w-[327px] h-[303px] bg-gray-3 border border-gray-3 ">

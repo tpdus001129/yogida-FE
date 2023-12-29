@@ -164,55 +164,56 @@ export default function Detail() {
   if (!data) return <p>loading...</p>;
   return (
     <ModalContext.Provider value={{ commentModalMode, setCommentModalMode }}>
-      {commentModalMode && <Modal onMouseDown={onMouseDown} onMouseUp={onMouseUp} user={user} postId={postId} />}
-      <div className={commentModalMode ? 'w-full h-screen overflow-hidden' : ''}>
-        <Header headerData={data} postId={postId} />
-        <div className="w-full h-[160px] mb-[22px]">
-          {dayClickedSchedulesData() && !commentModalMode && <CourseMap data={dayClickedSchedulesData()} />}
-        </div>
-        <div className="overflow-scroll scrollbar-hide">
-          {data.startDate && (
-            <DayButton
-              startDate={data.startDate}
-              dayCount={dayCalculation}
-              dayTitle={setDayTitle}
-              setIndex={setIndex}
-            />
-          )}
-        </div>
-        <p className="text-center text-[14px] font-bold mb-[26px]">{dayTitle}</p>
-        <div className="mb-[60px]">
-          {dayClickedSchedulesData() && (
-            <ContentItem
-              key={index}
-              schedulesData={dayClickedSchedulesData()}
-              distancesData={distancesData()}
-              distanceIndex={index}
-              postId={postId}
-            />
-          )}
-        </div>
-        <div className="mx-[24px] mb-[60px]">
-          <div className="flex gap-[6px] mb-[16px]">
-            {/* 프로필 사진 넣는곳 */}
-            <div className="w-[40px] h-[40px] rounded-full border border-gray-4"></div>
-            <div className="flex flex-col">
-              <p className="text-[12px] text-gray-2">{createData}</p>
-              <p className="text-[14px] font-bold">{nicknameData()}님의 여행 한마디</p>
+      <div className="pb-[40px]">
+        {commentModalMode && <Modal onMouseDown={onMouseDown} onMouseUp={onMouseUp} user={user} postId={postId} />}
+        <div className={commentModalMode ? 'w-full h-screen overflow-hidden' : ''}>
+          <Header headerData={data} postId={postId} />
+          <div className="w-full h-[160px] mb-[22px]">
+            {dayClickedSchedulesData() && !commentModalMode && <CourseMap data={dayClickedSchedulesData()} />}
+          </div>
+          <div className="overflow-scroll scrollbar-hide">
+            {data.startDate && (
+              <DayButton
+                startDate={data.startDate}
+                dayCount={dayCalculation}
+                dayTitle={setDayTitle}
+                setIndex={setIndex}
+              />
+            )}
+          </div>
+          <p className="text-center text-[14px] font-bold mb-[26px]">{dayTitle}</p>
+          <div className="mb-[60px]">
+            {dayClickedSchedulesData() && (
+              <ContentItem
+                key={index}
+                schedulesData={dayClickedSchedulesData()}
+                distancesData={distancesData()}
+                distanceIndex={index}
+                postId={postId}
+              />
+            )}
+          </div>
+          <div className="mx-[24px] mb-[60px]">
+            <div className="flex gap-[6px] mb-[16px]">
+              <div className="w-[40px] h-[40px] rounded-full border border-gray-4"></div>
+              <div className="flex flex-col">
+                <p className="text-[12px] text-gray-2">{createData}</p>
+                <p className="text-[14px] font-bold">{nicknameData()}님의 여행 한마디</p>
+              </div>
             </div>
+            <div className="w-full bg-input rounded-[4px] text-[14px] p-[8px] break-all">{data.reviewText}</div>
           </div>
-          <div className="w-full bg-input rounded-[4px] text-[14px] p-[8px] break-all">{data.reviewText}</div>
+          {user?._id === data?.authorId?._id && (
+            <div className="w-full flex flex-col gap-[6px] justify-center pb-[60px] px-[24px]">
+              <Button type={'default'} text={'description'} onClick={() => navigate(`/schedule/${postId}`)}>
+                수정하기
+              </Button>
+              <Button type={'red'} text={'description'} onClick={handleRemoveClick}>
+                삭제하기
+              </Button>
+            </div>
+          )}
         </div>
-        {user?._id === data?.authorId?._id && (
-          <div className="w-full flex flex-col gap-[6px] justify-center pb-[60px] px-[24px]">
-            <Button type={'default'} text={'description'} onClick={() => navigate(`/schedule/${postId}`)}>
-              수정하기
-            </Button>
-            <Button type={'red'} text={'description'} onClick={handleRemoveClick}>
-              삭제하기
-            </Button>
-          </div>
-        )}
       </div>
     </ModalContext.Provider>
   );
