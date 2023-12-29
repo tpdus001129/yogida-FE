@@ -8,7 +8,7 @@ import Plus from '../../assets/Plus';
 
 import authAPI from '../../services/auth';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useKakaoUserInfoQuery } from './queries';
 import { useNavigate } from 'react-router-dom';
 import useNickname from '../../hooks/useNickname';
@@ -22,18 +22,24 @@ export default function Setup() {
   const { openModal } = useModal();
 
   const [image, setImage] = useState('');
+  const selectFile = useRef(null);
 
   const { nickname, setNickname, isNicknameAvailable, checkNicknameMessage, handleCheckNickname } = useNickname();
 
   const handleSignUp = async () => {
+    const formDataOfUser = new FormData();
+    formDataOfUser.append('snsId', user.data.snsId);
+    formDataOfUser.append('email', user.data.email);
+    formDataOfUser.append('nickname', nickname);
+    if (selectFile.current.files[0]) {
+      formDataOfUser.append('profile', selectFile.current.files[0]);
+    } else {
+      formDataOfUser.append('profileImageUrl', image);
+    }
+    formDataOfUser.append('type', 'kakao');
+    console.log('email', formDataOfUser.get('email'));
     await authAPI
-      .signup({
-        snsId: user.data.snsId,
-        email: user.data.email,
-        nickname,
-        profileImageUrl: user.data.profileImageUrl,
-        type: 'kakao',
-      })
+      .signup(formDataOfUser)
       .then(() => {
         openModal({ message: `회원가입이 완료되었습니다.`, callback: () => navigate('/') });
       })
@@ -58,6 +64,15 @@ export default function Setup() {
     }
   }, [user, setNickname, setImage]);
 
+  const handleUpload = (event) => {
+    console.log(selectFile.current.files[0]);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setImage(event.target.result);
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  };
+
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center p-6">
       <Header />
@@ -65,7 +80,13 @@ export default function Setup() {
         <div className="flex flex-col items-center justify-end">
           <div className={`w-36 h-36 relative`}>
             <img src={image === '' ? profileImage : image} className={`w-full h-full bg-cover rounded-full `} />
-            <Plus className="w-8 h-8 bg-white rounded-full absolute fill-darkgray right-2 bottom-2 cursor-pointer"></Plus>
+            <input type="file" className="invisible" ref={selectFile} onChange={handleUpload}></input>
+            <Plus
+              className="w-8 h-8 bg-white rounded-full absolute fill-darkgray right-2 bottom-2 cursor-pointer"
+              onClick={() => {
+                selectFile.current.click();
+              }}
+            ></Plus>
           </div>
         </div>
         <div className="py-5">

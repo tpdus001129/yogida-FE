@@ -29,6 +29,7 @@ function App() {
         <Route path={PATH.notfound} element={<Notfound />} />
         <Route path={PATH.filter} element={<Main />} />
         <Route path={PATH.schedule} element={<Schedule />} />
+        <Route path={PATH.editSchedule} element={<Schedule />} />
         <Route path={PATH.signup} element={<Signup />} />
         <Route path={PATH.findPassword} element={<FindPassword />} />
         <Route path={PATH.detail} element={<Detail />} />

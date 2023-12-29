@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import { IoCheckmarkCircle } from 'react-icons/io5';
 import { IoHeartSharp } from 'react-icons/io5';
-import sample from '../../assets/images/sample.jpg';
 import Title from './Title';
 import DeleteAllCheckbox from './DeleteAllCheckbox';
 import { useMypageLikesQuery } from '../../pages/mypage/queries';
 import useCheckbox from '../../hooks/useCheckbox';
 import toast from 'react-hot-toast';
 import { convertSimpleDate } from '../../utils/convertSimpleDate';
+import noImage from '../../assets/images/noImage.png';
 
 export default function Likes() {
   const { likesList, removeLikes } = useMypageLikesQuery();
@@ -40,7 +40,7 @@ export default function Likes() {
       <div className="flex flex-col gap-[20px]">
         {totalCount !== 0 &&
           list?.map((item) => {
-            const img = item?.postId?.schedules[0][0]?.placeImageSrc || sample;
+            const img = item?.postId?.schedules[0][0]?.placeImageSrc || noImage;
             const title = item?.postId?.title;
             return (
               <Like

@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import { IoAdd } from 'react-icons/io5';
 import { IoEllipsisHorizontalSharp, IoLockClosedOutline } from 'react-icons/io5';
-import sample from '../../assets/images/sample.jpg';
 import { Link } from 'react-router-dom';
 import Title from './Title';
 import { useMypagePostsQuery } from '../../pages/mypage/queries';
 import { convertSimpleDate } from '../../utils/convertSimpleDate';
 import useModal from '../../hooks/useModal';
-// import ModalWithOption from '../Modal/ModalWithOption';
+import noImage from '../../assets/images/noImage.png';
 
 export default function Posts() {
   const { postsList } = useMypagePostsQuery();
@@ -39,7 +38,7 @@ export default function Posts() {
           postsList?.list?.map((item) => (
             <Post
               key={item._id}
-              img={item?.schedules[0][0].placeImageSrc || sample}
+              img={item?.schedules[0][0]?.placeImageSrc || noImage}
               title={item?.title}
               date={`${convertSimpleDate(item?.startDate)} ~ ${convertSimpleDate(item?.endDate)}`}
               isPublic={item?.isPublic}
@@ -56,7 +55,13 @@ export default function Posts() {
 function Post({ img, title, date, isPublic, onClick }) {
   return (
     <div className="flex gap-[16px] items-center">
-      <img src={img} alt="card-thumbnail" className="w-[60px] h-[60px] rounded-full object-cover" />
+      <div className="border rounded-full">
+        <img
+          src={img}
+          alt="card-thumbnail"
+          className="w-[60px] h-[60px] rounded-full object-cover border border-black"
+        />
+      </div>
       <div className="w-[65%]">
         <div className="flex items-center gap-1">
           <strong className=" block text-black text-[14px] truncate">{title}</strong>
