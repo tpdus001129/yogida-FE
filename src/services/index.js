@@ -58,7 +58,6 @@ api.interceptors.response.use(
         http status가 200이 아닌 경우
         응답 에러 직전 호출됩니다.
     */
-    console.log('error : ', error);
     if (isAxiosError(error)) {
       if (error.response?.status === HttpStatusCode.NotFound) {
         console.log('404');
