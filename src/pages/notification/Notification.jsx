@@ -45,7 +45,7 @@ export default function Notification() {
           전체삭제
         </button>
       </div>
-      <div className={`overflow-scroll h-[calc(100vh-160px)]`}>
+      <div className={`overflow-scroll h-[calc(100vh-160px)] scrollbar-hide`}>
         {notificationList?.map((notification) => (
           <NotificationItem
             key={notification._id}

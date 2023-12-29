@@ -75,8 +75,8 @@ export default function LoginWithEmailContainer() {
       >
         로그인
       </Button>
-      <Link to="/find-password">
-        <p className="flex justify-center mt-4">
+      <Link to="/find-password" className="mt-4 block">
+        <p className="flex justify-center">
           <span className="text-xs text-black cursor-pointer">비밀번호가 생각나지 않나요?</span>
         </p>
       </Link>

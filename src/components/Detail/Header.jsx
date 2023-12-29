@@ -18,7 +18,7 @@ const headerIcon = ['share', 'comment', 'heart'];
 
 export default function Header({ headerData, postId }) {
   // 날짜 계산기 커스텀 훅 사용
-  const dayCalculation = useDayCalculation(headerData.startDate, headerData.endDate);
+  const dayCalculation = Math.floor(useDayCalculation(headerData.startDate, headerData.endDate));
 
   // 비용 포맷
   const costFormat = (+headerData.cost).toLocaleString();
