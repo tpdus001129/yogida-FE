@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types';
+import { useEffect, useRef, useState } from 'react';
 
 import { IoArrowUpCircle } from 'react-icons/io5';
 
-function ReplyId({ authorNickname, replyOff, widthRef }) {
+function ReplyId({ authorNickname, replyOff, widthRef, getWidth }) {
+  useEffect(() => {
+    getWidth(widthRef?.current?.offsetWidth);
+  }, [getWidth, widthRef]);
   return (
     <span
       className="text-primary text-[12px] bg-primary bg-opacity-30 rounded-[4px] px-[4px] mr-[6px] absolute top-[50%] mt-[-9px] left-[10px]"
@@ -32,7 +36,7 @@ export default function Input({
   setCommentParentsComment,
   setCommentReplyContent,
 }) {
-  const nicknameLength = authorNickname.length;
+  // const nicknameLength = authorNickname.length;
 
   function onSubmitHandler() {
     // e.preventDefault();
@@ -48,6 +52,11 @@ export default function Input({
     onSubmitHandler();
   }
 
+  const widthRef = useRef();
+  const [nickNameSize, setNickNameSize] = useState();
+  const getWidth = (width) => {
+    setNickNameSize(width + 15);
+  };
   return (
     <div className={className}>
       <form className="mx-[24px] flex items-center relative" onSubmit={handleCommentSubmit}>
@@ -55,12 +64,12 @@ export default function Input({
         <div className="flex-col w-full">
           {replyMode ? (
             <div className="relative w-full">
-              <ReplyId authorNickname={authorNickname} replyOff={replyOff} />
+              <ReplyId authorNickname={authorNickname} replyOff={replyOff} widthRef={widthRef} getWidth={getWidth} />
               <input
                 id="replyInput"
                 onChange={(e) => setCommentReplyContent(e.target.value)}
                 value={commentReplyContent}
-                style={{ paddingLeft: `${nicknameLength + 80}px` }}
+                style={{ paddingLeft: `${nickNameSize}px` }}
                 className="w-full h-[48px] bg-gray-3 bg-opacity-30 focus:outline-none rounded-[24px] pr-[44px] text-[14px]"
                 placeholder={`님께 댓글 작성 중입니다.`}
               />
@@ -90,6 +99,7 @@ ReplyId.propTypes = {
   authorNickname: PropTypes.string.isRequired,
   replyOff: PropTypes.func,
   widthRef: PropTypes.any,
+  getWidth: PropTypes.func,
 };
 
 Input.propTypes = {

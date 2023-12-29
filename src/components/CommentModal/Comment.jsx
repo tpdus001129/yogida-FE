@@ -146,6 +146,7 @@ export default function Comment({
               userId={userId}
               deleteReplyComment={deleteReplyComment}
               updateNewComment={updateNewComment}
+              nickname={nickname}
             />
           ))}
       </div>
@@ -153,7 +154,7 @@ export default function Comment({
   );
 }
 
-function ReplyComment({ re, userId, deleteReplyComment }) {
+function ReplyComment({ re, userId, deleteReplyComment, nickname }) {
   const [editMode, setEditMode] = useState(false);
   const [commentMenuMode, setCommentMenuMode] = useState(false);
   // 대댓글 현재 상태, 바뀐 상태
@@ -210,7 +211,7 @@ function ReplyComment({ re, userId, deleteReplyComment }) {
               <div className="text-[12px] text-gray-2">{re?.createdAt?.slice(0, 10)}</div>
             </div>
             <div className="flex w-full gap-1">
-              <span className="font-bold text-sm text-primary w-fit whitespace-nowrap">@이다현</span>
+              <span className="font-bold text-sm text-primary w-fit whitespace-nowrap">@{nickname}</span>
               <textarea
                 className={`w-full text-[12px] bg-white resize-none ${editMode ? 'outline-primary' : ''}`}
                 value={newReply}
@@ -286,5 +287,6 @@ Profile.propTypes = {
 ReplyComment.propTypes = {
   re: PropTypes.object,
   userId: PropTypes.string,
+  nickname: PropTypes.string,
   deleteReplyComment: PropTypes.func,
 };
