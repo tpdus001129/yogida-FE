@@ -9,7 +9,7 @@ export default function Tag({ tags, whiteMode, handleRemoveTag }) {
           className={`${
             whiteMode ? 'text-primary bg-white' : 'text-white bg-primary'
           } rounded px-[6px] py-[1px] mb-[6px] mr-[4px] hover:cursor-pointer `}
-          onClick={() => handleRemoveTag(tag)}
+          onClick={() => (handleRemoveTag ? handleRemoveTag(tag) : {})}
         >
           #{tag}
         </span>
