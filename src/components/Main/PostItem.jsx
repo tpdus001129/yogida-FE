@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { userState } from '../../recoils/userAtom';
 import { useRecoilValue } from 'recoil';
 import PropTypes from 'prop-types';
-
+import Notfound from '../Search/NotFound';
 import { IoChatbubbleOutline, IoHeartOutline, IoHeartSharp } from 'react-icons/io5';
 
 import Tag from '../commons/Tag';
@@ -54,10 +54,11 @@ export default function PostItem({ data }) {
     await likesAPI.removeAll(payload);
   }
 
+  if (data.length === 0) return <Notfound />;
   return (
     <div>
       {data.map((item) => (
-        <Link to={`/posts/${item._id}`} key={item._id}>
+        <Link to={`/posts/${item._id}`} key={`post-${item._id}`}>
           <div>
             <div className="pb-[20px]">
               <div>

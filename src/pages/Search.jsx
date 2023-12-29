@@ -1,23 +1,24 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 import { IoSearchOutline } from 'react-icons/io5';
 
 import Header from '../components/Search/Header';
 import SearchItem from '../components/Search/SearchItem';
 import SearchInput from '../components/commons/SearchInput';
+import { TRAVEL_DESTINATION } from '../constants';
+import { convertToHangulJamo } from '../utils/convertToHangulJamo';
 
-export default function Search({ searchModeOff, newKeyword, setNewKeyword }) {
-  const close = true;
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  // 검색 데이터
-  // const [newKeyword, setNewKeyword] = useState('');
+export default function Search() {
+  // 검색 input 키워드
+  const [searchKeyword, setSearchKeyword] = useState('');
 
   // 로컬스토리지에 배열로 담을 변수
   const [keywords, setKeywords] = useState([]);
 
+  const navigate = useNavigate();
+
+  // 렌더링 될때 Local Storage 에서 키워드를 가져와 세팅한다.
   useEffect(() => {
     const result = localStorage.getItem('keywords');
     if (result?.length !== 0) {
@@ -25,38 +26,41 @@ export default function Search({ searchModeOff, newKeyword, setNewKeyword }) {
     }
   }, []);
 
-  // 현재 입력 검색어 저장
-  function onChangeHandler(e) {
-    setNewKeyword(e.target.value);
+  // input 입력 핸들러
+  function handleChangeInput(e) {
+    setSearchKeyword(e.target.value);
   }
 
   // 검색어를 최근 검색어 목록에 추가(중복 안됨)
   function handleAddKeyword(e) {
     e.preventDefault();
 
-    if (newKeyword) {
-      const keywordsWithoutNull = keywords ? keywords.filter((keyword) => keyword !== null) : [];
-      const updatedKeywords = Array.from(new Set([newKeyword, ...keywordsWithoutNull])).slice(0, 5);
+    if (!searchKeyword) return; // 검색어가 없는 경우 추가하지 않음
 
-      setKeywords(updatedKeywords);
-      setNewKeyword('');
+    // 기존 키워드 목록에서 중복 검사
+    const isDuplicate = keywords.includes(searchKeyword);
+    let updatedKeywords = [];
 
-      localStorage.setItem('keywords', JSON.stringify(updatedKeywords));
+    if (!isDuplicate) {
+      // 중복되지 않은 경우, 검색어를 추가
+      updatedKeywords = [searchKeyword, ...keywords];
+    } else {
+      // 중복된 경우, 기존 순서를 유지
+      updatedKeywords = [...keywords];
     }
+
+    // 최근 검색어가 너무 많을 경우, 오래된 검색어 제거 (예: 최대 10개)
+    if (updatedKeywords.length > 5) {
+      updatedKeywords = updatedKeywords.slice(0, 5);
+    }
+
+    setKeywords(updatedKeywords);
+    localStorage.setItem('keywords', JSON.stringify(updatedKeywords));
   }
-
-  // 로컬 스토리지에서 최근 검색어를 불러옴
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const result = localStorage.getItem('keywords');
-      setKeywords(JSON.parse(result));
-    }
-  }, []);
 
   // 모든 검색어 삭제
   function handleRemoveAllKeywords() {
     setKeywords([]);
-    localStorage.clear();
     localStorage.setItem('keywords', JSON.stringify([]));
   }
 
@@ -70,35 +74,24 @@ export default function Search({ searchModeOff, newKeyword, setNewKeyword }) {
 
   // 검색
   function searchHandler() {
-    if (newKeyword) {
-      setSearchParams({
-        city: newKeyword,
-      });
-      searchModeOff();
-    } else if (newKeyword === '' || newKeyword === null) {
-      return;
+    if (searchKeyword) {
+      navigate('/search?city=' + encodeURIComponent(searchKeyword));
     } else {
-      searchModeOff();
-      alert('존재하지 않는 게시물');
+      navigate('/');
     }
   }
 
-  // function handleRefresh() {
-  //   window.location.reload();
-  // }
-
   return (
     <div className="w-full">
-      <Header title={'검색'} close={close} searchModeOff={searchModeOff} />
+      <Header title={'검색'} />
       <form
         className="w-full h-[74px] flex relative items-center px-[24px]"
         onSubmit={(e) => {
           handleAddKeyword(e);
           searchHandler();
-          handleRefresh();
         }}
       >
-        <SearchInput newKeyword={newKeyword} onChangeHandler={onChangeHandler} />
+        <SearchInput onChangeHandler={handleChangeInput} />
         <button className="absolute right-[40px] top-[35%]" type="submit">
           <IoSearchOutline size="22" />
         </button>
@@ -117,12 +110,32 @@ export default function Search({ searchModeOff, newKeyword, setNewKeyword }) {
       {keywords?.length === 0 && (
         <p className="text-center text-gray-1 text-[14px] mt-[20px]">최근 검색어 내역이 없습니다.</p>
       )}
+      <ul className="w-full px-[24px]">
+        {TRAVEL_DESTINATION.filter(
+          (destination) =>
+            convertToHangulJamo(destination).includes(searchKeyword) || destination.includes(searchKeyword),
+        ).map((item) => (
+          <li key={item}>
+            <DestinationItem name={item} onClick={() => navigate(`/search?city=${item}`)} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-Search.propTypes = {
-  searchModeOff: PropTypes.func,
-  newKeyword: PropTypes.string,
-  setNewKeyword: PropTypes.func,
+function DestinationItem({ name, onClick }) {
+  return (
+    <div className="flex items-center justify-between py-4">
+      <strong>{name}</strong>
+      <button className="bg-gray-4 text-sm px-3 py-1 rounded-2xl" onClick={onClick}>
+        선택
+      </button>
+    </div>
+  );
+}
+
+DestinationItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
