@@ -22,6 +22,8 @@ export default function Signup() {
   const {
     email,
     setEmail,
+    isLoading,
+    setIsLoading,
     verificationCode,
     setVerificationCode,
     isAvailableEmailInput,
@@ -93,10 +95,13 @@ export default function Signup() {
                 onChangeFunc={setEmail}
                 buttonType={'default'}
                 buttonChildren={'인증번호 전송'}
-                isButtonDisabled={emailValidationMessage !== '' || !isAvailableEmailInput}
+                isButtonDisabled={isLoading || emailValidationMessage !== '' || !isAvailableEmailInput}
                 isInputDisabled={!isAvailableEmailInput}
                 isValid={emailValidationMessage === ''}
-                onClick={() => handleSendValidationCode({ type: 'signup' })}
+                onClick={() => {
+                  setIsLoading(true);
+                  handleSendValidationCode({ type: 'signup' });
+                }}
               />
             }
             validateMessage={emailValidationMessage}

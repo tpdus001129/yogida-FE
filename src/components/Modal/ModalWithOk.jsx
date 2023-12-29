@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 
 import Button from '../commons/Button';
 import useModal from '../../hooks/useModal';
-import { useEffect } from 'react';
 
 ModalWithOk.propTypes = {
   message: PropTypes.string,
@@ -16,14 +15,6 @@ ModalWithOk.defaultProps = {
 export default function ModalWithOk() {
   const { modal, closeModal } = useModal();
 
-  useEffect(() => {
-    return () => {
-      if (modal.callback) {
-        modal.callback();
-      }
-    };
-  });
-
   const calendarStyle =
     modal.type === 'calendar'
       ? 'w-[90%] bg-white rounded-xl flex flex-col gap-[16px]'
@@ -35,12 +26,27 @@ export default function ModalWithOk() {
           <div className="fixed top-0 left-0 w-screen h-screen bg-gray-1 opacity-50 !m-0 !p-0 z-10"></div>
           <div className="fixed top-0 left-0 w-screen h-screen !m-0 !p-0 flex justify-center items-center z-20 ">
             <div className={calendarStyle}>
-              <p className="w-full text-center break-keep whitespace-pre-wrap grow flex justify-center items-center">
+              <div className="w-full text-center break-keep whitespace-pre-wrap grow flex justify-center items-center">
                 {modal.message}
-              </p>
-              <Button type={'primary'} onClick={closeModal}>
-                확인
-              </Button>
+              </div>
+              {modal.type === 'calendar' ? (
+                <button
+                  className="bg-primary text-white border-transparent text-base h-button cursor-pointer rounded-b-md disabled:cursor-not-allowed border flex justify-center items-center disabled:bg-gray-2 disabled:opacity-50 disabled:text-black disabled:border-black"
+                  onClick={closeModal}
+                >
+                  확인
+                </button>
+              ) : (
+                <Button
+                  type={'primary'}
+                  onClick={() => {
+                    closeModal();
+                    modal.callback();
+                  }}
+                >
+                  확인
+                </Button>
+              )}
             </div>
           </div>
         </>

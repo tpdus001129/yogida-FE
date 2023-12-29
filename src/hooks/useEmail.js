@@ -4,6 +4,7 @@ import useModal from './useModal';
 
 export default function useEmail() {
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [isAvailableEmailInput, setIsAvailableEmailInput] = useState(true);
   const [isVerificationVisible, setIsVerificationVisible] = useState(false);
@@ -27,8 +28,10 @@ export default function useEmail() {
         openModal({ message: `메일이 전송되었습니다.\n5분 안에 인증번호를 입력해주세요.` });
         setIsAvailableEmailInput(false);
         setIsVerificationVisible(true);
+        setIsLoading(false);
       })
       .catch((error) => {
+        setIsLoading(false);
         switch (error?.status) {
           case 400: {
             openModal({ message: error?.message ?? '메일 전송 중 오류가 발생했습니다' });
@@ -76,6 +79,8 @@ export default function useEmail() {
   return {
     email,
     setEmail,
+    isLoading,
+    setIsLoading,
     verificationCode,
     setVerificationCode,
     isAvailableEmailInput,

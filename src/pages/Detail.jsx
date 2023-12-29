@@ -145,7 +145,6 @@ export default function Detail() {
           </div>
           <div className="w-full bg-input rounded-[4px] text-[14px] p-[8px] break-all">{data.reviewText}</div>
         </div>
-
         {user && (
           <div className="w-full flex flex-col gap-[6px] justify-center pb-[60px] px-[24px]">
             <Button type={'default'} text={'description'}>

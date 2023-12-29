@@ -14,6 +14,8 @@ export default function FindPassword() {
   const {
     email,
     setEmail,
+    isLoading,
+    setIsLoading,
     emailValidationMessage,
     verificationCode,
     setVerificationCode,
@@ -53,10 +55,13 @@ export default function FindPassword() {
                 onChangeFunc={setEmail}
                 buttonType={'default'}
                 buttonChildren={'이메일 인증하기'}
-                isButtonDisabled={emailValidationMessage !== '' || !isAvailableEmailInput}
+                isButtonDisabled={isLoading || emailValidationMessage !== '' || !isAvailableEmailInput}
                 isInputDisabled={!isAvailableEmailInput}
                 isValid={emailValidationMessage === ''}
-                onClick={() => handleSendValidationCode({ type: 'change-password' })}
+                onClick={() => {
+                  setIsLoading(true);
+                  handleSendValidationCode({ type: 'change-password' });
+                }}
               />
             }
             validateMessage={emailValidationMessage}
