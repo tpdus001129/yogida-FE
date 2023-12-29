@@ -64,7 +64,7 @@ export default function DayButton({ startDate, dayCount, dayTitle, setIndex }) {
 }
 
 DayButton.propTypes = {
-  startDate: PropTypes.instanceOf(Date),
+  startDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
   dayCount: PropTypes.number.isRequired,
   dayTitle: PropTypes.func,
   setIndex: PropTypes.func,
