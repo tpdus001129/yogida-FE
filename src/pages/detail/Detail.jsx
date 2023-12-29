@@ -44,8 +44,7 @@ export default function Detail() {
       .then((post) => {
         setData(post.data);
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
         throw new Error('상세 게시글을 불러오는 중에 오류가 생겼습니다.');
       });
   }, [postId]);
@@ -195,7 +194,13 @@ export default function Detail() {
           </div>
           <div className="mx-[24px] mb-[60px]">
             <div className="flex gap-[6px] mb-[16px]">
-              <div className="w-[40px] h-[40px] rounded-full border border-gray-4"></div>
+              <div className="w-[40px] h-[40px] rounded-full border border-gray-4">
+                <img
+                  src={data?.authorId?.profileImageSrc}
+                  alt="profile"
+                  className="w-[40px] h-[40px] rounded-full border border-gray-4 object-cover"
+                />
+              </div>
               <div className="flex flex-col">
                 <p className="text-[12px] text-gray-2">{createData}</p>
                 <p className="text-[14px] font-bold">{nicknameData()}님의 여행 한마디</p>

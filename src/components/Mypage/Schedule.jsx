@@ -203,7 +203,6 @@ export default function Schedule() {
   };
 
   const handleRemoveTag = (value) => {
-    console.log(value);
     if (tag.includes(value)) {
       setTag((prevList) => prevList.filter((item) => item !== value));
       return;
