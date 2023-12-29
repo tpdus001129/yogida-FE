@@ -27,8 +27,12 @@ export default function ImageSlide({ images }) {
           </li>
         ) : (
           images.map((image, index) => (
-            <li key={index} className="w-[327px] h-[303px] bg-gray-3">
-              <img src={image || noImage} alt="thumbnail" className="object-cover h-full w-full" />
+            <li key={index} className="w-[327px] h-[303px] border bg-gray-3  border-gray-3">
+              <img
+                src={image === 'default' ? noImage : image || noImage}
+                alt="thumbnail"
+                className="object-cover h-full w-full  rounded-[10px]"
+              />
             </li>
           ))
         )}
