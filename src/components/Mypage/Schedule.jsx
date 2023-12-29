@@ -15,7 +15,7 @@ import {
   IoLocationSharp,
   IoAccessibility,
   IoWallet,
-  IoBagRemove,
+  // IoBagRemove,
   IoMap,
   IoPricetag,
 } from 'react-icons/io5';
@@ -56,7 +56,7 @@ export default function Schedule() {
   const [destination, setDestination] = useState(''); // 여행지
   const [peopleCount, setPeopleCount] = useState(0); //인원수
   const [cost, setCost] = useState(0); //예산
-  const [isPublic, setIsPublic] = useState('true'); //게시글 공개 여부
+  // const [isPublic, setIsPublic] = useState('true'); //게시글 공개 여부
   const [schedules, setSchedules] = useState([]); // 코스 등록
   const [tag, setTag] = useState([]); //태그
 
@@ -105,8 +105,7 @@ export default function Schedule() {
     postsAPI
       .getPostById(postId)
       .then((post) => {
-        const { startDate, endDate, title, reviewText, destination, peopleCount, cost, isPublic, schedules, tag } =
-          post.data;
+        const { startDate, endDate, title, reviewText, destination, peopleCount, cost, schedules, tag } = post.data;
         setSchedules(schedules);
         setStartDate(startDate);
         setEndDate(endDate);
@@ -115,7 +114,7 @@ export default function Schedule() {
         setDestination(destination);
         setPeopleCount(peopleCount);
         setCost(cost);
-        setIsPublic(`${isPublic}`);
+        // setIsPublic(`${isPublic}`);
         setTag(tag);
       })
       .catch((error) => {
@@ -228,7 +227,7 @@ export default function Schedule() {
       distances: calculateDistance(),
       cost,
       peopleCount,
-      isPublic,
+      // isPublic,
       reviewText,
     };
     const placeImages = schedules.map((subArray) => {
@@ -272,7 +271,7 @@ export default function Schedule() {
       distances: calculateDistance(),
       cost,
       peopleCount,
-      isPublic,
+      // isPublic,
       reviewText,
     };
     localStorage.setItem('temp-schedule', JSON.stringify(payload));
@@ -405,7 +404,8 @@ export default function Schedule() {
               onChange={(e) => setCost(e.target.value)}
             />
           </ScheduleItem>
-          <ScheduleItem
+          {/* 게시글 공개 여부 */}
+          {/* <ScheduleItem
             icon={<IoBagRemove color="#589BF7" size={20} />}
             title="게시글 공개 여부"
             id="secret"
@@ -438,7 +438,7 @@ export default function Schedule() {
                 비공개
               </label>
             </div>
-          </ScheduleItem>
+          </ScheduleItem> */}
           <ScheduleItem icon={<IoMap color="#589BF7" size={20} />} title="코스 등록" id="map"></ScheduleItem>
         </ul>
         {!startDate && !endDate && (

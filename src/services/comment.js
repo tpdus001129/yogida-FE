@@ -11,7 +11,6 @@ const commentAPI = {
   },
   // 댓글, 대댓글 post
   async postComment({ parentComment, postId, content }) {
-    console.log('@@@@@@', parentComment);
     const payload = parentComment ? { parentComment, postId, content } : { postId, content };
     return await api.post(API_URL, payload);
   },
