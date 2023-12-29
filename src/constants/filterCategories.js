@@ -1,4 +1,4 @@
-const FilterCategory = [
+const FILTER_CATEGORIES = [
   {
     title: '정렬 기준',
     contents: ['최신순', '오래된순', '찜많은순'],
@@ -13,4 +13,4 @@ const FilterCategory = [
   },
 ];
 
-export default FilterCategory;
+export default FILTER_CATEGORIES;
