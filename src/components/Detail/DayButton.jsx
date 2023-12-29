@@ -9,9 +9,8 @@ export default function DayButton({ startDate, dayCount, dayTitle, setIndex }) {
   function handleOnClick(day) {
     setSelectedDay(day);
   }
-
   // 시작 날짜
-  const newStartDate = useMemo(() => new Date(startDate.startDate), [startDate]);
+  const newStartDate = useMemo(() => new Date(startDate), [startDate]);
   const startDateDate = newStartDate.getDate();
 
   // 요일 계산기
@@ -65,8 +64,8 @@ export default function DayButton({ startDate, dayCount, dayTitle, setIndex }) {
 }
 
 DayButton.propTypes = {
+  startDate: PropTypes.instanceOf(Date),
   dayCount: PropTypes.number.isRequired,
-  startDate: PropTypes.string,
   dayTitle: PropTypes.func,
   setIndex: PropTypes.func,
 };

@@ -203,6 +203,14 @@ export default function Schedule() {
     setTag(tags);
   };
 
+  const handleRemoveTag = (value) => {
+    console.log(value);
+    if (tag.includes(value)) {
+      setTag((prevList) => prevList.filter((item) => item !== value));
+      return;
+    }
+  };
+
   const onSubmit = async () => {
     const payload = {
       title,
@@ -433,12 +441,7 @@ export default function Schedule() {
           )}
 
           <div className="overflow-scroll  scrollbar-hide">
-            <DayButton
-              startDate={{ startDate }}
-              dayCount={dayCalculation}
-              dayTitle={setDayTitle}
-              setIndex={setSelectDay}
-            />
+            <DayButton startDate={startDate} dayCount={dayCalculation} dayTitle={setDayTitle} setIndex={setSelectDay} />
           </div>
           <p className="text-center text-[14px] font-bold mb-[30px]">{dayTitle}</p>
 
@@ -463,7 +466,7 @@ export default function Schedule() {
         <Button onClick={() => setAddTag(true)}>태그 선택하기</Button>
         <div className="mb-7 mt-4">
           {tag && tag?.length !== 0 ? (
-            <Tag tags={tag} />
+            <Tag tags={tag} handleRemoveTag={handleRemoveTag} />
           ) : (
             <span className="text-primary font-bold opacity-60 ">태그를 선택해주세요!</span>
           )}

@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 
-export default function Tag({ tags, whiteMode }) {
+export default function Tag({ tags, whiteMode, handleRemoveTag }) {
   return (
     <div className="flex flex-wrap text-[14px]">
       {tags.map((tag, index) => (
         <span
-          key={index}
+          key={'teg-' + index}
           className={`${
             whiteMode ? 'text-primary bg-white' : 'text-white bg-primary'
-          } rounded px-[6px] py-[1px] mb-[10px] mr-[5px]`}
+          } rounded px-[6px] py-[1px] mb-[10px] mr-[5px] hover:cursor-pointer `}
+          onClick={() => handleRemoveTag(tag)}
         >
           #{tag}
         </span>
@@ -20,4 +21,5 @@ export default function Tag({ tags, whiteMode }) {
 Tag.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   whiteMode: PropTypes.bool,
+  handleRemoveTag: PropTypes.func,
 };
