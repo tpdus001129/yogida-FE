@@ -12,10 +12,12 @@ export default function CommentMenu({
   return (
     <>
       {editMode ? (
-        <div className="absolute w-[40px] h-[56px] rounded-[4px] text-[12px] drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)] bg-white left-[-4px] bottom-[2px]">
+        <div className="absolute w-[40px] h-[56px] rounded-[4px] text-[12px] drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)] bg-white left-[-4px] top-[10px]">
           <button
             className="hover:bg-gray-200 w-full h-[50%]"
-            onClick={() => updateNewComment({ commentId, newComment })}
+            onClick={() => {
+              updateNewComment({ commentId, newComment });
+            }}
           >
             완료
           </button>

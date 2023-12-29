@@ -11,7 +11,7 @@ export default function DayButton({ startDate, dayCount, dayTitle, setIndex }) {
   }
 
   // 시작 날짜
-  const newStartDate = useMemo(() => new Date(startDate), [startDate]);
+  const newStartDate = useMemo(() => new Date(startDate.startDate), [startDate]);
   const startDateDate = newStartDate.getDate();
 
   // 요일 계산기
