@@ -30,4 +30,6 @@ export const queryKeys = {
   loginStatus: 'LOGiN_STATUS',
   notification: 'NOTIFICATION',
   comment: 'COMMENT',
+  like: 'USER_LIKES',
+  bookmark: 'USER_BOOKMARKS',
 };

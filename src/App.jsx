@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import Main from './pages/Main';
+import Main from './pages/main/Main';
 import Notfound from './pages/Notfound';
 import Layout from './components/commons/Layout';
 import Mypage from './pages/mypage/Mypage';
@@ -8,13 +8,15 @@ import Schedule from './components/Mypage/Schedule';
 import Signup from './pages/SignUp';
 import FindPassword from './pages/FindPassword';
 import CommentModal from './components/CommentModal/CommentModal';
-import Detail from './pages/Detail';
+import Detail from './pages/detail/Detail';
 import ChangePassword from './pages/ChangePassword';
 import Notification from './pages/notification/Notification';
 import Map from './pages/Map';
 import Setup from './pages/setup/Setup';
 import PrivateRoute from './pages/PrivateRoute';
 import { PATH } from './constants/path';
+import Filter from './pages/Filter';
+import Search from './pages/Search';
 
 function App() {
   return (
@@ -22,12 +24,15 @@ function App() {
       <Route element={<PrivateRoute />}>
         <Route element={<Layout />}>
           <Route path={PATH.root} element={<Main />} />
+          <Route path={'/search'} element={<Main />} />
+          <Route path={'/filter'} element={<Main />} />
           <Route path={PATH.mypage} element={<Mypage />} />
           <Route path={PATH.notification} element={<Notification />} />
         </Route>
         <Route path={PATH.post} element={<Detail />} />
         <Route path={PATH.notfound} element={<Notfound />} />
-        <Route path={PATH.filter} element={<Main />} />
+        <Route path={PATH.filter} element={<Filter />} />
+        <Route path={PATH.search} element={<Search />} />
         <Route path={PATH.schedule} element={<Schedule />} />
         <Route path={PATH.editSchedule} element={<Schedule />} />
         <Route path={PATH.signup} element={<Signup />} />

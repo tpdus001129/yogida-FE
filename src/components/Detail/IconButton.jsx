@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react';
-import { ModalContext } from '../../pages/Detail';
+import { ModalContext } from '../../pages/detail/Detail';
 
 import toast from 'react-hot-toast';
 
@@ -18,21 +18,35 @@ import {
   IoLocationOutline,
   IoPeopleOutline,
 } from 'react-icons/io5';
+import { useLikeQuery } from '../../pages/main/queries';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoils/userAtom';
+import { isValidUser } from '../../utils/isValidUser';
 
 const share = () => {
   const href = document.location.href;
   navigator.clipboard.writeText(href).then(() => toast.success('링크가 복사되었습니다.'));
 };
 
-export default function IconButton({ iconName, buttonType }) {
+export default function IconButton({ iconName, buttonType, postId, authorId }) {
   const { setCommentModalMode } = useContext(ModalContext);
+  const { likeList, removeLikes, postLikes } = useLikeQuery();
+  const user = useRecoilValue(userState);
 
   function iconSelect(name) {
     switch (name) {
       case 'prev':
         return <IoChevronBack size="25" />;
-      case 'heart':
-        return isHeartClicked ? <IoHeartSharp size="25" className="text-red" /> : <IoHeartOutline size="25" />;
+      case 'heart': {
+        if (isValidUser(user) && authorId !== undefined && authorId !== user._id) {
+          if (isHeartClicked) {
+            return <IoHeartSharp size="25" className="text-red" />;
+          } else {
+            return <IoHeartOutline size="25" />;
+          }
+        }
+        return;
+      }
       case 'comment':
         return <IoChatbubbleOutline size="22" />;
       case 'share':
@@ -52,7 +66,7 @@ export default function IconButton({ iconName, buttonType }) {
     }
   }
 
-  const [isHeartClicked, setIsHeartClicked] = useState(false);
+  const [isHeartClicked, setIsHeartClicked] = useState(likeList?.myLikePostId.includes(postId));
 
   const selectedIcon = iconSelect(iconName, isHeartClicked);
 
@@ -67,6 +81,11 @@ export default function IconButton({ iconName, buttonType }) {
         setCommentModalMode(true);
         break;
       case 'heart':
+        if (isHeartClicked) {
+          removeLikes([likeList?.myLikePost.find((item) => item.postId._id === postId)._id]);
+        } else {
+          postLikes({ userId: user._id, postId });
+        }
         setIsHeartClicked((prev) => !prev);
         break;
       default:
@@ -90,4 +109,6 @@ export default function IconButton({ iconName, buttonType }) {
 IconButton.propTypes = {
   iconName: PropTypes.string.isRequired,
   buttonType: PropTypes.bool,
+  postId: PropTypes.string,
+  authorId: PropTypes.string,
 };

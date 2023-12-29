@@ -3,4 +3,5 @@ export const ATOM_KEY = {
   notification: 'NOTIFICATION',
   notificationCount: 'NOTIFY_COUNT',
   filter: 'FILTER',
+  city: 'CITY',
 };
