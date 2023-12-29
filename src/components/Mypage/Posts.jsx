@@ -118,7 +118,7 @@ function Post({ id, img, title, date, isPublic }) {
         </div>
       </Link>
       <div className="relative">
-        <IoEllipsisHorizontalSharp size={25} onClick={modalToggle} />
+        <IoEllipsisHorizontalSharp size={25} onClick={modalToggle} className="cursor-pointer" />
         {modalOpen && (
           <Modal handleEditClick={handleEditClick} handleRemoveClick={handleRemoveClick} modalToggle={modalToggle} />
         )}
