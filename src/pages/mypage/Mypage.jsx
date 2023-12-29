@@ -6,7 +6,7 @@ import Comments from '../../components/Mypage/Comments';
 import Bookmarks from '../../components/Mypage/Bookmarks';
 import Likes from '../../components/Mypage/Likes';
 import Profile from '../../components/Mypage/Profile';
-import { IoLogOutOutline } from 'react-icons/io5';
+import { IoLogOutOutline, IoSettingsOutline } from 'react-icons/io5';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoils/userAtom';
 import { useMutation } from 'react-query';
@@ -53,9 +53,12 @@ export default function Mypage() {
         <div className="h-header px-[23px] flex items-center justify-between text-[14px] text-black">
           <div className="flex gap-[1px] items-center cursor-pointer">
             <button onClick={logout}>로그아웃</button>
-            <IoLogOutOutline size={17} />
+            <IoLogOutOutline size={17} className="ml-1" />
           </div>
-          <button onClick={() => setEditProfileMode((prev) => !prev)}>설정</button>
+          <div className="flex gap-[1px] items-center cursor-pointer">
+            <button onClick={() => setEditProfileMode((prev) => !prev)}>설정</button>
+            <IoSettingsOutline size={17} className="ml-1" />
+          </div>
         </div>
         <div className="flex flex-col items-center justify-center h-[140px] ">
           <img

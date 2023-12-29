@@ -11,6 +11,7 @@ export default function Main() {
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
+
   const cityValue = queryParams.get('city');
   const tagValue = queryParams.get('tag');
   const sortValue = queryParams.get('sort');
@@ -50,7 +51,7 @@ export default function Main() {
                     className={`w-[52px] h-[52px] border border-gray-4 ${
                       tagValue || sortValue ? 'bg-primary' : 'bg-white'
                     } rounded-full flex justify-center items-center  drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]`}
-                    onClick={() => navigate(PATH.filter, { state: cityValue })}
+                    onClick={() => navigate(PATH.filter, { state: { cityValue, tagValue, sortValue } })}
                   >
                     <IoOptionsOutline
                       className={`text-[20px] ${tagValue || sortValue ? 'text-white' : 'text-black'}`}
