@@ -63,7 +63,15 @@ export default function Navbar() {
         <Tab path={PATH.schedule} icon={<PiNotePencil size={26} />} />
         <Tab
           path={PATH.mypage}
-          icon={user ? <Profile img={user?.profileImageSrc || defaultProfile} /> : <IoPersonCircleOutline size={26} />}
+          icon={
+            user ? (
+              <Profile
+                img={user?.profileImageSrc === 'default' ? defaultProfile : user?.profileImageSrc || defaultProfile}
+              />
+            ) : (
+              <IoPersonCircleOutline size={26} />
+            )
+          }
         />
       </ul>
     </nav>

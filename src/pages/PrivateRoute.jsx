@@ -9,7 +9,6 @@ export default function PrivateRoute() {
   const { loginUserInfo, isPrivate, isError, pathname } = useAuth();
   const setUser = useSetRecoilState(userState);
 
-  console.log('pathname : ', pathname !== PATH.root);
   // 로그인 유저정보 recoil에 저장
   useEffect(() => {
     if (loginUserInfo && !isError) {

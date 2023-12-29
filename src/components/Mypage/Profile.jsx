@@ -63,7 +63,6 @@ export default function Profile({ setEditProfileMode }) {
             break;
           }
           default: {
-            console.log(error.message);
             openModal({ message: `닉네임 중복 확인 중 오류가 발생했습니다.` });
             break;
           }

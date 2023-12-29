@@ -37,7 +37,6 @@ export default function Setup() {
       formDataOfUser.append('profileImageUrl', image);
     }
     formDataOfUser.append('type', 'kakao');
-    console.log('email', formDataOfUser.get('email'));
     await authAPI
       .signup(formDataOfUser)
       .then(() => {
@@ -65,7 +64,6 @@ export default function Setup() {
   }, [user, setNickname, setImage]);
 
   const handleUpload = (event) => {
-    console.log(selectFile.current.files[0]);
     const reader = new FileReader();
     reader.onload = (event) => {
       setImage(event.target.result);
