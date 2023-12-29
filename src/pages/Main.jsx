@@ -11,6 +11,7 @@ import Filter from './Filter';
 import NotFound from '../components/Search/NotFound';
 import postsAPI from '../services/posts';
 import { filterState } from '../recoils/filterAtom';
+import { cityState } from '../recoils/cityAtom';
 
 export default function Main() {
   const [data, setData] = useState([]);
@@ -22,6 +23,7 @@ export default function Main() {
   const sortValue = queryParams.get('sort');
 
   const [newKeyword, setNewKeyword] = useState('');
+  const [city, setCity] = useRecoilState(cityState);
 
   // 디코딩
   const keyword = decodeURI(location.search);
@@ -84,36 +86,69 @@ export default function Main() {
 
   // 쿼리스트링 만들기
   function makeQueryString() {
-    console.log('아아아', newKeyword);
-    console.log('checkedList', checkedList);
+    console.log('newKeyword', newKeyword);
     let queryString = '/'; // 기본 경로 설정
+    const sortStr = checkedList[0];
+    let tagQueryString = checkedList.slice(1).join(',');
 
-    if (oneValue.includes(checkedList[0])) {
-      if (checkedList.length === 1) {
-        queryString = `/filter?sort=${checkedList[0]}`;
-      } else {
-        const sortStr = checkedList[0];
-        const tagQueryString = checkedList.slice(1).join(',');
-        queryString = `/filter?tag=${tagQueryString}&sort=${sortStr}`;
-      }
-    } else if (checkedList.length > 0) {
-      const tagQueryString = checkedList.join(',');
-      queryString = `/filter?city=${newKeyword}&tag=${tagQueryString}`;
+    if (newKeyword && checkedList.length === 0) {
+      queryString = `/filter?city=${newKeyword}`;
     }
 
+    // sortStr이 있을 때
+    if (oneValue.includes(sortStr)) {
+      if (checkedList.length === 1 && !newKeyword) {
+        queryString = `/filter?sort=${sortStr}`;
+      } else if (checkedList.length === 1 && newKeyword) {
+        queryString = `/filter?sort=${sortStr}&city=${newKeyword}`;
+      } else if (checkedList.length > 1 && !newKeyword) {
+        queryString = `/filter?sort=${sortStr}&tag=${tagQueryString}`;
+      } else if (checkedList.length > 1 && newKeyword) {
+        queryString = `/filter?sort=${sortStr}&tag=${tagQueryString}&city=${newKeyword}`;
+      }
+      // sortStr이 없을 때
+    } else {
+      tagQueryString = checkedList.join(',');
+
+      if (checkedList.length > 1 && newKeyword) {
+        queryString = `/filter?tag=${tagQueryString}&city=${newKeyword}`;
+      } else if (checkedList.length > 1 && !newKeyword) {
+        queryString = `/filter?tag=${tagQueryString}`;
+      }
+    }
+
+    // if (oneValue.includes(sortStr)) {
+    //   if (checkedList.length === 1) {
+    //     queryString = `/filter?sort=${sortStr}`;
+    //   } else if (checkedList.length !== 1 && newKeyword) {
+    //     queryString = `/filter?tag=${tagQueryString}&sort=${sortStr}&city=${newKeyword}`;
+    //   } else {
+    //     queryString = `/filter?tag=${tagQueryString}&sort=${sortStr}`;
+    //   }
+    // } else {
+    //   if (checkedList.length > 0) {
+    //     const tagQueryString = checkedList.join(',');
+    //     queryString = `/filter?tag=${tagQueryString}`;
+    //     if (newKeyword) {
+    //       queryString = `/filter?tag=${tagQueryString}&city=${newKeyword}`;
+    //     }
+    //   }
+    // }
     navigate(queryString);
+    setNewKeyword('');
 
     filterModeOff();
   }
 
   useEffect(() => {
+    setCity(cityValue);
+
     postsAPI.getAllPosts({ tag: tagValue, sort: sortValue, city: cityValue }).then((Posts) => {
       const receivedData = Posts.data.posts;
       setData(receivedData);
 
-      console.log(data);
+      console.log(receivedData);
 
-      // 데이터가 없는 경우 notFound 상태를 true로 설정
       setNotFound(receivedData.length === 0);
     });
   }, [cityValue, tagValue, sortValue]);
@@ -123,9 +158,9 @@ export default function Main() {
       {searchMode ? (
         <Search
           searchModeOff={searchModeOff}
-          tagValue={tagValue}
           setNewKeyword={setNewKeyword}
           newKeyword={newKeyword}
+          makeQueryString={makeQueryString}
         />
       ) : filterMode ? (
         <Filter

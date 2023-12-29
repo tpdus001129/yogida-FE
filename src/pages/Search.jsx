@@ -8,7 +8,7 @@ import Header from '../components/Search/Header';
 import SearchItem from '../components/Search/SearchItem';
 import SearchInput from '../components/commons/SearchInput';
 
-export default function Search({ searchModeOff, newKeyword, setNewKeyword }) {
+export default function Search({ searchModeOff, newKeyword, setNewKeyword, makeQueryString }) {
   const close = true;
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -71,9 +71,9 @@ export default function Search({ searchModeOff, newKeyword, setNewKeyword }) {
   // 검색
   function searchHandler() {
     if (newKeyword) {
-      setSearchParams({
-        city: newKeyword,
-      });
+      // setSearchParams({
+      //   city: newKeyword,
+      // });
       searchModeOff();
     } else if (newKeyword === '' || newKeyword === null) {
       return;
@@ -94,8 +94,8 @@ export default function Search({ searchModeOff, newKeyword, setNewKeyword }) {
         className="w-full h-[74px] flex relative items-center px-[24px]"
         onSubmit={(e) => {
           handleAddKeyword(e);
+          makeQueryString();
           searchHandler();
-          handleRefresh();
         }}
       >
         <SearchInput newKeyword={newKeyword} onChangeHandler={onChangeHandler} />
@@ -125,4 +125,5 @@ Search.propTypes = {
   searchModeOff: PropTypes.func,
   newKeyword: PropTypes.string,
   setNewKeyword: PropTypes.func,
+  makeQueryString: PropTypes.func,
 };
