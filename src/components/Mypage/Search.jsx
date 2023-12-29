@@ -192,7 +192,7 @@ function Header({ title, onClick }) {
   return (
     <div className="w-full h-[56px] flex items-center justify-center px-[24px]">
       <p className="w-full h-full flex items-center justify-center">{title}</p>
-      {close && <IoClose size="24px" onClick={onClick} />}
+      {close && <IoClose size="24px" onClick={onClick} className="cursor-pointer" />}
     </div>
   );
 }

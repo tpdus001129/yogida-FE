@@ -21,7 +21,7 @@ export default function Card(props) {
           <p className="text-[14px] mr-[4px] font-bold">{placeName || ''}</p>
           <p className="text-[12px] mt-[2px] line-height-[14px]">{category || ''}</p>
         </div>
-        <IoClose size={20} onClick={() => handleRemoveSingleScheduleClick(_id)} />
+        <IoClose size={20} onClick={() => handleRemoveSingleScheduleClick(_id)} className="cursor-pointer" />
       </div>
       <label
         htmlFor={`${_id}`}
