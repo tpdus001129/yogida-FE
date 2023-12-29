@@ -13,7 +13,6 @@ import { useEffect } from 'react';
 
 export default function PostItem({ data }) {
   const user = useRecoilValue(userState);
-
   // 유저가 좋아요 누른 데이터
   const { likeList, removeLikes, postLikes, refetch } = useLikeQuery();
 
@@ -48,7 +47,7 @@ export default function PostItem({ data }) {
                     onClick={(e) => handleClickLike(e, user._id, item._id)}
                     className="absolute z-[10] top-[16px] right-[16px]"
                   >
-                    {isValidUser(user) && (
+                    {isValidUser(user) && item.authorId !== user._id && (
                       <>
                         {likeList?.myLikePostId.includes(item._id) ? (
                           <IoHeartSharp size="36" className="text-red" />

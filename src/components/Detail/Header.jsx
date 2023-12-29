@@ -69,7 +69,13 @@ export default function Header({ headerData, postId }) {
         <IconButton iconName={'prev'} buttonType={buttonType} />
         <div className="flex gap-[16px] space-x-[6px]">
           {headerIcon.map((icon) => (
-            <IconButton iconName={icon} buttonType={buttonType} key={icon} postId={postId} />
+            <IconButton
+              iconName={icon}
+              buttonType={buttonType}
+              key={icon}
+              postId={postId}
+              authorId={headerData.authorId?._id}
+            />
           ))}
         </div>
       </div>

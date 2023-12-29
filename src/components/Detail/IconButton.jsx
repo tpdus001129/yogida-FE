@@ -28,7 +28,7 @@ const share = () => {
   navigator.clipboard.writeText(href).then(() => toast.success('링크가 복사되었습니다.'));
 };
 
-export default function IconButton({ iconName, buttonType, postId }) {
+export default function IconButton({ iconName, buttonType, postId, authorId }) {
   const { setCommentModalMode } = useContext(ModalContext);
   const { likeList, removeLikes, postLikes } = useLikeQuery();
   const user = useRecoilValue(userState);
@@ -38,7 +38,7 @@ export default function IconButton({ iconName, buttonType, postId }) {
       case 'prev':
         return <IoChevronBack size="25" />;
       case 'heart': {
-        if (isValidUser(user)) {
+        if (isValidUser(user) && authorId !== undefined && authorId !== user._id) {
           if (isHeartClicked) {
             return <IoHeartSharp size="25" className="text-red" />;
           } else {
@@ -110,4 +110,5 @@ IconButton.propTypes = {
   iconName: PropTypes.string.isRequired,
   buttonType: PropTypes.bool,
   postId: PropTypes.string,
+  authorId: PropTypes.string,
 };
