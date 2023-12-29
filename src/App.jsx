@@ -28,8 +28,8 @@ function App() {
           <Route path={'/filter'} element={<Main />} />
           <Route path={PATH.mypage} element={<Mypage />} />
           <Route path={PATH.notification} element={<Notification />} />
+          <Route path={PATH.post} element={<Detail />} />
         </Route>
-        <Route path={PATH.post} element={<Detail />} />
         <Route path={PATH.notfound} element={<Notfound />} />
         <Route path={PATH.filter} element={<Filter />} />
         <Route path={PATH.search} element={<Search />} />
