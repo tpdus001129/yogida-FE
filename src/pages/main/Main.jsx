@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IoOptionsOutline, IoSearchOutline } from 'react-icons/io5';
-import Header from '../components/Main/Header';
-import PostItem from '../components/Main/PostItem';
-import postsAPI from '../services/posts';
-import { PATH } from '../constants/path';
+import Header from '../../components/Main/Header';
+import PostItem from '../../components/Main/PostItem';
+import postsAPI from '../../services/posts';
+import { PATH } from '../../constants/path';
 
 export default function Main() {
   const [data, setData] = useState([]);

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { ModalContext } from '../../pages/Detail';
+import { ModalContext } from '../../pages/detail/Detail';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoils/userAtom';

@@ -4,61 +4,18 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { IoStar, IoCar, IoWalkOutline } from 'react-icons/io5';
+import { IoBookmarkOutline, IoBookmark } from 'react-icons/io5';
 
 // import bookmarkAPI from '../../services/bookmarks';
 import NoImage from './NoImage';
+import { useBookmarkQuery } from '../../pages/detail/queries';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoils/userAtom';
+import { isValidUser } from '../../utils/isValidUser';
 
-export default function ContentItem({ distanceIndex, schedulesData, distancesData }) {
-  // const [isClickedBookmark, setIsClickedBookmark] = useState(new Array(schedulesData.length).fill(false));
-
-  // 내 북마크 목록
-  // const [myBookmark, setMyBookmark] = useState([]);
-
-  // 북마크 저장
-  // function bookmarkHandleClick(index) {
-  //   const singleScheduleId = schedulesData[index];
-
-  //   const newBookmark = [...isClickedBookmark];
-  //   newBookmark[index] = !newBookmark[index];
-  //   setIsClickedBookmark(newBookmark);
-  // }
-
-  // 북마크 get
-  // useEffect(() => {
-  //   const fetchLikes = async () => {
-  //     try {
-  //       const bookmarks = await bookmarkAPI.getAllBookmarksByMe();
-  //       setMyBookmark(bookmarks);
-  //     } catch (error) {
-  //       console.error('bookmark Error:', error);
-  //     }
-  //   };
-  //   fetchLikes();
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log();
-  // });
-
-  // 좋아요 post
-  // async function handleClickLike(e, userId, postId) {
-  //   e.stopPropagation();
-  //   e.preventDefault();
-  //   location.reload();
-
-  //   const isLiked = myLikes.includes(postId);
-
-  //   if (isLiked) {
-  //     await handleRemoveLike([myLikeId.find((item) => item.postId._id === postId)]);
-  //   } else {
-  //     await likesAPI.postLike(userId, postId);
-  //   }
-  // }
-
-  // // 좋아요 patch
-  // async function handleRemoveLike(payload) {
-  //   await likesAPI.removeAll(payload);
-  // }
+export default function ContentItem({ distanceIndex, schedulesData, distancesData, postId }) {
+  const user = useRecoilValue(userState);
+  const { myBookmark, postBookmarks, removeBookmarks } = useBookmarkQuery();
 
   // 거리별 아이콘 타입
   function distanceIconType(distance) {
@@ -69,7 +26,6 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
     }
   }
 
-  // 상세페이지에 전달할 data 로컬 스토리지에 저장
   useEffect(() => {
     if (schedulesData) {
       schedulesData.map((places) => {
@@ -77,6 +33,17 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
       });
     }
   }, [schedulesData]);
+
+  function handleRemoveBookmark(placeId) {
+    const bookmarkId = myBookmark?.userBookmark.find(
+      ({ matchingSchedule }) => placeId === matchingSchedule._id,
+    ).bookmarkId;
+    removeBookmarks([bookmarkId]);
+  }
+
+  function handlePostBookmark(placeId, postId) {
+    postBookmarks({ singleScheduleId: placeId, postId });
+  }
 
   if (!schedulesData) return <div>Loading...</div>;
   return (
@@ -118,6 +85,29 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                     <p className="text-[12px] mt-[2px] line-height-[14px]">{places.category}</p>
                   </div>
                   <button className="absolute right-[14px]">
+                    {isValidUser(user) && (
+                      <>
+                        {myBookmark?.userBookmarkId.includes(places._id) ? (
+                          <IoBookmark
+                            className="text-secondary"
+                            size="22"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              handleRemoveBookmark(places._id);
+                            }}
+                          />
+                        ) : (
+                          <IoBookmarkOutline
+                            className="text-secondary"
+                            size="22"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              handlePostBookmark(places._id, postId);
+                            }}
+                          />
+                        )}
+                      </>
+                    )}
                     {/* {isClickedBookmark[index] ? (
                       <IoBookmark className="text-secondary" size="22" />
                     ) : (
