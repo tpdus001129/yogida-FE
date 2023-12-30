@@ -158,7 +158,7 @@ export default function Profile({ setEditProfileMode }) {
         <div className="flex flex-col items-center justify-center h-[140px]">
           <input type="file" name="profile" id="profile" className="hidden" ref={imgRef} onChange={handleChangeImage} />
           <img
-            src={profileImg || defaultProfile}
+            src={profileImg === 'default' ? defaultProfile : profileImg || defaultProfile}
             alt="profile"
             className="w-[60px] h-[60px] rounded-full object-cover mb-[10px] cursor-pointer"
             onClick={() => imgRef.current.click()}
