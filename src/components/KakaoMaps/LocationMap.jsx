@@ -4,6 +4,8 @@ import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import PropTypes from 'prop-types';
 
 export default function LocationMap({ state }) {
+  console.log(state);
+
   const [placeLat, setPlaceLat] = useState('');
   const [placeLng, setPlaceLng] = useState([]);
 
@@ -42,7 +44,12 @@ export default function LocationMap({ state }) {
         />
         <CustomOverlayMap position={{ lat: placeLat, lng: placeLng }} yAnchor={1} className="relative">
           <div>
-            <a href={`https://map.kakao.com/link/search/${placeLat},${placeLng}`} target="_blank" rel="noreferrer">
+            <a
+              // eslint-disable-next-line react/prop-types
+              href={`https://map.kakao.com/link/map/${state.placeName},${placeLat},${placeLng}`}
+              target="_blank"
+              rel="noreferrer"
+            >
               <div className="w-[45px] h-[53px] flex justify-center items-center ml-[-9px] mt-[-75px] ">
                 <span className="text-[10px] text-white"></span>
               </div>
