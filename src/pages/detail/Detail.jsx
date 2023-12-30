@@ -1,6 +1,6 @@
 import { useState, createContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import noImage from '../../assets/images/noImage.png';
 import { userState } from '../../recoils/userAtom';
 import { useRecoilValue } from 'recoil';
 
@@ -196,7 +196,9 @@ export default function Detail() {
             <div className="flex gap-[6px] mb-[16px]">
               <div className="w-[40px] h-[40px] rounded-full border border-gray-4">
                 <img
-                  src={data?.authorId?.profileImageSrc}
+                  src={
+                    data?.authorId?.profileImageSrc === 'default' ? noImage : data?.authorId?.profileImageSrc || noImage
+                  }
                   alt="profile"
                   className="w-[40px] h-[40px] rounded-full border border-gray-4 object-cover"
                 />
