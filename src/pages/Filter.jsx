@@ -72,18 +72,21 @@ export default function Filter() {
     setTag([]);
   }
 
-  function testSubmit() {
-    const searchQuery = location.state.cityValue ? `/search?city=${location.state.cityValue}` : '';
-    const tagQuery = location.state.cityValue ? '&tag=' + tag.toString() : '/filter?tag=' + tag.toString();
-    const sortQuery = location.state.cityValue ? '&sort=' + sort : '/filter?sort=' + sort;
-
+  function handleSubmit() {
+    // cityValue가 있는지 확인하고, 기본 URL을 설정합니다.
+    let baseUrl = location.state?.cityValue ? `/search?city=${location.state.cityValue}` : '/filter';
     let query = '';
 
+    // tag 쿼리를 생성합니다.
     if (tag.length > 0) {
-      query += tagQuery;
+      query += `${query ? '&' : '?'}tag=${tag.join(',')}`;
     }
 
-    navigate(searchQuery + query + sortQuery);
+    // sort 쿼리를 생성합니다.
+    query += `${query ? '&' : '?'}sort=${sort}`;
+
+    // navigate 함수를 사용하여 페이지를 이동시킵니다.
+    navigate(baseUrl + query);
   }
 
   return (
@@ -128,7 +131,7 @@ export default function Filter() {
             ))}
           </section>
           <section className="mt-[30px]">
-            <Button type={checkedList ? 'primary' : 'gray'} text={'description'} onClick={testSubmit}>
+            <Button type={checkedList ? 'primary' : 'gray'} text={'description'} onClick={handleSubmit}>
               필터 적용하기
             </Button>
           </section>
