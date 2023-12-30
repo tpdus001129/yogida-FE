@@ -79,7 +79,7 @@ export default function Comment({
       <div className="flex justify-between">
         <div className="`mx-[24px] flex mb-[16px] ml-[24px]">
           <div className="w-[40px] h-[40px] rounded-full bg-gray-3 mr-[10px] flex-shrink-0 overflow-hidden">
-            <Profile img={image || defaultProfile} />
+            <Profile img={image === 'default' ? defaultProfile : image || defaultProfile} />
           </div>
           <div className="w-full">
             <div className="flex">
@@ -203,7 +203,13 @@ function ReplyComment({ re, userId, deleteReplyComment, nickname }) {
       <div className="flex justify-between">
         <div className="mx-[24px] flex mb-[16px] ml-[44px]">
           <div className="w-[40px] h-[40px] rounded-full bg-gray-3 mr-[10px] flex-shrink-0 overflow-hidden">
-            <Profile img={re?.authorId?.profileImageSrc || defaultProfile} />
+            <Profile
+              img={
+                re?.authorId?.profileImageSrc === 'default'
+                  ? defaultProfile
+                  : re?.authorId?.profileImageSrc || defaultProfile
+              }
+            />
           </div>
           <div className="w-full">
             <div className="flex">
