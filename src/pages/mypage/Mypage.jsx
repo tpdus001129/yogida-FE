@@ -65,7 +65,7 @@ export default function Mypage() {
         </div>
         <div className="flex flex-col items-center justify-center h-[140px] ">
           <img
-            src={user?.profileImageSrc || defaultProfile}
+            src={user?.profileImageSrc === 'default' ? defaultProfile : user?.profileImageSrc || defaultProfile}
             alt="profile"
             className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]"
           />
