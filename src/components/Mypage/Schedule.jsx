@@ -260,23 +260,23 @@ export default function Schedule() {
     }
   };
 
-  const onTempSave = () => {
-    const payload = {
-      title,
-      destination,
-      startDate,
-      endDate,
-      tag,
-      schedules,
-      distances: calculateDistance(),
-      cost,
-      peopleCount,
-      isPublic,
-      reviewText,
-    };
-    localStorage.setItem('temp-schedule', JSON.stringify(payload));
-    toast.success('임시저장 되었습니다.');
-  };
+  // const onTempSave = () => {
+  //   const payload = {
+  //     title,
+  //     destination,
+  //     startDate,
+  //     endDate,
+  //     tag,
+  //     schedules,
+  //     distances: calculateDistance(),
+  //     cost,
+  //     peopleCount,
+  //     isPublic,
+  //     reviewText,
+  //   };
+  //   localStorage.setItem('temp-schedule', JSON.stringify(payload));
+  //   toast.success('임시저장 되었습니다.');
+  // };
 
   //여행지 검색
   //장소 검색
@@ -392,6 +392,7 @@ export default function Schedule() {
               className="w-full focus:outline-none text-[14px] font-medium text-right placeholder:text-[14px]"
               value={peopleCount}
               onChange={(e) => setPeopleCount(e.target.value)}
+              min={0}
             />
           </ScheduleItem>
           <ScheduleItem icon={<IoWallet color="#589BF7" size={20} />} title="예산" id="budget">
@@ -402,6 +403,7 @@ export default function Schedule() {
               className="w-full focus:outline-none text-[14px] font-medium text-right placeholder:text-[14px]"
               value={cost}
               onChange={(e) => setCost(e.target.value)}
+              min={0}
             />
           </ScheduleItem>
           {/* 게시글 공개 여부 */}
@@ -498,9 +500,9 @@ export default function Schedule() {
             )}
             {!editMode && (
               <>
-                <Button type={'secondary'} onClick={onTempSave}>
+                {/* <Button type={'secondary'} onClick={onTempSave}>
                   임시저장
-                </Button>
+                </Button> */}
                 <Button type={'primary'} onClick={onSubmit}>
                   작성완료
                 </Button>

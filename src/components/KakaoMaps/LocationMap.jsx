@@ -4,8 +4,6 @@ import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import PropTypes from 'prop-types';
 
 export default function LocationMap({ state }) {
-  console.log(state);
-
   const [placeLat, setPlaceLat] = useState('');
   const [placeLng, setPlaceLng] = useState([]);
 

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
+import PropTypes from 'prop-types';
+
 import LocationMap from '../components/KakaoMaps/LocationMap';
 import Header from '../components/Login/Header';
 
@@ -25,3 +27,7 @@ export default function Map() {
     </div>
   );
 }
+
+LocationMap.propTypes = {
+  state: PropTypes.any,
+};

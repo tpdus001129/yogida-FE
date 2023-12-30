@@ -4,9 +4,10 @@ import NoProfile from '../commons/NoProfile';
 import { getTime } from '../../utils/getTime';
 import { Link } from 'react-router-dom';
 import { useNotificationQuery } from '../../pages/notification/queries';
-
+import useNotification from '../../hooks/useNotification';
 export default function NotificationItem({ type, nickname, message, createdAt, url, alarmId, isRead }) {
-  const { readAlarm, deleteAlarm } = useNotificationQuery();
+  const { data, refetch, readAlarm, deleteAlarm } = useNotificationQuery();
+  const { setNotificationList } = useNotification;
 
   // 메시지 타입
   const mapTypeToMessage = {
@@ -34,7 +35,15 @@ export default function NotificationItem({ type, nickname, message, createdAt, u
         </div>
       </Link>
       <button>
-        <IoClose size="20" className="text-gray-1" onClick={() => deleteAlarm(alarmId)} />
+        <IoClose
+          size="20"
+          className="text-gray-1"
+          onClick={async () => {
+            const result = await deleteAlarm(alarmId);
+            if (result?.status === 204) refetch();
+            setNotificationList(data);
+          }}
+        />
       </button>
     </div>
   );
