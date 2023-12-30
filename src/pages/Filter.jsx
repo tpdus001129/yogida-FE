@@ -73,20 +73,29 @@ export default function Filter() {
   }
 
   function handleSubmit() {
-    // cityValue가 있는지 확인하고, 기본 URL을 설정합니다.
-    let baseUrl = location.state?.cityValue ? `/search?city=${location.state.cityValue}` : '/filter';
-    let query = '';
+    // cityValue의 존재 여부에 따라 기본 URL 설정
+    const cityValue = location.state?.cityValue;
+    let query = cityValue ? `/search?city=${encodeURIComponent(cityValue)}` : '/filter';
 
-    // tag 쿼리를 생성합니다.
+    // tag와 sort 쿼리 파라미터를 추가하기 위한 배열
+    const queryParams = [];
+
+    // tag 파라미터가 있으면 queryParams 배열에 추가
     if (tag.length > 0) {
-      query += `${query ? '&' : '?'}tag=${tag.join(',')}`;
+      queryParams.push(`tag=${tag.map(encodeURIComponent).join(',')}`);
     }
 
-    // sort 쿼리를 생성합니다.
-    query += `${query ? '&' : '?'}sort=${sort}`;
+    // sort 파라미터를 queryParams 배열에 추가
+    queryParams.push(`sort=${encodeURIComponent(sort)}`);
 
-    // navigate 함수를 사용하여 페이지를 이동시킵니다.
-    navigate(baseUrl + query);
+    // 쿼리 파라미터를 '&'로 연결하여 쿼리 스트링을 완성
+    const queryString = queryParams.join('&');
+
+    // 쿼리 스트링이 있으면 query에 추가하되, cityValue가 없을 경우 '?'를 붙여 시작
+    query += cityValue ? `&${queryString}` : `?${queryString}`;
+
+    // 페이지 이동
+    navigate(query);
   }
 
   return (
