@@ -40,7 +40,10 @@ export default function Likes() {
       <div className="flex flex-col gap-[20px]">
         {totalCount !== 0 &&
           list?.map((item) => {
-            const img = item?.postId?.schedules[0][0]?.placeImageSrc || noImage;
+            const img =
+              item?.postId?.schedules[0][0]?.placeImageSrc === 'default'
+                ? noImage
+                : item?.postId?.schedules[0][0]?.placeImageSrc || noImage;
             const title = item?.postId?.title;
             return (
               <Like

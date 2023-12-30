@@ -41,7 +41,11 @@ export default function Bookmarks() {
             <Bookmark
               key={item.bookmarkId}
               id={item.bookmarkId}
-              img={item?.matchingSchedule?.placeImageSrc || noImage}
+              img={
+                item?.matchingSchedule?.placeImageSrc === 'default'
+                  ? noImage
+                  : item?.matchingSchedule?.placeImageSrc || noImage
+              }
               title={item?.matchingSchedule?.placeName}
               subTitle={item?.matchingSchedule?.category}
               checkedIdsSet={checkedIdsSet}

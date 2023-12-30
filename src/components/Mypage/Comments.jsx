@@ -5,6 +5,7 @@ import { useMypageCommentQuery } from '../../pages/mypage/queries';
 import Title from './Title';
 import { IoChatbubbleSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
+import defaultProfile from '../../assets/images/defaultProfile.png';
 
 export default function Comments() {
   const { profileImageSrc } = useRecoilValue(userState);
@@ -23,7 +24,12 @@ export default function Comments() {
       <div className="flex flex-col gap-[20px]">
         {commentList?.totalCount !== 0 &&
           commentList?.list?.map((item) => (
-            <Comment key={item._id} img={profileImageSrc} title={item?.content} postId={item?.postId?._id} />
+            <Comment
+              key={item._id}
+              img={profileImageSrc === 'default' ? defaultProfile : profileImageSrc || defaultProfile}
+              title={item?.content}
+              postId={item?.postId?._id}
+            />
           ))}
       </div>
     </>

@@ -74,7 +74,9 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                 ) : (
                   <div className="absolute bottom-[40px] bg-white flex items-center">
                     {distanceIconType(distancesData[distanceIndex])}
-                    <p className="text-[12px] w-[40px] mr-[-40px] pl-[2px]">{distancesData[distanceIndex]}m</p>
+                    <p className="text-[12px] w-[40px] mr-[-40px] pl-[2px]">
+                      {(distancesData[distanceIndex] / 1000).toFixed(2)}km
+                    </p>
                   </div>
                 )}
               </div>
