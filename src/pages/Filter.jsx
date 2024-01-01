@@ -73,9 +73,9 @@ export default function Filter() {
   }
 
   function handleSubmit() {
-    const searchQuery = location.state.cityValue ? `/search?city=${location.state.cityValue}` : '';
-    const tagQuery = location.state.cityValue ? '&tag=' + tag.toString() : '/filter?tag=' + tag.toString();
-    const sortQuery = location.state.cityValue ? '&sort=' + sort : '/filter?sort=' + sort;
+    const searchQuery = location.state.cityValue ? `/?city=${location.state.cityValue}` : '';
+    const tagQuery = location.state.cityValue ? '&tag=' + tag.toString() : '/?tag=' + tag.toString();
+    const sortQuery = location.state.cityValue ? '&sort=' + sort : '/?sort=' + sort;
 
     let query = '';
 
