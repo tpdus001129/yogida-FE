@@ -76,7 +76,7 @@ export default function Search() {
   // 검색
   function searchHandler() {
     if (searchKeyword) {
-      navigate('/search?city=' + encodeURIComponent(searchKeyword));
+      navigate('/?city=' + encodeURIComponent(searchKeyword));
     } else {
       navigate('/');
     }
@@ -117,7 +117,7 @@ export default function Search() {
             convertToHangulJamo(destination).includes(searchKeyword) || destination.includes(searchKeyword),
         ).map((item) => (
           <li key={item}>
-            <DestinationItem name={item} onClick={() => navigate(`/search?city=${item}`)} />
+            <DestinationItem name={item} onClick={() => navigate(`/?city=${item}`)} />
           </li>
         ))}
       </ul>
