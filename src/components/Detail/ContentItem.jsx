@@ -81,10 +81,10 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                 )}
               </div>
               {/* 오른쪽 컨텐츠 */}
-              <div className="w-[236px] h-[130px] bg-white rounded-[20px] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] relative">
-                <div className="h-[43px] flex justify-between items-center ml-[18px] rounded-t-[20px]">
-                  <div className="flex">
-                    <p className="text-[14px] mr-[4px] font-bold">{places.placeName}</p>
+              <div className="w-[236px] bg-white rounded-[20px] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] relative">
+                <div className="h-[43px] flex justify-between items-center ml-[18px] my-2 rounded-t-[20px]">
+                  <div className="flex flex-wrap">
+                    <p className="text-[14px] mr-[4px] font-bold truncate w-[80%]">{places.placeName}</p>
                     <p className="text-[12px] mt-[2px] line-height-[14px]">{places.category}</p>
                   </div>
                   <button className="absolute right-[14px]">
@@ -113,7 +113,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                     )}
                   </button>
                 </div>
-                <div className="h-[87px] rounded-b-[20px] bg-gray-3 relative">
+                <div className="h-[130px] rounded-b-[20px] bg-gray-3 relative">
                   {places.placeImageSrc ? (
                     <img
                       src={places.placeImageSrc === 'default' ? defaultImg : places.placeImageSrc}

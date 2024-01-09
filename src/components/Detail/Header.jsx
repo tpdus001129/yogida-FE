@@ -37,14 +37,14 @@ export default function Header({ headerData, postId }) {
   // 시작 날짜
   const startDate = {
     year: new Date(headerData.startDate).getFullYear(),
-    month: new Date(headerData.startDate).getMonth(),
+    month: new Date(headerData.startDate).getMonth() + 1,
     date: new Date(headerData.startDate).getDate(),
   };
 
   // 끝 날짜
   const endDate = {
     year: new Date(headerData.endDate).getFullYear(),
-    month: new Date(headerData.endDate).getMonth(),
+    month: new Date(headerData.endDate).getMonth() + 1,
     date: new Date(headerData.endDate).getDate(),
   };
 
