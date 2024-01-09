@@ -90,7 +90,7 @@ function Tab({ path, icon, activeIcon }) {
 
 function Profile({ img }) {
   return (
-    <img src={img} alt="profile-img" className="flex items-center w-fit m-auto object-cover h-[24px] rounded-full" />
+    <img src={img} alt="profile-img" className="flex items-center w-[24px] m-auto object-cover h-[24px] rounded-full" />
   );
 }
 
