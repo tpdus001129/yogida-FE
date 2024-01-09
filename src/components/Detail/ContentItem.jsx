@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import { IoStar, IoCar, IoWalkOutline } from 'react-icons/io5';
 import { IoBookmarkOutline, IoBookmark } from 'react-icons/io5';
 
-// import bookmarkAPI from '../../services/bookmarks';
 import NoImage from './NoImage';
 import defaultImg from '../../assets/images/noImage.png';
 import { useBookmarkQuery } from '../../pages/detail/queries';
@@ -71,7 +70,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                   <div className="absolute bottom-[40px] bg-white flex items-center">
                     {distanceIconType(distancesData[distanceIndex])}
                     <p className="text-[12px] w-[40px] mr-[-40px] pl-[2px]">
-                      {(distancesData[distanceIndex] / 1000).toFixed(2)}km
+                      {(distancesData[distanceIndex][index] / 1000).toFixed(2)}km
                     </p>
                   </div>
                 )}
