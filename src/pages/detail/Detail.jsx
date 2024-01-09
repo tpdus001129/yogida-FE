@@ -200,7 +200,7 @@ export default function Detail() {
                     data?.authorId?.profileImageSrc === 'default' ? noImage : data?.authorId?.profileImageSrc || noImage
                   }
                   alt="profile"
-                  className="w-[40px] h-[40px] rounded-full border border-gray-4 object-cover"
+                  className="w-[38px] h-[38px] rounded-full border border-gray-4 object-cover"
                 />
               </div>
               <div className="flex flex-col">
