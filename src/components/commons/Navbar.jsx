@@ -62,7 +62,7 @@ export default function Navbar() {
         />
         <Tab path={PATH.schedule} icon={<PiNotePencil size={26} />} />
         <Tab
-          path={PATH.mypage}
+          path={PATH.myPage}
           icon={
             user ? (
               <Profile
