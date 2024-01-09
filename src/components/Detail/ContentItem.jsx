@@ -89,7 +89,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                         {myBookmark?.userBookmarkId.includes(places._id) ? (
                           <IoBookmark
                             className="text-secondary"
-                            size="26"
+                            size="22"
                             onClick={(event) => {
                               event.preventDefault();
                               handleRemoveBookmark(places._id);
@@ -98,7 +98,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                         ) : (
                           <IoBookmarkOutline
                             className="text-secondary"
-                            size="26"
+                            size="22"
                             onClick={(event) => {
                               event.preventDefault();
                               handlePostBookmark(places._id, postId);
@@ -114,7 +114,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                     <img
                       src={places.placeImageSrc === 'default' ? defaultImg : places.placeImageSrc}
                       alt="img"
-                      className="w-full h-full block object-cover rounded-b-[20px]"
+                      className="w-full h-full block object-fill rounded-b-[20px]"
                     />
                   ) : (
                     <NoImage />
