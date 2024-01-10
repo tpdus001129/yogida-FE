@@ -70,7 +70,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                   <div className="absolute bottom-[40px] bg-white flex items-center">
                     {distanceIconType(distancesData[distanceIndex])}
                     <p className="text-[12px] w-[40px] mr-[-40px] pl-[2px]">
-                      {(distancesData[distanceIndex][index] / 1000).toFixed(2)}km
+                      {(distancesData[distanceIndex][index] / 1000)?.toFixed(2)}km
                     </p>
                   </div>
                 )}
@@ -88,7 +88,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                         {myBookmark?.userBookmarkId.includes(places._id) ? (
                           <IoBookmark
                             className="text-secondary"
-                            size="26"
+                            size="22"
                             onClick={(event) => {
                               event.preventDefault();
                               handleRemoveBookmark(places._id);
@@ -97,7 +97,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                         ) : (
                           <IoBookmarkOutline
                             className="text-secondary"
-                            size="26"
+                            size="22"
                             onClick={(event) => {
                               event.preventDefault();
                               handlePostBookmark(places._id, postId);
