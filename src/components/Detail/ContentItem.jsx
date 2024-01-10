@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import { IoStar, IoCar, IoWalkOutline } from 'react-icons/io5';
 import { IoBookmarkOutline, IoBookmark } from 'react-icons/io5';
 
-// import bookmarkAPI from '../../services/bookmarks';
 import NoImage from './NoImage';
 import defaultImg from '../../assets/images/noImage.png';
 import { useBookmarkQuery } from '../../pages/detail/queries';
