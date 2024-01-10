@@ -114,7 +114,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                     <img
                       src={places.placeImageSrc === 'default' ? defaultImg : places.placeImageSrc}
                       alt="img"
-                      className="w-full h-full block object-fill rounded-b-[20px]"
+                      className="w-full h-full block object-cover rounded-b-[20px]"
                     />
                   ) : (
                     <NoImage />
