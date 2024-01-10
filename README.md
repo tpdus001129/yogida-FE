@@ -43,13 +43,13 @@
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/DANA-HYEON/"><img src="https://github.com/DANA-HYEON/yogida-client/assets/80450737/cfc68cf2-643a-423a-9ac2-f01ba20faac0" alt="profile" style="width:100px; height:100px; object-fit:cover;"/><br /><sub><b>FE 팀장 : 이다현</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="https://github.com/DANA-HYEON/yogida-client/assets/80450737/e06a4240-88f7-4f80-a320-afae2e328ccc" alt="profile" style="width:100px; height:100px; object-fit:cover;"/><br /><sub><b>FE 팀원 : 황하연</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="https://github.com/DANA-HYEON/yogida-client/assets/80450737/66966aa8-a3b3-4f72-8a2f-d9fc009b2418" alt="profile" style="width:100px; height:100px; object-fit:cover;"/><br /><sub><b>FE 팀원 : 하유나</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/DANA-HYEON/"><img src="https://github.com/DANA-HYEON/yogida-client/assets/80450737/cfc68cf2-643a-423a-9ac2-f01ba20faac0" alt="profile" width="100" height="100px" object-fit="cover"/><br /><sub><b>FE 팀장 : 이다현</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="https://github.com/DANA-HYEON/yogida-client/assets/80450737/e06a4240-88f7-4f80-a320-afae2e328ccc" alt="profile" width="100" height="100px"/><br /><sub><b>FE 팀원 : 황하연</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="https://github.com/DANA-HYEON/yogida-client/assets/80450737/66966aa8-a3b3-4f72-8a2f-d9fc009b2418" alt="profile" width="100" height="100px"/><br /><sub><b>FE 팀원 : 하유나</b></sub></a><br /></td>
      <tr/>
-      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>BE 팀장 : 구기윤</b></sub></a><br /></td>
-     <td align="center"><a href=""><img src="https://github.com/DANA-HYEON/yogida-client/assets/80450737/bd715476-66fa-4291-a1ca-9d46dd99bbcf" alt="profile" style="width:100px; height:100px; object-fit:cover;"/><br /><sub><b>BE 팀원 : 김세연</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="https://github.com/DANA-HYEON/yogida-client/assets/80450737/ba7cc33b-6596-4bd0-a9bd-0a83a5796db2" alt="profile" style="width:100px; height:100px; object-fit:cover;"/><br /><sub><b>BE 팀원 : 고정화</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="https://github.com/DANA-HYEON/yogida_client/assets/80450737/28baf1f4-6f49-4d25-b9dd-93d1f55c416e" width="100" height="100px" alt=""/><br /><sub><b>BE 팀장 : 구기윤</b></sub></a><br /></td>
+     <td align="center"><a href=""><img src="https://github.com/DANA-HYEON/yogida-client/assets/80450737/bd715476-66fa-4291-a1ca-9d46dd99bbcf" alt="profile" width="100" height="100px"/><br /><sub><b>BE 팀원 : 김세연</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="https://github.com/DANA-HYEON/yogida-client/assets/80450737/ba7cc33b-6596-4bd0-a9bd-0a83a5796db2" alt="profile" width="100" height="100px"/><br /><sub><b>BE 팀원 : 고정화</b></sub></a><br /></td>
     </tr>
   </tbody>
 </table>
@@ -325,6 +325,7 @@
 - 좋아요 클릭 시 바로 좋아요 갯수 +1 해서 보여주기 (낙관적 UI적용)
 - 메인페이지 무한스크롤 적용하기
 - 알람 삭제 시 새로고침해야 적용되는 현상 실시간 적용으로 개선하기
+- 웹 반응형 작업
 
     
 <br>
@@ -334,8 +335,12 @@
 ### 🍊 이다현
 
 이 번 프로젝트를 진행하면서 개발도 중요하지만 협업하는 방식도 중요하다는 것을 배웠습니다. 
-매일 아침마다 디스코드로 만나 스크럼을 할 때에도 서로 감정상하지 않게 얘기하는 것, 서로의 일정을 쉽게 이해할 수 있게 공유하는 것, 문제 사항을 부끄러워하지 않고 물어보는 것 등... 
+매일 아침마다 디스코드로 만나 스크럼을 할 때에도 
+<br/>
+서로 감정상하지 않게 얘기하는 것, 서로의 일정을 쉽게 이해할 수 있게 공유하는 것, 문제 사항을 부끄러워하지 않고 물어보는 것 등... 
+<br/>
 개발자로서의 성장도 물론이지만 같이 소통하고 일하는 법을 배워 "동료"로써 성장했다고도 느꼈습니다.
+<br/>
 2023년 한 해 동안 가장 치열하게 살았던 한 달인 것 같습니다. 같이 힘내준 우리 조원들 모두에게 고생했다고 전하고 싶습니다🧡
 
 <br>
