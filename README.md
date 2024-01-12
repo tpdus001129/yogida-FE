@@ -145,6 +145,11 @@
 <br>
 
 ## 4. 역할 분담
+|이름|담당 업무|
+|------|---|
+|🍊이다현|**UI** <br>- 페이지 : 게시글 작성, 게시글 수정, 마이페이지, 프로필 편집<br>- 공통 컴포넌트 : Header, Navbar, Loading, ErrorBoudnary<br><br>**기능** <br>- 로그인 유무에 따른 페이지 분기 처리 <br>- axios 응답 인터셉터에서 404 || 401 || 403 응답 값을 받을 경우 error를 throw하여 react-error-boundary에서 catch하도록 설정 <br>- react-query의 onError 옵션을 활용해 404 || 401 || 403 를 제외한 에러 발생 시 react-hot-toast 모달 표현 <br>- 에러 타입별 react-error-boundary 적용 <br>- 카카오맵 api를 이용한 실시간 주소 키워드 검색 <br>- 게시글 등록, 수정, 삭제 <br>- 마이페이지 리스트 조회, 부분 삭제, 전체 삭제 <br>- 댓글 등록, 삭제, 편집 <br>- 로그아웃 <br>|
+|테스트1|테스트2|
+|테스트1|테스트2|
 <table>
   <tr>
     <th>이름</th>
