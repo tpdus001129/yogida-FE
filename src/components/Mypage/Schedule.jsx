@@ -63,42 +63,6 @@ export default function Schedule() {
   const [dayTitle, setDayTitle] = useState('');
   const [selectDay, setSelectDay] = useState(0); //선택한 day
 
-  // useEffect(() => {
-  //   const tempData = localStorage.getItem('temp-schedule');
-  //   console.log(tempData);
-  //   if (tempData) {
-  //     toast.custom((t) => (
-  //       <div
-  //         className={`${
-  //           t.visible ? 'animate-enter' : 'animate-leave'
-  //         } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-  //       >
-  //         <div className="flex-1 w-0 p-4">임시저장된 데이터가 있습니다. 가져오시겠습니까?</div>
-  //         <div className="flex w-full gap-2">
-  //           <button
-  //             onClick={() => toast.dismiss(t.id)}
-  //             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-  //           >
-  //             임시데이터 삭제하기
-  //           </button>
-  //           <button
-  //             onClick={() => toast.dismiss(t.id)}
-  //             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-  //           >
-  //             취소
-  //           </button>
-  //           <button
-  //             onClick={() => toast.dismiss(t.id)}
-  //             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-  //           >
-  //             확인
-  //           </button>
-  //         </div>
-  //       </div>
-  //     ));
-  //   }
-  // }, []);
-
   // 상세페이지 GET API
   useEffect(() => {
     if (!postId) return;
@@ -130,10 +94,12 @@ export default function Schedule() {
   const dayCalculation = useDayCalculation(startDate, endDate);
 
   useEffect(() => {
-    if (startDate && endDate && dayCalculation > 0 && !editMode) {
-      const days = Array.from(Array(Math.ceil(dayCalculation)), () => new Array());
-      setSchedules(days);
-    }
+    console.log(startDate);
+    console.log(endDate);
+    // if (startDate && endDate && dayCalculation > 0 && !editMode) {
+    //   const days = Array.from(Array(dayCalculation), () => new Array());
+    //   setSchedules(days);
+    // }
   }, [dayCalculation, startDate, endDate, editMode]);
 
   // day별 장소 추가
@@ -233,10 +199,8 @@ export default function Schedule() {
     const placeImages = schedules.map((subArray) => {
       return subArray.map((item) => item.placeImageSrc);
     });
-
     const formData = new FormData();
     formData.append('payload', JSON.stringify(payload));
-
     for (let i = 0; i < placeImages.length; i++) {
       for (let j = 0; j < placeImages[i].length; j++) {
         if (placeImages[i][j] instanceof File) {
@@ -244,7 +208,6 @@ export default function Schedule() {
         }
       }
     }
-
     if (!editMode) {
       const result = await addPost(formData);
       if (result?.status === 201) {

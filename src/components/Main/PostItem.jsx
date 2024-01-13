@@ -58,7 +58,7 @@ export default function PostItem({ data }) {
                     )}
                   </button>
                   <ImageSlide
-                    images={item.schedules.flatMap((schedule) => schedule.flatMap((place) => place.placeImageSrc))}
+                    images={item.schedules.map((place) => place.placeImageSrc)}
                     myLikes={likeList?.myLikePostId}
                     item={item}
                     handleClickLike={handleClickLike}

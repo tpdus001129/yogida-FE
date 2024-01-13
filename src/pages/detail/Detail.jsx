@@ -138,7 +138,8 @@ export default function Detail() {
   function dayClickedSchedulesData() {
     if (data.schedules && data.schedules.length > 0) {
       const schedulesData = data.schedules;
-      return schedulesData[index];
+      const result = schedulesData.filter((place) => place.day === index + 1);
+      return result;
     }
   }
 
