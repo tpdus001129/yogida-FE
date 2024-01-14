@@ -4,7 +4,6 @@ import noImage from '../../assets/images/noImage.png';
 
 export default function Card(props) {
   const { _id, category, placeName, placeImageSrc, handleAddPlaceImgClick, handleRemoveSingleScheduleClick } = props;
-
   const handleChangeImage = (e) => {
     if (!e.target.files) {
       return;
@@ -24,7 +23,7 @@ export default function Card(props) {
         <IoClose size={20} onClick={() => handleRemoveSingleScheduleClick(_id)} className="cursor-pointer" />
       </div>
       <label
-        htmlFor={`${_id}`}
+        htmlFor={`${placeName}`}
         className="h-[130px] rounded-b-[20px] bg-[#d9d9d9] overflow-hidden flex items-center justify-center"
       >
         {placeImageSrc && (
@@ -45,7 +44,7 @@ export default function Card(props) {
             <IoCamera size={24} color="white" />
           </span>
         )}
-        <input type="file" name="placeImg" id={`${_id}`} className="hidden" onChange={handleChangeImage} />
+        <input type="file" name="placeImg" id={`${placeName}`} className="hidden" onChange={handleChangeImage} />
       </label>
     </div>
   );
@@ -54,7 +53,7 @@ export default function Card(props) {
 Card.propTypes = {
   category: PropTypes.string,
   placeName: PropTypes.string,
-  placeImageSrc: PropTypes.string,
+  placeImageSrc: PropTypes.oneOfType([PropTypes.instanceOf(File), PropTypes.string]),
   handleAddPlaceImgClick: PropTypes.func,
   handleRemoveSingleScheduleClick: PropTypes.func,
   _id: PropTypes.string,

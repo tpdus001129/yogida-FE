@@ -11,7 +11,7 @@ export const useBookmarkQuery = () => {
     queryKey: [queryKeys.bookmark],
     queryFn: () => {
       if (isValidUser(user)) {
-        return bookmarkAPI.getAllBookmarksByMe();
+        // return bookmarkAPI.getAllBookmarksByMe();
       }
     },
     select: (data) => ({

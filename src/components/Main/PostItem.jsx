@@ -28,7 +28,7 @@ export default function PostItem({ data }) {
     const isLiked = likeList?.myLikePostId.includes(postId);
 
     if (isLiked) {
-      removeLikes([likeList?.myLikePost.find((item) => item.postId._id === postId)._id]);
+      removeLikes([likeList?.myLikePost.find((item) => item._id === postId)._id]);
     } else {
       postLikes({ userId, postId });
     }
@@ -58,7 +58,7 @@ export default function PostItem({ data }) {
                     )}
                   </button>
                   <ImageSlide
-                    images={item.schedules.flatMap((schedule) => schedule.flatMap((place) => place.placeImageSrc))}
+                    images={item.schedules.map((place) => place.placeImageSrc)}
                     myLikes={likeList?.myLikePostId}
                     item={item}
                     handleClickLike={handleClickLike}

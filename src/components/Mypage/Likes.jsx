@@ -41,17 +41,15 @@ export default function Likes() {
         {totalCount !== 0 &&
           list?.map((item) => {
             const img =
-              item?.postId?.schedules[0][0]?.placeImageSrc === 'default'
-                ? noImage
-                : item?.postId?.schedules[0][0]?.placeImageSrc || noImage;
-            const title = item?.postId?.title;
+              item?.schedules[0]?.placeImageSrc === 'default' ? noImage : item?.schedules[0]?.placeImageSrc || noImage;
+            const title = item?.title;
             return (
               <Like
                 key={item?._id}
                 id={item?._id}
                 img={img}
                 title={title}
-                subTitle={`${convertSimpleDate(item?.postId?.startDate)} ~ ${convertSimpleDate(item?.postId?.endDate)}`}
+                subTitle={`${convertSimpleDate(item?.startDate)} ~ ${convertSimpleDate(item?.endDate)}`}
                 checkedIdsSet={checkedIdsSet}
                 onClick={() => handleOnChange(item?._id)}
               />
