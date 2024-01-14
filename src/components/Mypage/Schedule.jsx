@@ -93,13 +93,6 @@ export default function Schedule() {
   // 날짜 계산기 커스텀 훅 사용
   const dayCalculation = useDayCalculation(startDate, endDate);
 
-  useEffect(() => {
-    if (startDate && endDate && dayCalculation > 0 && !editMode) {
-      const days = Array.from(Array(dayCalculation + 1), () => new Array());
-      setSchedules(days);
-    }
-  }, [dayCalculation, startDate, endDate, editMode]);
-
   // day별 장소 추가
   const handleSingleScheduleClick = (option) => {
     const singleSchedule = {
@@ -112,46 +105,31 @@ export default function Schedule() {
       day: selectDay + 1,
     };
 
-    setSchedules((prev) => prev.map((day, i) => (selectDay === i ? [...day, singleSchedule] : day)));
+    setSchedules((prev) => prev.concat([singleSchedule]));
   };
 
   //day별 장소 삭제
   const handleRemoveSingleScheduleClick = (_id) => {
-    setSchedules((prev) =>
-      prev.map((day, i) => (selectDay === i ? day.filter((singleSchedule) => singleSchedule._id !== _id) : day)),
-    );
+    setSchedules((schedules) => schedules.filter((schedule) => schedule._id !== _id));
   };
 
   // 장소 이미지 추가
   const handleAddPlaceImgClick = ({ _id, img }) => {
-    if (editMode) {
-      setSchedules((schedules) =>
-        schedules.map((schedule) => (schedule._id === _id ? { ...schedule, placeImageSrc: img } : schedule)),
-      );
-
-      return;
-    }
-    setSchedules((prev) =>
-      prev.map((day, i) =>
-        selectDay === i ? day.map((place) => (place?._id === _id ? { ...place, placeImageSrc: img } : place)) : day,
-      ),
+    setSchedules((schedules) =>
+      schedules.map((schedule) => (schedule._id === _id ? { ...schedule, placeImageSrc: img } : schedule)),
     );
   };
 
   // 장소 별점 추가
   const handleAddScoreClick = ({ _id, star }) => {
-    setSchedules((prev) =>
-      prev.map((day, i) =>
-        selectDay === i ? day.map((place) => (place?._id === _id ? { ...place, star } : place)) : day,
-      ),
-    );
+    setSchedules((schedules) => schedules.map((schedule) => (schedule._id === _id ? { ...schedule, star } : schedule)));
   };
 
   //장소별 거리 계산
   const calculateDistance = () => {
     const arr = [];
-    for (let i = 0; i < schedules.length; i++) {
-      const day = schedules[i];
+    for (let i = 0; i < dayCalculation + 1; i++) {
+      const day = schedules.filter((schedule) => schedule.day === i + 1);
       if (!day) return;
       arr.push([]);
       for (let j = 0; j < day.length - 1; j++) {
@@ -162,6 +140,7 @@ export default function Schedule() {
         arr[i].push(distance);
       }
     }
+
     return arr;
   };
 
@@ -183,14 +162,13 @@ export default function Schedule() {
   };
 
   const onSubmit = async () => {
-    const flatScheduleArray = schedules.flat();
     const payload = {
       title,
       destination,
       startDate,
       endDate,
       tag,
-      schedules: flatScheduleArray.map((schedule) => {
+      schedules: schedules.map((schedule) => {
         // eslint-disable-next-line no-unused-vars
         const { _id, ...rest } = schedule;
         return rest;
@@ -201,7 +179,7 @@ export default function Schedule() {
       isPublic,
       reviewText,
     };
-    const placeImages = flatScheduleArray.map((item) => ({
+    const placeImages = schedules.map((item) => ({
       placeName: item.placeName,
       placeImageSrc: item.placeImageSrc,
     }));

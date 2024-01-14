@@ -16,13 +16,9 @@ export default function Course({
   const [showSchedules, setShowSchedules] = useState([]);
 
   useEffect(() => {
-    if (editMode) {
-      const filteredSchedules = schedules.filter((schedule) => schedule.day === selectDay + 1);
-      setShowSchedules(filteredSchedules);
-    } else {
-      setShowSchedules(schedules[selectDay]);
-    }
-  }, [editMode, schedules, selectDay]);
+    const filteredSchedules = schedules.filter((schedule) => schedule.day === selectDay + 1);
+    setShowSchedules(filteredSchedules);
+  }, [schedules, selectDay]);
 
   return (
     <ul className="mt-5 flex flex-col gap-5">
