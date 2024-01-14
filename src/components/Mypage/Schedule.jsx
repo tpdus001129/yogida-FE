@@ -23,7 +23,7 @@ import {
 import { PATH } from '../../constants/path';
 import { SearchPlace, SearchTravelDestination, SelectTag } from './Search';
 import useDayCalculation from '../../hooks/useDayCalculation';
-import ScheduleCalendar from './Calendar';
+import Calendar from './Calendar';
 import useModal from '../../hooks/useModal';
 import { convertSimpleDate } from '../../utils/convertSimpleDate';
 import Course from './Course';
@@ -94,12 +94,10 @@ export default function Schedule() {
   const dayCalculation = useDayCalculation(startDate, endDate);
 
   useEffect(() => {
-    console.log(startDate);
-    console.log(endDate);
-    // if (startDate && endDate && dayCalculation > 0 && !editMode) {
-    //   const days = Array.from(Array(dayCalculation), () => new Array());
-    //   setSchedules(days);
-    // }
+    if (startDate && endDate && dayCalculation > 0 && !editMode) {
+      const days = Array.from(Array(dayCalculation + 1), () => new Array());
+      setSchedules(days);
+    }
   }, [dayCalculation, startDate, endDate, editMode]);
 
   // day별 장소 추가
@@ -111,6 +109,7 @@ export default function Schedule() {
       star: 0,
       category: option?.category,
       placePosition: [Number(option?.y), Number(option?.x)],
+      day: selectDay + 1,
     };
 
     setSchedules((prev) => prev.map((day, i) => (selectDay === i ? [...day, singleSchedule] : day)));
@@ -125,6 +124,13 @@ export default function Schedule() {
 
   // 장소 이미지 추가
   const handleAddPlaceImgClick = ({ _id, img }) => {
+    if (editMode) {
+      setSchedules((schedules) =>
+        schedules.map((schedule) => (schedule._id === _id ? { ...schedule, placeImageSrc: img } : schedule)),
+      );
+
+      return;
+    }
     setSchedules((prev) =>
       prev.map((day, i) =>
         selectDay === i ? day.map((place) => (place?._id === _id ? { ...place, placeImageSrc: img } : place)) : day,
@@ -177,37 +183,36 @@ export default function Schedule() {
   };
 
   const onSubmit = async () => {
+    const flatScheduleArray = schedules.flat();
     const payload = {
       title,
       destination,
       startDate,
       endDate,
       tag,
-      schedules: schedules.map((schedule) =>
-        schedule.map((place) => {
-          // eslint-disable-next-line no-unused-vars
-          const { _id, ...rest } = place;
-          return rest;
-        }),
-      ),
+      schedules: flatScheduleArray.map((schedule) => {
+        // eslint-disable-next-line no-unused-vars
+        const { _id, ...rest } = schedule;
+        return rest;
+      }),
       distances: calculateDistance(),
       cost,
       peopleCount,
       isPublic,
       reviewText,
     };
-    const placeImages = schedules.map((subArray) => {
-      return subArray.map((item) => item.placeImageSrc);
-    });
+    const placeImages = flatScheduleArray.map((item) => ({
+      placeName: item.placeName,
+      placeImageSrc: item.placeImageSrc,
+    }));
     const formData = new FormData();
     formData.append('payload', JSON.stringify(payload));
     for (let i = 0; i < placeImages.length; i++) {
-      for (let j = 0; j < placeImages[i].length; j++) {
-        if (placeImages[i][j] instanceof File) {
-          formData.append(`image`, placeImages[i][j], `${i + 1}-${j + 1}`);
-        }
+      if (placeImages[i].placeImageSrc instanceof File) {
+        formData.append(`image`, placeImages[i].placeImageSrc, `${placeImages[i].placeName}`);
       }
     }
+
     if (!editMode) {
       const result = await addPost(formData);
       if (result?.status === 201) {
@@ -286,7 +291,7 @@ export default function Schedule() {
             id="date"
             onClick={() =>
               openModal({
-                message: <ScheduleCalendar setStartDate={setStartDate} setEndDate={setEndDate} />,
+                message: <Calendar setStartDate={setStartDate} setEndDate={setEndDate} />,
                 type: 'calendar',
               })
             }
@@ -434,7 +439,7 @@ export default function Schedule() {
 
               <Course
                 editMode={editMode}
-                schedules={schedulePerDay}
+                schedules={schedules} // 1차원 배열이여서 보여지는것과 수정할때가 이상해짐..
                 selectDay={selectDay}
                 handleAddPlaceImgClick={handleAddPlaceImgClick}
                 handleAddScoreClick={handleAddScoreClick}
