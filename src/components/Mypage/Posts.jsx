@@ -31,15 +31,13 @@ export default function Posts() {
       <Title title={'지난 여행'} count={postsList?.totalCount} />
 
       <div className="flex flex-col gap-[20px]">
-        {postsList?.list !== 0 &&
-          postsList?.list?.map((item) => (
+        {postsList?.list.length > 0 &&
+          postsList?.list.map((item) => (
             <Post
               key={item._id}
               id={item?._id}
               img={
-                item?.schedules[0][0]?.placeImageSrc === 'default'
-                  ? noImage
-                  : item?.schedules[0][0]?.placeImageSrc || noImage
+                item?.schedules[0]?.placeImageSrc === 'default' ? noImage : item?.schedules[0]?.placeImageSrc || noImage
               }
               title={item?.title}
               date={`${convertSimpleDate(item?.startDate)} ~ ${convertSimpleDate(item?.endDate)}`}
