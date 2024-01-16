@@ -6,7 +6,7 @@ export default function Background({ setCommentModalMode }) {
   }
   return (
     <div
-      className="w-full h-screen fixed z-[10] bg-black bg-opacity-40 inset-0"
+      className="w-full h-screen fixed top-0 z-[10] bg-black bg-opacity-40 inset-0 overflow-hidden"
       style={{ transition: 'opacity 3s ease' }}
       onClick={onClickHandler}
     ></div>

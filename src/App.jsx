@@ -7,7 +7,6 @@ import Login from './pages/Login';
 import Schedule from './components/Mypage/Schedule';
 import Signup from './pages/SignUp';
 import FindPassword from './pages/FindPassword';
-import CommentModal from './components/CommentModal/CommentModal';
 import Detail from './pages/detail/Detail';
 import ChangePassword from './pages/ChangePassword';
 import Notification from './pages/notification/Notification';
@@ -37,7 +36,6 @@ function App() {
         <Route path={PATH.findPassword} element={<FindPassword />} />
         <Route path={PATH.detail} element={<Detail />} />
         <Route path={PATH.changePassword} element={<ChangePassword />} />
-        <Route path={PATH.commentModal} element={<CommentModal />} />
         <Route path={PATH.map} element={<Map />} />
         <Route path={PATH.setup} element={<Setup />} />
       </Route>
