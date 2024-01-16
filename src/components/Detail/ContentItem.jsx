@@ -45,8 +45,6 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
     postBookmarks({ singleScheduleId: placeId, postId });
   }
 
-  if (!schedulesData) return <div>Loading...</div>;
-
   return (
     <div>
       {distancesData &&
