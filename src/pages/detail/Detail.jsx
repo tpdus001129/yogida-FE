@@ -152,12 +152,11 @@ export default function Detail() {
     };
   }, [commentModalMode, setNavbarHidden]);
 
-  if (!data) return <p>loading...</p>;
   return (
     <ModalContext.Provider value={{ commentModalMode, setCommentModalMode }}>
-      <div className="pb-[40px]">
+      <div>
         {commentModalMode && <Modal onMouseDown={onMouseDown} onMouseUp={onMouseUp} user={user} postId={postId} />}
-        <div className={commentModalMode ? 'w-full h-screen overflow-hidden' : ''}>
+        <div className={commentModalMode ? 'w-full h-screen overflow-hidden' : 'pb-[40px]'}>
           <Header headerData={data} postId={postId} />
           <div className="w-full h-[160px] mb-[22px]">
             {dayClickedSchedulesData() && !commentModalMode && <CourseMap data={dayClickedSchedulesData()} />}

@@ -69,7 +69,7 @@ export default function Modal({ postId }) {
   };
 
   return (
-    <div>
+    <div className="w-full h-screen absolute">
       <Background commentModalMode={commentModalMode} setCommentModalMode={setCommentModalMode} />
       <div onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         <div className="w-full h-[80vh] bg-white absolute bottom-0 rounded-t-[20px] z-[10] animate-[bottom-sheet-up_200ms_ease-in-out]">
