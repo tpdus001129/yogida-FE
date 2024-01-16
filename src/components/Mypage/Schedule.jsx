@@ -23,7 +23,7 @@ import {
 import { PATH } from '../../constants/path';
 import { SearchPlace, SearchTravelDestination, SelectTag } from './Search';
 import useDayCalculation from '../../hooks/useDayCalculation';
-import ScheduleCalendar from './Calendar';
+import Calendar from './Calendar';
 import useModal from '../../hooks/useModal';
 import { convertSimpleDate } from '../../utils/convertSimpleDate';
 import Course from './Course';
@@ -63,42 +63,6 @@ export default function Schedule() {
   const [dayTitle, setDayTitle] = useState('');
   const [selectDay, setSelectDay] = useState(0); //선택한 day
 
-  // useEffect(() => {
-  //   const tempData = localStorage.getItem('temp-schedule');
-  //   console.log(tempData);
-  //   if (tempData) {
-  //     toast.custom((t) => (
-  //       <div
-  //         className={`${
-  //           t.visible ? 'animate-enter' : 'animate-leave'
-  //         } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-  //       >
-  //         <div className="flex-1 w-0 p-4">임시저장된 데이터가 있습니다. 가져오시겠습니까?</div>
-  //         <div className="flex w-full gap-2">
-  //           <button
-  //             onClick={() => toast.dismiss(t.id)}
-  //             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-  //           >
-  //             임시데이터 삭제하기
-  //           </button>
-  //           <button
-  //             onClick={() => toast.dismiss(t.id)}
-  //             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-  //           >
-  //             취소
-  //           </button>
-  //           <button
-  //             onClick={() => toast.dismiss(t.id)}
-  //             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-  //           >
-  //             확인
-  //           </button>
-  //         </div>
-  //       </div>
-  //     ));
-  //   }
-  // }, []);
-
   // 상세페이지 GET API
   useEffect(() => {
     if (!postId) return;
@@ -129,13 +93,6 @@ export default function Schedule() {
   // 날짜 계산기 커스텀 훅 사용
   const dayCalculation = useDayCalculation(startDate, endDate);
 
-  useEffect(() => {
-    if (startDate && endDate && dayCalculation > 0 && !editMode) {
-      const days = Array.from(Array(Math.ceil(dayCalculation)), () => new Array());
-      setSchedules(days);
-    }
-  }, [dayCalculation, startDate, endDate, editMode]);
-
   // day별 장소 추가
   const handleSingleScheduleClick = (option) => {
     const singleSchedule = {
@@ -145,41 +102,34 @@ export default function Schedule() {
       star: 0,
       category: option?.category,
       placePosition: [Number(option?.y), Number(option?.x)],
+      day: selectDay + 1,
     };
 
-    setSchedules((prev) => prev.map((day, i) => (selectDay === i ? [...day, singleSchedule] : day)));
+    setSchedules((prev) => prev.concat([singleSchedule]));
   };
 
   //day별 장소 삭제
   const handleRemoveSingleScheduleClick = (_id) => {
-    setSchedules((prev) =>
-      prev.map((day, i) => (selectDay === i ? day.filter((singleSchedule) => singleSchedule._id !== _id) : day)),
-    );
+    setSchedules((schedules) => schedules.filter((schedule) => schedule._id !== _id));
   };
 
   // 장소 이미지 추가
   const handleAddPlaceImgClick = ({ _id, img }) => {
-    setSchedules((prev) =>
-      prev.map((day, i) =>
-        selectDay === i ? day.map((place) => (place?._id === _id ? { ...place, placeImageSrc: img } : place)) : day,
-      ),
+    setSchedules((schedules) =>
+      schedules.map((schedule) => (schedule._id === _id ? { ...schedule, placeImageSrc: img } : schedule)),
     );
   };
 
   // 장소 별점 추가
   const handleAddScoreClick = ({ _id, star }) => {
-    setSchedules((prev) =>
-      prev.map((day, i) =>
-        selectDay === i ? day.map((place) => (place?._id === _id ? { ...place, star } : place)) : day,
-      ),
-    );
+    setSchedules((schedules) => schedules.map((schedule) => (schedule._id === _id ? { ...schedule, star } : schedule)));
   };
 
   //장소별 거리 계산
   const calculateDistance = () => {
     const arr = [];
-    for (let i = 0; i < schedules.length; i++) {
-      const day = schedules[i];
+    for (let i = 0; i < dayCalculation + 1; i++) {
+      const day = schedules.filter((schedule) => schedule.day === i + 1);
       if (!day) return;
       arr.push([]);
       for (let j = 0; j < day.length - 1; j++) {
@@ -190,6 +140,7 @@ export default function Schedule() {
         arr[i].push(distance);
       }
     }
+
     return arr;
   };
 
@@ -217,31 +168,26 @@ export default function Schedule() {
       startDate,
       endDate,
       tag,
-      schedules: schedules.map((schedule) =>
-        schedule.map((place) => {
-          // eslint-disable-next-line no-unused-vars
-          const { _id, ...rest } = place;
-          return rest;
-        }),
-      ),
+      schedules: schedules.map((schedule) => {
+        // eslint-disable-next-line no-unused-vars
+        const { _id, ...rest } = schedule;
+        return rest;
+      }),
       distances: calculateDistance(),
       cost,
       peopleCount,
       isPublic,
       reviewText,
     };
-    const placeImages = schedules.map((subArray) => {
-      return subArray.map((item) => item.placeImageSrc);
-    });
-
+    const placeImages = schedules.map((item) => ({
+      placeName: item.placeName,
+      placeImageSrc: item.placeImageSrc,
+    }));
     const formData = new FormData();
     formData.append('payload', JSON.stringify(payload));
-
     for (let i = 0; i < placeImages.length; i++) {
-      for (let j = 0; j < placeImages[i].length; j++) {
-        if (placeImages[i][j] instanceof File) {
-          formData.append(`image`, placeImages[i][j], `${i + 1}-${j + 1}`);
-        }
+      if (placeImages[i].placeImageSrc instanceof File) {
+        formData.append(`image`, placeImages[i].placeImageSrc, `${placeImages[i].placeName}`);
       }
     }
 
@@ -323,7 +269,7 @@ export default function Schedule() {
             id="date"
             onClick={() =>
               openModal({
-                message: <ScheduleCalendar setStartDate={setStartDate} setEndDate={setEndDate} />,
+                message: <Calendar setStartDate={setStartDate} setEndDate={setEndDate} />,
                 type: 'calendar',
               })
             }
@@ -471,7 +417,7 @@ export default function Schedule() {
 
               <Course
                 editMode={editMode}
-                schedules={schedulePerDay}
+                schedules={schedules} // 1차원 배열이여서 보여지는것과 수정할때가 이상해짐..
                 selectDay={selectDay}
                 handleAddPlaceImgClick={handleAddPlaceImgClick}
                 handleAddScoreClick={handleAddScoreClick}

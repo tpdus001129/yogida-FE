@@ -18,7 +18,7 @@ export const useLikeQuery = () => {
     select: (data) => {
       return {
         myLikePost: data.data.likedPosts,
-        myLikePostId: data.data.likedPosts.map((item) => item.postId._id),
+        myLikePostId: data.data.likedPosts.map((item) => item._id),
       };
     },
   });

@@ -4,16 +4,25 @@ import PropTypes from 'prop-types';
 import { Rating } from 'semantic-ui-react';
 
 import { IoStar } from 'react-icons/io5';
+import { useEffect, useState } from 'react';
 export default function Course({
   editMode,
   schedules,
+  selectDay,
   handleAddPlaceImgClick,
   handleAddScoreClick,
   handleRemoveSingleScheduleClick,
 }) {
+  const [showSchedules, setShowSchedules] = useState([]);
+
+  useEffect(() => {
+    const filteredSchedules = schedules.filter((schedule) => schedule.day === selectDay + 1);
+    setShowSchedules(filteredSchedules);
+  }, [schedules, selectDay]);
+
   return (
     <ul className="mt-5 flex flex-col gap-5">
-      {schedules?.map((schedule, i) => (
+      {showSchedules?.map((schedule, i) => (
         <li key={`${schedule?.id}-${i}`}>
           <Card
             {...schedule}
@@ -69,7 +78,7 @@ ScheduleItem.propTypes = {
 
 Course.propTypes = {
   editMode: PropTypes.bool,
-  schedules: PropTypes.array,
+  schedules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   selectDay: PropTypes.number,
   handleAddPlaceImgClick: PropTypes.func,
   handleAddScoreClick: PropTypes.func,

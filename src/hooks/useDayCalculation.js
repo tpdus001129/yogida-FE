@@ -1,13 +1,15 @@
-import { useMemo } from 'react';
+import dayjs from 'dayjs';
+import dayOfYear from 'dayjs/plugin/dayOfYear';
+
+dayjs.extend(dayOfYear);
 
 // 시작 날짜 ~ 끝 날짜 계산기
 const useDayCalculation = (startDate, endDate) => {
-  const startDateData = new Date(startDate);
-  const endDateData = new Date(endDate);
+  const startDateData = dayjs(startDate);
+  const endDateData = dayjs(endDate);
+  const diffDate = endDateData.dayOfYear() - startDateData.dayOfYear();
 
-  const diffDate = startDateData.getTime() - endDateData.getTime();
-
-  return useMemo(() => Math.abs(diffDate / (1000 * 60 * 60 * 24)), [diffDate]);
+  return diffDate;
 };
 
 export default useDayCalculation;

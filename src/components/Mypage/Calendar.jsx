@@ -1,10 +1,10 @@
 import Proptypes from 'prop-types';
-import Calendar from 'react-calendar';
+import ReactCalender from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './calendar.css';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
-export default function ScheduleCalendar({ setStartDate, setEndDate }) {
+export default function Calendar({ setStartDate, setEndDate }) {
   const handleDateClick = (e) => {
     setStartDate(e[0]);
     setEndDate(e[1]);
@@ -17,9 +17,15 @@ export default function ScheduleCalendar({ setStartDate, setEndDate }) {
   };
 
   return (
-    <Calendar
+    <ReactCalender
       onChange={handleDateClick}
-      formatDay={(locale, date) => moment(date).format('D')}
+      formatDay={(locale, date) => {
+        return dayjs(date).format('D');
+      }}
+      // formatDay={(locale, date) => {
+      //   console.log(moment(date).format('D'));
+      //   return moment(date).format('D');
+      // }}
       selectRange={true}
       next2Label={null}
       prev2Label={null}
@@ -31,7 +37,7 @@ export default function ScheduleCalendar({ setStartDate, setEndDate }) {
   );
 }
 
-ScheduleCalendar.propTypes = {
+Calendar.propTypes = {
   setStartDate: Proptypes.func,
   setEndDate: Proptypes.func,
 };

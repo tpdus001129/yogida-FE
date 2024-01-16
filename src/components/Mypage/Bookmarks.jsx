@@ -39,17 +39,13 @@ export default function Bookmarks() {
         {totalCount !== 0 &&
           list?.map((item) => (
             <Bookmark
-              key={item.bookmarkId}
-              id={item.bookmarkId}
-              img={
-                item?.matchingSchedule?.placeImageSrc === 'default'
-                  ? noImage
-                  : item?.matchingSchedule?.placeImageSrc || noImage
-              }
-              title={item?.matchingSchedule?.placeName}
-              subTitle={item?.matchingSchedule?.category}
+              key={item._id}
+              id={item._id}
+              img={item?.scheduleId?.placeImageSrc === 'default' ? noImage : item?.scheduleId?.placeImageSrc || noImage}
+              title={item?.scheduleId?.placeName}
+              subTitle={item?.scheduleId?.category}
               checkedIdsSet={checkedIdsSet}
-              onClick={() => handleOnChange(item?.bookmarkId)}
+              onClick={() => handleOnChange(item?._id)}
             />
           ))}
       </div>
