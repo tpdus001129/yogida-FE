@@ -16,6 +16,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom/dist';
 import { useMypagePostsQuery } from '../mypage/queries';
 import toast from 'react-hot-toast';
 import { PATH } from '../../constants/path';
+import { useQuery } from 'react-query';
 
 export const ModalContext = createContext();
 
@@ -23,12 +24,14 @@ export default function Detail() {
   const navigate = useNavigate();
   const user = useRecoilValue(userState);
   const { id: postId } = useParams();
-  const [data, setData] = useState([]);
   const [dayTitle, setDayTitle] = useState('');
   const [index, setIndex] = useState(0);
   const { setNavbarHidden } = useOutletContext();
 
   const { removePost } = useMypagePostsQuery();
+
+  // API
+  const { data } = useQuery(['posts', postId], () => postsAPI.getPostById(postId).then((post) => post.data));
 
   // 댓글 모드
   const [commentModalMode, setCommentModalMode] = useState(false);
@@ -36,18 +39,6 @@ export default function Detail() {
   // 시작점과 종료점의 Y 좌표를 저장하는 state
   const [mouseDownClientY, setMouseDownClientY] = useState(0);
   const [mouseUpClientY, setMouseUpClientY] = useState(0);
-
-  // 상세페이지 GET API
-  useEffect(() => {
-    postsAPI
-      .getPostById(postId)
-      .then((post) => {
-        setData(post.data);
-      })
-      .catch(() => {
-        throw new Error('상세 게시글을 불러오는 중에 오류가 생겼습니다.');
-      });
-  }, [postId]);
 
   const remove = async () => {
     const result = await removePost(postId);

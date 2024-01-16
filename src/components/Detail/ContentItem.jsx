@@ -46,6 +46,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
   }
 
   if (!schedulesData) return <div>Loading...</div>;
+
   return (
     <div>
       {distancesData &&
