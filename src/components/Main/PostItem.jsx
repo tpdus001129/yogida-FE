@@ -10,6 +10,7 @@ import ImageSlide from './ImageSlide';
 import { useLikeQuery } from '../../pages/main/queries';
 import { isValidUser } from '../../utils/isValidUser';
 import { useEffect } from 'react';
+import { ScheduleDate } from '../../utils/ScheduleDate';
 
 export default function PostItem({ data }) {
   const user = useRecoilValue(userState);
@@ -78,11 +79,7 @@ export default function PostItem({ data }) {
               <div>
                 <Tag tags={item.tag} />
               </div>
-              <span className="text-gray-1 mb-[4px]">
-                일정: {new Date(item.startDate).getFullYear()}년 {new Date(item.startDate).getMonth() + 1}월{' '}
-                {new Date(item.startDate).getDate()}일 ~ {new Date(item.endDate).getFullYear()}년{' '}
-                {new Date(item.endDate).getMonth() + 1}월 {new Date(item.endDate).getDate()}일
-              </span>
+              <span className="text-gray-1 mb-[4px]">일정 : {ScheduleDate(item.startDate, item.endDate)}</span>
               <p className="text-gray-1">예산: {item.cost.toLocaleString()}원</p>
             </div>
           </div>

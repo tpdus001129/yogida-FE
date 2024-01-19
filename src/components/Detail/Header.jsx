@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import IconButton from './IconButton';
 import Tag from '../commons/Tag';
 import useDayCalculation from '../../hooks/useDayCalculation';
-
+import { ScheduleDate } from '../../utils/ScheduleDate';
 import { IoLockClosed } from 'react-icons/io5';
 // import { IoCreateOutline } from "react-icons/io5";
 
@@ -34,34 +34,6 @@ export default function Header({ headerData, postId }) {
     ['destination', headerData.destination],
   ];
 
-  // 시작 날짜
-  const startDate = {
-    year: new Date(headerData.startDate).getFullYear(),
-    month: new Date(headerData.startDate).getMonth() + 1,
-    date: new Date(headerData.startDate).getDate(),
-  };
-
-  // 끝 날짜
-  const endDate = {
-    year: new Date(headerData.endDate).getFullYear(),
-    month: new Date(headerData.endDate).getMonth() + 1,
-    date: new Date(headerData.endDate).getDate(),
-  };
-
-  // 여행 기간
-  const period =
-    startDate.year +
-    '.' +
-    startDate.month +
-    '.' +
-    startDate.date +
-    ' ~ ' +
-    endDate.year +
-    '.' +
-    endDate.month +
-    '.' +
-    endDate.date;
-
   if (!headerData) return <p>loading...</p>;
   return (
     <div className={`w-full pb-[20px] bg-primary`}>
@@ -80,7 +52,7 @@ export default function Header({ headerData, postId }) {
         </div>
       </div>
       <div className="mx-[24px] text-white">
-        <p className="text-[14px]">{period}</p>
+        <p className="text-[14px]">{ScheduleDate(headerData.startDate, headerData.endDate)}</p>
         <div className="flex justify-between mb-[6px] items-center">
           <div>
             <p className="text-[22px] font-bold">{headerData.title}</p>
