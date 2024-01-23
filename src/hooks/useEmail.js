@@ -18,7 +18,9 @@ export default function useEmail() {
 
   const handleExpire = useCallback(() => {
     openModal({ message: `입력 시간이 지났습니다.\n다시 인증번호를 요청 해주세요.` });
+    setIsAvailableEmailInput(true);
     setIsVerificationVisible(false);
+    setIsLoading(false);
   }, [openModal]);
 
   const handleSendValidationCode = async ({ type }) => {
