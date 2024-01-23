@@ -8,8 +8,8 @@ import useInfinityPaging from '../../hooks/useInfinityPaging';
 import spinner from '../../assets/images/spinner.gif';
 
 export default function Notification() {
-  const { notificationList, setNotificationList } = useNotification();
-  const { data, deleteAllAlarm, lastItemId, setLastItemId, refetch } = useNotificationQuery();
+  const { notificationList } = useNotification();
+  const { data, deleteAllAlarm, refetch, readAlarm, deleteAlarm } = useNotificationQuery();
   const { handleObserver, hasNextPage, setHasNextPage } = useInfinityPaging({
     callback: () => refetch(),
   });
@@ -17,25 +17,9 @@ export default function Notification() {
   const { setTarget } = useIntersectionObserver({ onIntersect: handleObserver });
 
   useEffect(() => {
-    if (data && Array.isArray(data)) {
-      if (data.length > 0) {
-        const curItem = data;
-        setNotificationList((prev) => {
-          const newItem = prev ? [...prev, ...curItem] : curItem;
-          const newItemWithFilter = newItem.reduce((acc, cur) => {
-            if (acc.findIndex(({ _id }) => _id === cur._id) === -1) {
-              acc.push(cur);
-            }
-            return acc;
-          }, []);
-          return newItemWithFilter;
-        });
-        setLastItemId(lastItemId);
-      } else {
-        setHasNextPage(false);
-      }
-    }
-  }, [data, lastItemId, setHasNextPage, setLastItemId, setNotificationList]);
+    if (data.data.length === 0) setHasNextPage(false);
+    else setHasNextPage(true);
+  }, [data, setHasNextPage]);
 
   return (
     <div>
@@ -63,6 +47,8 @@ export default function Notification() {
             url={notification.postId}
             isRead={notification.isRead}
             alarmId={notification._id}
+            readAlarm={readAlarm}
+            deleteAlarm={deleteAlarm}
           />
         ))}
         {

@@ -3,12 +3,18 @@ import { IoClose } from 'react-icons/io5';
 import NoProfile from '../commons/NoProfile';
 import { getTime } from '../../utils/getTime';
 import { Link } from 'react-router-dom';
-import { useNotificationQuery } from '../../pages/notification/queries';
-import useNotification from '../../hooks/useNotification';
-export default function NotificationItem({ type, nickname, message, createdAt, url, alarmId, isRead }) {
-  const { data, refetch, readAlarm, deleteAlarm } = useNotificationQuery();
-  const { setNotificationList } = useNotification;
 
+export default function NotificationItem({
+  type,
+  nickname,
+  message,
+  createdAt,
+  url,
+  alarmId,
+  isRead,
+  readAlarm,
+  deleteAlarm,
+}) {
   // 메시지 타입
   const mapTypeToMessage = {
     comment: '님이 댓글을 남겼습니다.',
@@ -35,15 +41,7 @@ export default function NotificationItem({ type, nickname, message, createdAt, u
         </div>
       </Link>
       <button>
-        <IoClose
-          size="20"
-          className="text-gray-1"
-          onClick={async () => {
-            const result = await deleteAlarm(alarmId);
-            if (result?.status === 204) refetch();
-            setNotificationList(data);
-          }}
-        />
+        <IoClose size="20" className="text-gray-1" onClick={async () => await deleteAlarm(alarmId)} />
       </button>
     </div>
   );
@@ -57,4 +55,6 @@ NotificationItem.propTypes = {
   createdAt: PropTypes.string.isRequired,
   alarmId: PropTypes.string.isRequired,
   isRead: PropTypes.bool.isRequired,
+  readAlarm: PropTypes.func,
+  deleteAlarm: PropTypes.func,
 };
