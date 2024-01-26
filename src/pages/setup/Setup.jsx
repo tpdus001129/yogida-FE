@@ -2,41 +2,65 @@ import Header from '../../components/Login/Header';
 import Button from '../../components/commons/Button';
 import InputWithLabel from '../../components/Input/InputWithLabel';
 import InputWithCheckButton from '../../components/Input/InputWithCheckButton';
-import profileImage from '../../assets/images/profile.jpg';
-
+import defaultProfileImage from '../../assets/images/defaultProfile.png';
 import Plus from '../../assets/Plus';
-
 import authAPI from '../../services/auth';
-
 import { useState, useEffect, useRef } from 'react';
-import { useKakaoUserInfoQuery } from './queries';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useNickname from '../../hooks/useNickname';
 import useModal from '../../hooks/useModal';
 
 export default function Setup() {
   const navigate = useNavigate();
-
-  const { user } = useKakaoUserInfoQuery();
+  const location = useLocation();
 
   const { openModal } = useModal();
 
   const [image, setImage] = useState('');
-  const selectFile = useRef(null);
+  const selectFile = useRef(null); // 파일 Input을 위한 ref
 
   const { nickname, setNickname, isNicknameAvailable, checkNicknameMessage, handleCheckNickname } = useNickname();
 
-  const handleSignUp = async () => {
-    const formDataOfUser = new FormData();
-    formDataOfUser.append('snsId', user.data.snsId);
-    formDataOfUser.append('email', user.data.email);
-    formDataOfUser.append('nickname', nickname);
-    if (selectFile.current.files[0]) {
-      formDataOfUser.append('profile', selectFile.current.files[0]);
+  const [email, setEmail] = useState('');
+  const [snsId, setSnsId] = useState('');
+
+  useEffect(() => {
+    if (location.state) {
+      setImage(location.state?.profileImageUrl ?? 'default');
     } else {
-      formDataOfUser.append('profileImageUrl', image);
+      authAPI.getKakaoUserInfo().then((res) => {
+        const { email, nickname, profileImageUrl, snsId } = res.data;
+        setImage(profileImageUrl);
+        setNickname(nickname);
+        setEmail(email);
+        setSnsId(snsId);
+      });
     }
-    formDataOfUser.append('type', 'kakao');
+  }, [location.state, setNickname]);
+
+  const handleSignUp = async () => {
+    let payload;
+    if (location.state) {
+      payload = {
+        email: location?.state.email,
+        nickname,
+        password: location.state.password,
+        type: 'email',
+      };
+    } else {
+      payload = {
+        snsId,
+        email,
+        nickname,
+        profileImageSrc: image,
+        type: 'kakao',
+      };
+    }
+
+    const formDataOfUser = new FormData();
+    formDataOfUser.append('payload', JSON.stringify(payload));
+    formDataOfUser.append('profile', image);
+
     await authAPI
       .signup(formDataOfUser)
       .then(() => {
@@ -56,19 +80,8 @@ export default function Setup() {
       });
   };
 
-  useEffect(() => {
-    if (user !== undefined) {
-      setNickname(user.data.nickname);
-      setImage(user.data.profileImageUrl);
-    }
-  }, [user, setNickname, setImage]);
-
   const handleUpload = (event) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setImage(event.target.result);
-    };
-    reader.readAsDataURL(event.target.files[0]);
+    setImage(event.target.files[0]);
   };
 
   return (
@@ -77,7 +90,16 @@ export default function Setup() {
       <div className="w-mobile p-6">
         <div className="flex flex-col items-center justify-end">
           <div className={`w-36 h-36 relative`}>
-            <img src={image === '' ? profileImage : image} className={`w-full h-full bg-cover rounded-full `} />
+            <img
+              src={
+                image === 'default'
+                  ? defaultProfileImage
+                  : typeof image === 'string'
+                    ? image
+                    : URL.createObjectURL(image)
+              }
+              className={`w-full h-full bg-cover rounded-full `}
+            />
             <input type="file" className="invisible" ref={selectFile} onChange={handleUpload}></input>
             <Plus
               className="w-8 h-8 bg-white rounded-full absolute fill-darkgray right-2 bottom-2 cursor-pointer"
@@ -98,7 +120,7 @@ export default function Setup() {
                 onChangeFunc={setNickname}
                 buttonType={'default'}
                 buttonChildren={'중복 확인'}
-                isValid={nickname.length > 0 && isNicknameAvailable}
+                isValid={isNicknameAvailable}
                 isButtonDisabled={checkNicknameMessage !== ''}
                 onClick={handleCheckNickname}
               />

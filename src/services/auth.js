@@ -29,7 +29,8 @@ const authAPI = {
   },
 
   async verify() {
-    return await api.get(API_URL + '/me');
+    const { data } = await api.get(API_URL + '/me');
+    return data;
   },
 
   async changePassword({ email, password }) {

@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
 import PropTypes from 'prop-types';
-
 import { IoStar, IoCar, IoWalkOutline } from 'react-icons/io5';
 import { IoBookmarkOutline, IoBookmark } from 'react-icons/io5';
-
 import NoImage from './NoImage';
 import defaultImg from '../../assets/images/noImage.png';
 import { useBookmarkQuery } from '../../pages/detail/queries';
@@ -15,8 +12,9 @@ import { isValidUser } from '../../utils/isValidUser';
 
 export default function ContentItem({ distanceIndex, schedulesData, distancesData, postId }) {
   const user = useRecoilValue(userState);
-  const { myBookmark, postBookmarks, removeBookmarks } = useBookmarkQuery();
+  const { bookmarkedSchedules, postBookmarks, removeBookmarks } = useBookmarkQuery();
 
+  const bookmarkedScheduleIds = bookmarkedSchedules.map((bookmark) => bookmark.scheduleId._id);
   // 거리별 아이콘 타입
   function distanceIconType(distance) {
     if (Number(distance) < 1000) {
@@ -34,15 +32,12 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
     }
   }, [schedulesData]);
 
-  function handleRemoveBookmark(placeId) {
-    const bookmarkId = myBookmark?.userBookmark.find(
-      ({ matchingSchedule }) => placeId === matchingSchedule._id,
-    ).bookmarkId;
-    removeBookmarks([bookmarkId]);
+  function handleRemoveBookmark(singleScheduleId) {
+    removeBookmarks([bookmarkedSchedules.find((item) => item.scheduleId._id === singleScheduleId)._id]);
   }
 
-  function handlePostBookmark(placeId, postId) {
-    postBookmarks({ singleScheduleId: placeId, postId });
+  function handlePostBookmark(singleScheduleId, postId) {
+    postBookmarks({ singleScheduleId, postId });
   }
 
   return (
@@ -84,7 +79,7 @@ export default function ContentItem({ distanceIndex, schedulesData, distancesDat
                   <button className="absolute right-[14px]">
                     {isValidUser(user) && (
                       <>
-                        {myBookmark?.userBookmarkId.includes(places._id) ? (
+                        {bookmarkedScheduleIds.includes(places._id) ? (
                           <IoBookmark
                             className="text-secondary"
                             size="22"

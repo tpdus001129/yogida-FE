@@ -22,24 +22,26 @@ function App() {
     <Routes>
       <Route element={<PrivateRoute />}>
         <Route element={<Layout />}>
-          <Route path={PATH.root} element={<Main />} />
           <Route path={PATH.myPage} element={<Mypage />} />
           <Route path={PATH.notification} element={<Notification />} />
-          <Route path={PATH.post} element={<Detail />} />
         </Route>
         <Route path={PATH.notfound} element={<Notfound />} />
         <Route path={PATH.filter} element={<Filter />} />
         <Route path={PATH.search} element={<Search />} />
         <Route path={PATH.schedule} element={<Schedule />} />
         <Route path={PATH.editSchedule} element={<Schedule />} />
-        <Route path={PATH.signUp} element={<Signup />} />
         <Route path={PATH.findPassword} element={<FindPassword />} />
-        <Route path={PATH.detail} element={<Detail />} />
         <Route path={PATH.changePassword} element={<ChangePassword />} />
         <Route path={PATH.map} element={<Map />} />
-        <Route path={PATH.setup} element={<Setup />} />
+      </Route>
+
+      <Route element={<Layout />}>
+        <Route path={PATH.root} element={<Main />} />
+        <Route path={PATH.post} element={<Detail />} />
       </Route>
       <Route path={PATH.login} element={<Login />} />
+      <Route path={PATH.signUp} element={<Signup />} />
+      <Route path={PATH.setup} element={<Setup />} />
     </Routes>
   );
 }

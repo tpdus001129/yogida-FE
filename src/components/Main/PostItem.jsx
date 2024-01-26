@@ -7,33 +7,11 @@ import { IoChatbubbleOutline, IoHeartOutline, IoHeartSharp } from 'react-icons/i
 
 import Tag from '../commons/Tag';
 import ImageSlide from './ImageSlide';
-import { useLikeQuery } from '../../pages/main/queries';
 import { isValidUser } from '../../utils/isValidUser';
-import { useEffect } from 'react';
 import { ScheduleDate } from '../../utils/ScheduleDate';
 
-export default function PostItem({ data }) {
+export default function PostItem({ data, handleClickLike, likedList }) {
   const user = useRecoilValue(userState);
-  // 유저가 좋아요 누른 데이터
-  const { likeList, removeLikes, postLikes, refetch } = useLikeQuery();
-
-  useEffect(() => {
-    refetch();
-  }, [user, refetch]);
-
-  // 좋아요 post
-  async function handleClickLike(e, userId, postId) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    const isLiked = likeList?.myLikePostId.includes(postId);
-
-    if (isLiked) {
-      removeLikes([likeList?.myLikePost.find((item) => item._id === postId)._id]);
-    } else {
-      postLikes({ userId, postId });
-    }
-  }
 
   if (data?.length === 0) return <Notfound />;
   return (
@@ -50,7 +28,7 @@ export default function PostItem({ data }) {
                   >
                     {isValidUser(user) && item.authorId !== user._id && (
                       <>
-                        {likeList?.myLikePostId.includes(item._id) ? (
+                        {likedList?.includes(item._id) ? (
                           <IoHeartSharp size="36" className="text-red" />
                         ) : (
                           <IoHeartOutline size="36" color="#D9D9D9" />
@@ -58,12 +36,7 @@ export default function PostItem({ data }) {
                       </>
                     )}
                   </button>
-                  <ImageSlide
-                    images={item.schedules.map((place) => place.placeImageSrc)}
-                    myLikes={likeList?.myLikePostId}
-                    item={item}
-                    handleClickLike={handleClickLike}
-                  />
+                  <ImageSlide images={item.schedules.map((place) => place.placeImageSrc)} />
                 </div>
               </div>
               <div className="flex justify-between items-center">
@@ -92,4 +65,6 @@ export default function PostItem({ data }) {
 PostItem.propTypes = {
   data: PropTypes.array.isRequired,
   filter: PropTypes.string,
+  handleClickLike: PropTypes.func,
+  likedList: PropTypes.array,
 };

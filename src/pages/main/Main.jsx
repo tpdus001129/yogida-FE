@@ -5,6 +5,7 @@ import Header from '../../components/Main/Header';
 import PostItem from '../../components/Main/PostItem';
 import postsAPI from '../../services/posts';
 import { PATH } from '../../constants/path';
+import { useLikeQuery } from './queries';
 
 export default function Main() {
   const [data, setData] = useState([]);
@@ -16,12 +17,30 @@ export default function Main() {
   const tagValue = queryParams.get('tag');
   const sortValue = queryParams.get('sort');
 
+  // 유저가 좋아요 누른 데이터
+
+  const { likedPosts, removeLikes, postLikes } = useLikeQuery();
+  const likedPostIds = likedPosts?.map((likedPost) => likedPost._id);
+
   useEffect(() => {
     postsAPI.getAllPosts({ tag: tagValue, sort: sortValue, city: cityValue }).then((Posts) => {
       const receivedData = Posts.data.posts;
       setData(receivedData);
     });
   }, [location, cityValue, tagValue, sortValue]);
+
+  // 좋아요 post
+  async function handleClickLike(e, userId, postId) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const isLiked = likedPostIds.includes(postId);
+    if (isLiked) {
+      removeLikes([likedPostIds.find((item) => item === postId)]);
+    } else {
+      postLikes({ userId, postId });
+    }
+  }
 
   return (
     <>
@@ -58,7 +77,7 @@ export default function Main() {
                     />
                   </button>
                 </div>
-                <PostItem data={data} filter={tagValue} />
+                <PostItem data={data} filter={tagValue} handleClickLike={handleClickLike} likedList={likedPostIds} />
               </div>
             </div>
             <div className="w-full h-[64px]"></div>

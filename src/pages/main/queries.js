@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../store/reactQuery';
 import likesAPI from '../../services/likes';
 import { queryClient } from '../../store/reactQuery';
@@ -8,19 +8,11 @@ import { userState } from '../../recoils/userAtom';
 
 export const useLikeQuery = () => {
   const user = useRecoilValue(userState);
-  const { data: likeList, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: [queryKeys.like],
-    queryFn: () => {
-      if (isValidUser(user)) {
-        return likesAPI.getAllLikesByMe();
-      }
-    },
-    select: (data) => {
-      return {
-        myLikePost: data.data.likedPosts,
-        myLikePostId: data.data.likedPosts.map((item) => item._id),
-      };
-    },
+    queryFn: likesAPI.getAllLikesByMe,
+    throwOnError: isValidUser(user),
+    enabled: isValidUser(user),
   });
 
   const invalidateMatchQuery = () =>
@@ -28,17 +20,19 @@ export const useLikeQuery = () => {
       queryKey: [queryKeys.like],
     });
 
-  const postLikes = useMutation(({ userId, postId }) => likesAPI.postLike(userId, postId), {
+  const postLikes = useMutation({
+    mutationFn: ({ userId, postId }) => likesAPI.postLike(userId, postId),
     onSuccess: invalidateMatchQuery,
   }).mutateAsync;
 
-  const removeLikes = useMutation((removeLikeList) => likesAPI.removeAll(removeLikeList), {
+  const removeLikes = useMutation({
+    mutationFn: (removeLikeList) => likesAPI.removeAll(removeLikeList),
     onSuccess: invalidateMatchQuery,
   }).mutateAsync;
 
   return {
     refetch,
-    likeList,
+    likedPosts: data?.likedPosts || [],
     postLikes,
     removeLikes,
   };

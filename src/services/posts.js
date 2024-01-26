@@ -23,8 +23,8 @@ const postsAPI = {
     return await api.delete(API_URL + `/${id}`);
   },
 
-  async updateOne({ id, payload }) {
-    return await api.put(API_URL + `/${id}`, payload);
+  async updateOne(id, payload) {
+    return await api.putForm(API_URL + `/${id}`, payload);
   },
 };
 

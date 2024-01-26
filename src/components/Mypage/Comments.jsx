@@ -15,7 +15,7 @@ export default function Comments() {
     <>
       <Title
         title="내가 쓴 댓글"
-        count={commentList?.totalCount}
+        count={commentList?.totalCount || 0}
         icon={<IoChatbubbleSharp color="#589BF7" size="13" />}
       />
 

@@ -9,18 +9,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import usePassword from '../../hooks/usePassword';
 import useEmail from '../../hooks/useEmail';
 import useModal from '../../hooks/useModal';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '../../recoils/userAtom';
 
 export default function LoginWithEmailContainer() {
   const navigate = useNavigate();
 
   const { email, setEmail, emailValidationMessage } = useEmail();
   const { password, setPassword, passwordValidationMessage } = usePassword();
+  const setUser = useSetRecoilState(userState);
   const { openModal } = useModal();
 
   const handleLogin = async () => {
     await authAPI
       .login({ email, password })
-      .then(() => {
+      .then((res) => {
+        setUser(res.user);
         navigate('/');
       })
       .catch((error) => {

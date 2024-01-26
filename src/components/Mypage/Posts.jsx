@@ -28,11 +28,11 @@ export default function Posts() {
         </div>
       </Link>
 
-      <Title title={'지난 여행'} count={postsList?.totalCount} />
+      <Title title={'지난 여행'} count={postsList?.length || 0} />
 
       <div className="flex flex-col gap-[20px]">
-        {postsList?.list.length > 0 &&
-          postsList?.list.map((item) => (
+        {postsList?.length > 0 &&
+          postsList?.map((item) => (
             <Post
               key={item._id}
               id={item?._id}

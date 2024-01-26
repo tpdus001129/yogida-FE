@@ -4,7 +4,8 @@ const API_URL = '/api/v1/likes';
 
 const likesAPI = {
   async getAllLikesByMe() {
-    return await api.get(API_URL);
+    const { data } = await api.get(API_URL);
+    return data;
   },
 
   async postLike(userId, postId) {

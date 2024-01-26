@@ -12,16 +12,26 @@ import useNotification from '../../hooks/useNotification';
 import { useNotificationQuery } from '../../pages/notification/queries';
 import { useEffect, useRef } from 'react';
 import { isValidUser } from '../../utils/isValidUser';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { userState } from '../../recoils/userAtom';
+import authAPI from '../../services/auth.js';
 
 export default function Navbar() {
   //recoil에 저장된 user정보 가져오기
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useRecoilState(userState);
+
   const { notificationCount, setNotificationList } = useNotification();
   const { data, refetch } = useNotificationQuery();
   const location = useLocation();
   const isInit = useRef(true);
+
+  useEffect(() => {
+    if (!user) {
+      authAPI.verify().then((res) => {
+        setUser(res.data.user);
+      });
+    }
+  }, [user, setUser]);
 
   useEffect(() => {
     if (location.pathname !== '/notification' && isValidUser(user)) {
