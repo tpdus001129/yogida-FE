@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 export const queryErrorHandler = (error) => {
   return toast.error(`${error.status} :: ${error.message}`);
@@ -8,13 +8,11 @@ export const queryErrorHandler = (error) => {
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      suspense: true,
-      onError: queryErrorHandler,
+      throwOnError: queryErrorHandler,
       retry: 0,
     },
     mutations: {
-      suspense: true,
-      onError: queryErrorHandler,
+      throwOnError: queryErrorHandler,
       retry: 0,
     },
   },

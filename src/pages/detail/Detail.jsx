@@ -13,10 +13,8 @@ import Modal from '../../components/CommentModal/Modal';
 import useDayCalculation from '../../hooks/useDayCalculation';
 import postsAPI from '../../services/posts';
 import { useNavigate, useOutletContext } from 'react-router-dom/dist';
-import { useMypagePostsQuery } from '../mypage/queries';
 import toast from 'react-hot-toast';
 import { PATH } from '../../constants/path';
-import { useQuery } from 'react-query';
 
 export const ModalContext = createContext();
 
@@ -28,10 +26,14 @@ export default function Detail() {
   const [index, setIndex] = useState(0);
   const { setNavbarHidden } = useOutletContext();
 
-  const { removePost } = useMypagePostsQuery();
+  const [data, setData] = useState({});
 
   // API
-  const { data } = useQuery(['posts', postId], () => postsAPI.getPostById(postId).then((post) => post.data));
+  useEffect(() => {
+    postsAPI.getPostById(postId).then((post) => {
+      setData(post.data);
+    });
+  }, [postId]);
 
   // 댓글 모드
   const [commentModalMode, setCommentModalMode] = useState(false);
@@ -41,7 +43,7 @@ export default function Detail() {
   const [mouseUpClientY, setMouseUpClientY] = useState(0);
 
   const remove = async () => {
-    const result = await removePost(postId);
+    const result = await postsAPI.removeOne(postId);
     if (result?.status === 204) {
       const instance = toast.success('게시글이 삭제되었습니다.');
       setTimeout(() => toast.dismiss(instance.id), 2000);

@@ -30,10 +30,12 @@ const share = () => {
 
 export default function IconButton({ iconName, buttonType, postId, authorId }) {
   const { setCommentModalMode } = useContext(ModalContext);
-  const { likeList, removeLikes, postLikes } = useLikeQuery();
+  const { likedPosts, removeLikes, postLikes } = useLikeQuery();
+  const likedPostIds = likedPosts?.map((likedPost) => likedPost._id);
+
   const user = useRecoilValue(userState);
 
-  function iconSelect(name) {
+  function iconSelect(name, isHeartClicked) {
     switch (name) {
       case 'prev':
         return <IoChevronBack size="25" />;
@@ -66,7 +68,7 @@ export default function IconButton({ iconName, buttonType, postId, authorId }) {
     }
   }
 
-  const [isHeartClicked, setIsHeartClicked] = useState(likeList?.myLikePostId.includes(postId));
+  const [isHeartClicked, setIsHeartClicked] = useState(likedPostIds.includes(postId));
 
   const selectedIcon = iconSelect(iconName, isHeartClicked);
 
@@ -82,7 +84,7 @@ export default function IconButton({ iconName, buttonType, postId, authorId }) {
         break;
       case 'heart':
         if (isHeartClicked) {
-          removeLikes([likeList?.myLikePost.find((item) => item.postId._id === postId)._id]);
+          removeLikes([likedPosts.find((item) => item.postId._id === postId)._id]);
         } else {
           postLikes({ userId: user._id, postId });
         }

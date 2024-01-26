@@ -2,21 +2,22 @@ import PropTypes from 'prop-types';
 import { IoChevronBack } from 'react-icons/io5';
 import Button from '../commons/Button';
 import { useOutletContext } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { userState } from '../../recoils/userAtom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 
 import userAPI from '../../services/user';
 import authAPI from '../../services/auth';
 import useModal from '../../hooks/useModal';
 
-import { useMutation } from 'react-query';
-import { useWithdraw } from '../../hooks/useResetAuth';
-
 export default function Profile({ setEditProfileMode }) {
+  const navigate = useNavigate();
   const { setNavbarHidden } = useOutletContext();
   const { email, nickname, profileImageSrc } = useRecoilValue(userState);
+  const setUser = useSetRecoilState(userState);
+  const userReset = useResetRecoilState(userState);
 
   const [profileImg, setProfileImg] = useState('');
   const imgRef = useRef(null);
@@ -72,12 +73,17 @@ export default function Profile({ setEditProfileMode }) {
 
   // 회원 정보 수정
   const handleInfoModify = async () => {
+    const payload = {
+      nickname: newNickname,
+    };
+
     const formData = new FormData();
-    formData.append('nickname', newNickname);
+    formData.append('payload', JSON.stringify(payload));
     formData.append('profile', imgRef.current.files[0]);
     await userAPI
       .userInfoModify(formData)
-      .then(() => {
+      .then((res) => {
+        const user = res.data.user;
         if (nickname === newNickname || profileImg == profileImageSrc) {
           openModal({ message: `수정된 정보가 없습니다.` });
         }
@@ -86,7 +92,7 @@ export default function Profile({ setEditProfileMode }) {
             message: `회원 정보가 수정되었습니다.`,
             callback: () => {
               setEditProfileMode((prev) => !prev);
-              window.location.reload();
+              setUser(user);
             },
           });
         }
@@ -102,48 +108,48 @@ export default function Profile({ setEditProfileMode }) {
   };
 
   // 회원 탈퇴
-  const { mutate: withdraw } = useMutation(authAPI.withdraw, {
-    onSuccess: useWithdraw(),
-  });
+  const handleWithdraw = async () => {
+    const userString = localStorage.getItem('user');
+    const user = JSON.parse(userString);
+    const userId = user.info._id;
+    const provider = user.info.provider;
 
-  // const handleWithdraw = async () => {
-  //   const userString = localStorage.getItem('user');
-  //   const user = JSON.parse(userString);
-  //   const userId = user.info._id;
-  //   const provider = user.info.provider;
-
-  //   if (provider === 'kakao') {
-  //     await authAPI
-  //       .kakaoUnlink()
-  //       .then(() => {
-  //         openModal({ message: `탈퇴되었습니다.` });
-  //         navigate('/');
-  //       })
-  //       .catch((error) => {
-  //         switch (error.response?.status) {
-  //           case 400: {
-  //             openModal({ message: `탈퇴를 실패하였습니다.` });
-  //             break;
-  //           }
-  //         }
-  //       });
-  //   } else {
-  //     await authAPI
-  //       .withdraw({ _id: userId })
-  //       .then(() => {
-  //         openModal({ message: `탈퇴되었습니다.` });
-  //         navigate('/');
-  //       })
-  //       .catch((error) => {
-  //         switch (error.response?.status) {
-  //           case 400: {
-  //             openModal({ message: `탈퇴를 실패하였습니다.` });
-  //             break;
-  //           }
-  //         }
-  //       });
-  //   }
-  // };
+    if (provider === 'kakao') {
+      await authAPI
+        .kakaoUnlink()
+        .then(() => {
+          openModal({
+            message: `탈퇴되었습니다.`,
+            callback: () => {
+              userReset();
+              navigate('/');
+            },
+          });
+        })
+        .catch((error) => {
+          switch (error.response?.status) {
+            case 400: {
+              openModal({ message: `탈퇴를 실패하였습니다.` });
+              break;
+            }
+          }
+        });
+    } else {
+      await authAPI
+        .withdraw({ _id: userId })
+        .then(() => {
+          openModal({ message: `탈퇴되었습니다.`, callback: () => navigate('/') });
+        })
+        .catch((error) => {
+          switch (error.response?.status) {
+            case 400: {
+              openModal({ message: `탈퇴를 실패하였습니다.` });
+              break;
+            }
+          }
+        });
+    }
+  };
 
   return (
     <div className="flex flex-col pb-[20px] h-screen items-center">
@@ -224,7 +230,7 @@ export default function Profile({ setEditProfileMode }) {
         <Button type="primary" size={'large'} text={'bold'} onClick={handleInfoModify}>
           <span className="font-bold text-[14px]">회원 정보 수정</span>
         </Button>
-        <Button type={'kakao'} size={'large'} text={'bold'} onClick={withdraw}>
+        <Button type={'kakao'} size={'large'} text={'bold'} onClick={handleWithdraw}>
           <span className="font-bold text-[14px]">탈퇴하기</span>
         </Button>
       </div>

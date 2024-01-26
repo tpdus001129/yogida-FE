@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient, queryKeys } from '../../store/reactQuery';
 import commentAPI from '../../services/comment';
 
@@ -7,7 +7,7 @@ export const useCommentsQuery = (postId) => {
   const { data: commentList } = useQuery({
     queryKey: [queryKeys.comment],
     queryFn: () => commentAPI.getAllCommentByPost(postId),
-    useErrorBoundary: false,
+    throwOnError: false,
     select: (data) => data.data.postComments,
   });
 

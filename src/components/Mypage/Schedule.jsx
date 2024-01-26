@@ -30,7 +30,6 @@ import Course from './Course';
 import CourseMap from '../KakaoMaps/CourseMap';
 import getDistance from '../../utils/getDistance';
 
-import { useMypagePostsQuery } from '../../pages/mypage/queries';
 import { useParams } from 'react-router-dom/dist';
 import postsAPI from '../../services/posts';
 
@@ -46,8 +45,6 @@ export default function Schedule() {
   const [addPlan, setAddPlan] = useState(false); //장소 추가
   const [addTag, setAddTag] = useState(false); //태그 선택
 
-  const { addPost, updatePost } = useMypagePostsQuery();
-
   const [startDate, setStartDate] = useState(null); //시작 날짜
   const [endDate, setEndDate] = useState(null); //종료 날짜
   const [title, setTitle] = useState(''); // 제목
@@ -56,7 +53,7 @@ export default function Schedule() {
   const [destination, setDestination] = useState(''); // 여행지
   const [peopleCount, setPeopleCount] = useState(0); //인원수
   const [cost, setCost] = useState(0); //예산
-  const [isPublic, setIsPublic] = useState('true'); //게시글 공개 여부
+  const [isPublic, setIsPublic] = useState(true); //게시글 공개 여부
   const [schedules, setSchedules] = useState([]); // 코스 등록
   const [tag, setTag] = useState([]); //태그
 
@@ -79,7 +76,7 @@ export default function Schedule() {
         setDestination(destination);
         setPeopleCount(peopleCount);
         setCost(cost);
-        setIsPublic(`${isPublic}`);
+        setIsPublic(isPublic);
         setTag(tag);
       })
       .catch((error) => {
@@ -144,16 +141,19 @@ export default function Schedule() {
     return arr;
   };
 
+  // 장소 모달창 토글 함수
   const handleDestinationClick = (text) => {
     setDestination(text);
     setAddTravelDestination(false);
   };
 
+  // 태그 모달창 토글 함수
   const handleTagsClick = (tags) => {
     setAddTag(false);
     setTag(tags);
   };
 
+  // 태그 삭제
   const handleRemoveTag = (value) => {
     if (tag.includes(value)) {
       setTag((prevList) => prevList.filter((item) => item !== value));
@@ -161,6 +161,7 @@ export default function Schedule() {
     }
   };
 
+  // 게시글 작성
   const onSubmit = async () => {
     const payload = {
       title,
@@ -170,7 +171,7 @@ export default function Schedule() {
       tag,
       schedules: schedules.map((schedule) => {
         // eslint-disable-next-line no-unused-vars
-        const { _id, ...rest } = schedule;
+        const { _id, __v, ...rest } = schedule;
         return rest;
       }),
       distances: calculateDistance(),
@@ -192,13 +193,13 @@ export default function Schedule() {
     }
 
     if (!editMode) {
-      const result = await addPost(formData);
+      const result = await postsAPI.addOne(formData);
       if (result?.status === 201) {
         toast.success('게시글이 등록되었습니다.');
         navigate(PATH.root);
       }
     } else {
-      const result = await updatePost({ id: postId, payload: formData });
+      const result = await postsAPI.updateOne(postId, formData);
       if (result?.status === 200) {
         toast.success('게시글이 수정되었습니다.');
         navigate(PATH.root);
@@ -352,8 +353,8 @@ export default function Schedule() {
               min={0}
             />
           </ScheduleItem>
-          {/* 게시글 공개 여부 */}
-          <ScheduleItem
+
+          <ScheduleItem // 게시글 공개 여부
             icon={<IoBagRemove color="#589BF7" size={20} />}
             title="게시글 공개 여부"
             id="secret"
@@ -366,9 +367,10 @@ export default function Schedule() {
                   name="secret"
                   id="show"
                   className="w-[20px] h-[20px]"
-                  checked={isPublic === 'true'}
-                  value={'true'}
-                  onChange={(e) => setIsPublic(e.target.value)}
+                  checked={isPublic === true}
+                  value={true}
+                  onClick={() => setIsPublic(true)}
+                  readOnly
                 />
                 공개
               </label>
@@ -379,9 +381,10 @@ export default function Schedule() {
                   name="secret"
                   id="hidden"
                   className="w-[20px] h-[20px]"
-                  checked={isPublic === 'false'}
-                  value={'false'}
-                  onChange={(e) => setIsPublic(e.target.value)}
+                  checked={isPublic === false}
+                  value={false}
+                  onClick={() => setIsPublic(false)}
+                  readOnly
                 />
                 비공개
               </label>

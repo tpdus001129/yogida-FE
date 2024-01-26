@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { queryKeys, queryClient } from '../../store/reactQuery';
 import alarmsAPI from '../../services/alarms';
 import { useState } from 'react';
@@ -11,14 +11,11 @@ export const useNotificationQuery = () => {
   const [lastItemId, setLastItemId] = useState(null);
   const { data, refetch } = useQuery({
     queryKey: [queryKeys.notification],
-    queryFn: () => {
-      if (isValidUser(user)) {
-        return alarmsAPI.getAllAlarms({ perPage: 10, lastItemId });
-      }
-    },
+    queryFn: () => alarmsAPI.getAllAlarms({ perPage: 10, lastItemId }),
     refetchInterval: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    enabled: isValidUser(user),
   });
 
   const invalidateMatchQuery = () => {

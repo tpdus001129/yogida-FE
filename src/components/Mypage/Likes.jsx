@@ -8,11 +8,12 @@ import useCheckbox from '../../hooks/useCheckbox';
 import toast from 'react-hot-toast';
 import { convertSimpleDate } from '../../utils/convertSimpleDate';
 import noImage from '../../assets/images/noImage.png';
+import { Link } from 'react-router-dom';
 
 export default function Likes() {
-  const { likesList, removeLikes } = useMypageLikesQuery();
-  const { list, totalCount } = likesList;
-  const { checkedIdsSet, numChecked, handleOnChange, toggleAllCheckedById } = useCheckbox(list);
+  const { likedPosts, removeLikes } = useMypageLikesQuery();
+
+  const { checkedIdsSet, numChecked, handleOnChange, toggleAllCheckedById } = useCheckbox(likedPosts);
 
   const handleRemoveClick = async () => {
     const result = await removeLikes([...checkedIdsSet]);
@@ -23,12 +24,12 @@ export default function Likes() {
 
   return (
     <>
-      <Title title="내가 찜한 코스" count={totalCount} icon={<IoHeartSharp color="#FB6363" size="13" />} />
+      <Title title="내가 찜한 코스" count={likedPosts.length} icon={<IoHeartSharp color="#FB6363" size="13" />} />
 
-      {totalCount !== 0 && (
+      {likedPosts.length !== 0 && (
         <DeleteAllCheckbox
           clickedCount={numChecked}
-          totalCount={totalCount}
+          totalCount={likedPosts.length}
           title="찜"
           onClick={toggleAllCheckedById}
           handleRemoveClick={handleRemoveClick}
@@ -38,8 +39,8 @@ export default function Likes() {
       <div className="border-b border-gray-4 mb-[20px]"></div>
 
       <div className="flex flex-col gap-[20px]">
-        {totalCount !== 0 &&
-          list?.map((item) => {
+        {likedPosts.length !== 0 &&
+          likedPosts?.map((item) => {
             const img =
               item?.schedules[0]?.placeImageSrc === 'default' ? noImage : item?.schedules[0]?.placeImageSrc || noImage;
             const title = item?.title;
@@ -64,18 +65,20 @@ function Like({ id, img, title, subTitle, checkedIdsSet, onClick }) {
   const checked = checkedIdsSet.has(id) ? 'text-primary' : 'text-gray-3';
   return (
     <>
-      <div htmlFor="delete-item" className="cursor-pointer flex items-center gap-[8px] w-full" onClick={onClick}>
-        <IoCheckmarkCircle className={checked} size={20} />
-        <div className="flex gap-[16px] items-center w-full">
-          <img src={img} alt="card-thumbnail" className="w-[60px] h-[60px] rounded-full object-cover" />
-          <div className="w-full">
-            <div className="flex items-center">
-              <strong className=" block text-black text-[14px] truncate">{title}</strong>
+      <div htmlFor="delete-item" className="cursor-pointer flex items-center gap-[8px] w-full">
+        <IoCheckmarkCircle className={checked} size={20} onClick={onClick} />
+        <Link to={`/posts/${id}`}>
+          <div className="flex gap-[16px] items-center w-full">
+            <img src={img} alt="card-thumbnail" className="w-[60px] h-[60px] rounded-full object-cover" />
+            <div className="w-full">
+              <div className="flex items-center">
+                <strong className=" block text-black text-[14px] truncate">{title}</strong>
+              </div>
+              <span className="text-gray-1 text-[14px] font-medium">{subTitle}</span>
             </div>
-            <span className="text-gray-1 text-[14px] font-medium">{subTitle}</span>
+            {/* <IoTrashOutline size={16} className="text-gray-1"  /> */}
           </div>
-          {/* <IoTrashOutline size={16} className="text-gray-1"  /> */}
-        </div>
+        </Link>
       </div>
     </>
   );

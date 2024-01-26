@@ -6,8 +6,6 @@ export const useKakaoUserInfoQuery = () => {
   const { data: user } = useQuery({
     queryKey: [queryKeys.kakaoUser],
     queryFn: authAPI.getKakaoUserInfo,
-    suspense: true,
-    useErrorBoundary: true,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   });

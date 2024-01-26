@@ -7,7 +7,7 @@ import { useNotificationQuery } from '../../pages/notification/queries';
 import useNotification from '../../hooks/useNotification';
 export default function NotificationItem({ type, nickname, message, createdAt, url, alarmId, isRead }) {
   const { data, refetch, readAlarm, deleteAlarm } = useNotificationQuery();
-  const { setNotificationList } = useNotification;
+  const { setNotificationList } = useNotification();
 
   // 메시지 타입
   const mapTypeToMessage = {

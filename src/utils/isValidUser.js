@@ -1,3 +1,3 @@
 export const isValidUser = (user) => {
-  return user instanceof Object && Object.keys(user).length;
+  return user instanceof Object && Object.keys(user).length > 0;
 };
