@@ -4,11 +4,11 @@ import { IoEllipsisHorizontalSharp, IoLockClosedOutline } from 'react-icons/io5'
 import { Link } from 'react-router-dom';
 import Title from './Title';
 import { useMypagePostsQuery } from '../../pages/mypage/queries';
-import { convertSimpleDate } from '../../utils/convertSimpleDate';
 import noImage from '../../assets/images/noImage.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom/dist';
 import toast from 'react-hot-toast';
+import { ScheduleDate } from '../../utils/ScheduleDate';
 
 export default function Posts() {
   const { postsList } = useMypagePostsQuery();
@@ -40,7 +40,7 @@ export default function Posts() {
                 item?.schedules[0]?.placeImageSrc === 'default' ? noImage : item?.schedules[0]?.placeImageSrc || noImage
               }
               title={item?.title}
-              date={`${convertSimpleDate(item?.startDate)} ~ ${convertSimpleDate(item?.endDate)}`}
+              date={ScheduleDate(item?.startDate, item?.endDate)}
               isPublic={item?.isPublic}
             />
           ))}

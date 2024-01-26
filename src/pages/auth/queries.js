@@ -7,6 +7,7 @@ export const useCheckLoginQuery = () => {
     queryKey: [queryKeys.loginStatus],
     queryFn: authAPI.verify,
     throwOnError: false,
+    gcTime: 1,
   });
 
   return { data, refetch, isError };

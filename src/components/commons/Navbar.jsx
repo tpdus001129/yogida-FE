@@ -37,7 +37,6 @@ export default function Navbar() {
     if (location.pathname !== '/notification' && isValidUser(user)) {
       if (isInit.current) {
         refetch();
-        setNotificationList(data);
         isInit.current = false;
       }
     }

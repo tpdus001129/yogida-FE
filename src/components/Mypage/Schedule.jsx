@@ -25,13 +25,13 @@ import { SearchPlace, SearchTravelDestination, SelectTag } from './Search';
 import useDayCalculation from '../../hooks/useDayCalculation';
 import Calendar from './Calendar';
 import useModal from '../../hooks/useModal';
-import { convertSimpleDate } from '../../utils/convertSimpleDate';
 import Course from './Course';
 import CourseMap from '../KakaoMaps/CourseMap';
 import getDistance from '../../utils/getDistance';
 
 import { useParams } from 'react-router-dom/dist';
 import postsAPI from '../../services/posts';
+import { ScheduleDate } from '../../utils/ScheduleDate';
 
 export default function Schedule() {
   const { id: postId } = useParams();
@@ -280,7 +280,7 @@ export default function Schedule() {
               name="date"
               id="date"
               className="w-full focus:outline-none text-[14px] font-medium placeholder:text-[14px]"
-              value={startDate && endDate ? `${convertSimpleDate(startDate)} ~ ${convertSimpleDate(endDate)}` : ''}
+              value={ScheduleDate(startDate, endDate)}
               readOnly
             />
           </ScheduleItem>

@@ -6,9 +6,9 @@ import DeleteAllCheckbox from './DeleteAllCheckbox';
 import { useMypageLikesQuery } from '../../pages/mypage/queries';
 import useCheckbox from '../../hooks/useCheckbox';
 import toast from 'react-hot-toast';
-import { convertSimpleDate } from '../../utils/convertSimpleDate';
 import noImage from '../../assets/images/noImage.png';
 import { Link } from 'react-router-dom';
+import { ScheduleDate } from '../../utils/ScheduleDate';
 
 export default function Likes() {
   const { likedPosts, removeLikes } = useMypageLikesQuery();
@@ -50,7 +50,7 @@ export default function Likes() {
                 id={item?._id}
                 img={img}
                 title={title}
-                subTitle={`${convertSimpleDate(item?.startDate)} ~ ${convertSimpleDate(item?.endDate)}`}
+                subTitle={ScheduleDate(item?.startDate, item?.endDate)}
                 checkedIdsSet={checkedIdsSet}
                 onClick={() => handleOnChange(item?._id)}
               />
