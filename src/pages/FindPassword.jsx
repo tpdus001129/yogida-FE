@@ -6,26 +6,32 @@ import InputWithVerifyCode from '../components/Input/InputWithVerifyCode';
 
 import logo from '../assets/logo.png';
 
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useEmail from '../hooks/useEmail';
 
 export default function FindPassword() {
+  const navigate = useNavigate();
   const {
     email,
     setEmail,
+    isLoading,
+    setIsLoading,
     emailValidationMessage,
     verificationCode,
     setVerificationCode,
     isAvailableEmailInput,
     isVerificationVisible,
-    isEmailCertificated,
     handleExpire,
     handleSendValidationCode,
     handleCheckValidationCode,
   } = useEmail();
 
-  const handleLink = (event) => {
-    if (!isEmailCertificated) event.preventDefault();
+  const handleLink = () => {
+    handleCheckValidationCode().then((data) => {
+      if (data?.status === 200) {
+        navigate('/change-password', { state: { email } });
+      }
+    });
   };
 
   return (
@@ -49,10 +55,13 @@ export default function FindPassword() {
                 onChangeFunc={setEmail}
                 buttonType={'default'}
                 buttonChildren={'이메일 인증하기'}
-                isButtonDisabled={emailValidationMessage !== '' || !isAvailableEmailInput}
+                isButtonDisabled={isLoading || emailValidationMessage !== '' || !isAvailableEmailInput}
                 isInputDisabled={!isAvailableEmailInput}
                 isValid={emailValidationMessage === ''}
-                onClick={handleSendValidationCode}
+                onClick={() => {
+                  setIsLoading(true);
+                  handleSendValidationCode({ type: 'change-password' });
+                }}
               />
             }
             validateMessage={emailValidationMessage}
@@ -67,11 +76,9 @@ export default function FindPassword() {
           )}
         </div>
         {isVerificationVisible && (
-          <Link to="/change-password" onClick={handleLink}>
-            <Button type={'default'} text={'bold'} onClick={handleCheckValidationCode}>
-              인증번호 확인하기
-            </Button>
-          </Link>
+          <Button type={'default'} text={'bold'} onClick={handleLink}>
+            인증번호 확인하기
+          </Button>
         )}
       </div>
     </div>

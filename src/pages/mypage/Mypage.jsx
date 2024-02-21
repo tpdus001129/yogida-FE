@@ -6,12 +6,14 @@ import Comments from '../../components/Mypage/Comments';
 import Bookmarks from '../../components/Mypage/Bookmarks';
 import Likes from '../../components/Mypage/Likes';
 import Profile from '../../components/Mypage/Profile';
-import { IoLogOutOutline } from 'react-icons/io5';
-import { useRecoilValue } from 'recoil';
+import { IoLogOutOutline, IoSettingsOutline } from 'react-icons/io5';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { userState } from '../../recoils/userAtom';
-import { useMutation } from 'react-query';
 import authAPI from '../../services/auth';
-import { useResetAuth } from '../../hooks/useResetAuth';
+import defaultProfile from '../../assets/images/defaultProfile.png';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from '../../constants/path';
 
 const TABS = [
   {
@@ -36,10 +38,16 @@ export default function Mypage() {
   const [editProfileMode, setEditProfileMode] = useState(false);
   const [currentTab, setCurrentTab] = useState(0);
   const user = useRecoilValue(userState);
+  const resetUser = useResetRecoilState(userState);
+  const navigate = useNavigate();
 
-  const { mutate: logout } = useMutation(authAPI.logout, {
-    onSuccess: useResetAuth(),
-  });
+  const handleLogout = async () => {
+    authAPI.logout().then(() => {
+      resetUser();
+      toast.success('로그아웃 되었습니다.');
+      navigate(PATH.root);
+    });
+  };
 
   const handleTabClick = (index) => {
     setCurrentTab(index);
@@ -50,19 +58,26 @@ export default function Mypage() {
     <>
       <section className="top-0">
         <div className="h-header px-[23px] flex items-center justify-between text-[14px] text-black">
-          <div className="flex gap-[1px] items-center cursor-pointer">
-            <button onClick={logout}>로그아웃</button>
-            <IoLogOutOutline size={17} />
+          <div className="flex gap-[1px] items-center cursor-pointer" onClick={handleLogout}>
+            <button>로그아웃</button>
+            <IoLogOutOutline size={17} className="ml-1" />
           </div>
-          <button onClick={() => setEditProfileMode((prev) => !prev)}>프로필 편집</button>
+          <div
+            className="flex gap-[1px] items-center cursor-pointer"
+            onClick={() => setEditProfileMode((prev) => !prev)}
+          >
+            <button>설정</button>
+            <IoSettingsOutline size={17} className="ml-1" />
+          </div>
         </div>
         <div className="flex flex-col items-center justify-center h-[140px] ">
           <img
-            src={user.profileImageSrc}
+            src={user?.profileImageSrc === 'default' ? defaultProfile : user?.profileImageSrc || defaultProfile}
             alt="profile"
             className="w-[60px] h-[60px] rounded-full object-cover mb-[10px]"
           />
-          <span className="text-black text-[20px] font-bold tracking-tight">{user.nickname}</span>
+
+          <span className="text-black text-[20px] font-bold tracking-tight">{user?.nickname}</span>
         </div>
       </section>
       <section>

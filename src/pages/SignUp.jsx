@@ -4,24 +4,20 @@ import InputWithLabel from '../components/Input/InputWithLabel';
 import InputPassword from '../components/Input/InputPassword';
 import InputWithCheckButton from '../components/Input/InputWithCheckButton';
 
-import authAPI from '../services/auth';
-
 import { useMemo } from 'react';
 import InputWithVerifyCode from '../components/Input/InputWithVerifyCode';
 import { useNavigate } from 'react-router-dom';
 import usePassword from '../hooks/usePassword';
-import useNickname from '../hooks/useNickname';
 import useEmail from '../hooks/useEmail';
-import useModal from '../hooks/useModal';
 
 export default function Signup() {
   const navigate = useNavigate();
 
-  const { openModal } = useModal();
-
   const {
     email,
     setEmail,
+    isLoading,
+    setIsLoading,
     verificationCode,
     setVerificationCode,
     isAvailableEmailInput,
@@ -42,35 +38,12 @@ export default function Signup() {
     checkPasswordValidationMessage,
   } = usePassword();
 
-  const { nickname, setNickname, isNicknameAvailable, checkNicknameMessage, handleCheckNickname } = useNickname();
-
   const isSignUpAvailable = useMemo(() => {
-    return (
-      isEmailCertificated &&
-      passwordValidationMessage === '' &&
-      checkPasswordValidationMessage === '' &&
-      isNicknameAvailable
-    );
-  }, [isEmailCertificated, passwordValidationMessage, checkPasswordValidationMessage, isNicknameAvailable]);
+    return isEmailCertificated && passwordValidationMessage === '' && checkPasswordValidationMessage === '';
+  }, [isEmailCertificated, passwordValidationMessage, checkPasswordValidationMessage]);
 
   const handleSignUp = async () => {
-    await authAPI
-      .signup({ email, password, nickname, type: 'email' })
-      .then(() => {
-        openModal({ message: '회원가입이 완료되었습니다.', callback: () => navigate('/') });
-      })
-      .catch((error) => {
-        switch (error.response.status) {
-          case 409: {
-            openModal({ message: `이미 존재하는 이메일로 회원가입을 요청했습니다.` });
-            break;
-          }
-          default: {
-            openModal({ message: `회원가입 도중 오류가 발생했습니다.` });
-            break;
-          }
-        }
-      });
+    navigate('/setup', { state: { email, password, type: 'email' } });
   };
 
   return (
@@ -93,10 +66,13 @@ export default function Signup() {
                 onChangeFunc={setEmail}
                 buttonType={'default'}
                 buttonChildren={'인증번호 전송'}
-                isButtonDisabled={emailValidationMessage !== '' || !isAvailableEmailInput}
+                isButtonDisabled={isLoading || emailValidationMessage !== '' || !isAvailableEmailInput}
                 isInputDisabled={!isAvailableEmailInput}
                 isValid={emailValidationMessage === ''}
-                onClick={handleSendValidationCode}
+                onClick={() => {
+                  setIsLoading(true);
+                  handleSendValidationCode({ type: 'signup' });
+                }}
               />
             }
             validateMessage={emailValidationMessage}
@@ -137,23 +113,6 @@ export default function Signup() {
               />
             }
             validateMessage={checkPasswordValidationMessage}
-          />
-          <InputWithLabel
-            labelText={'닉네임'}
-            InputComponent={
-              <InputWithCheckButton
-                value={nickname}
-                name={'nickname'}
-                placeholder={'닉네임 입력'}
-                onChangeFunc={setNickname}
-                buttonType={'default'}
-                buttonChildren={'중복 확인'}
-                isValid={nickname.length > 0 && isNicknameAvailable}
-                isButtonDisabled={checkNicknameMessage !== ''}
-                onClick={handleCheckNickname}
-              />
-            }
-            validateMessage={checkNicknameMessage}
           />
         </div>
         <div className="h-20 flex items-center">

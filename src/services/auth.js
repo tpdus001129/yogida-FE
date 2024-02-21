@@ -3,8 +3,8 @@ import api from '.';
 const API_URL = '/api/v1/auth';
 
 const authAPI = {
-  async signup({ snsId, email, password, nickname, profileImageUrl, type }) {
-    return await api.post(API_URL + '/signup', { snsId, email, password, nickname, profileImageUrl, type });
+  async signup(form) {
+    return await api.post(API_URL + '/signup', form);
   },
 
   async login({ email, password }) {
@@ -16,8 +16,8 @@ const authAPI = {
     return await api.post(API_URL + '/logout');
   },
 
-  async getEmailVerifyCode({ email }) {
-    return await api.post(API_URL + '/signup/auth-mail', { email });
+  async getEmailVerifyCode({ email, type }) {
+    return await api.post(API_URL + '/signup/auth-mail', { email, type });
   },
 
   async checkEmailVerifyCode({ email, authCode }) {
@@ -29,7 +29,20 @@ const authAPI = {
   },
 
   async verify() {
-    return await api.get(API_URL + '/me');
+    const { data } = await api.get(API_URL + '/me');
+    return data;
+  },
+
+  async changePassword({ email, password }) {
+    return await api.post(API_URL + '/change-password', { email, password });
+  },
+
+  async kakaoUnlink() {
+    return await api.post(API_URL + '/kakao/unlink');
+  },
+
+  async withdraw() {
+    return await api.delete(API_URL + '/withdraw');
   },
 };
 

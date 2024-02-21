@@ -9,22 +9,26 @@ import { Link, useNavigate } from 'react-router-dom';
 import usePassword from '../../hooks/usePassword';
 import useEmail from '../../hooks/useEmail';
 import useModal from '../../hooks/useModal';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '../../recoils/userAtom';
 
 export default function LoginWithEmailContainer() {
   const navigate = useNavigate();
 
   const { email, setEmail, emailValidationMessage } = useEmail();
   const { password, setPassword, passwordValidationMessage } = usePassword();
+  const setUser = useSetRecoilState(userState);
   const { openModal } = useModal();
 
   const handleLogin = async () => {
     await authAPI
       .login({ email, password })
-      .then(() => {
+      .then((res) => {
+        setUser(res.user);
         navigate('/');
       })
       .catch((error) => {
-        switch (error.response?.status) {
+        switch (error?.status) {
           case 400: {
             openModal({ message: `이메일 또는 비밀번호가 일치하지 않습니다.` });
             break;
@@ -75,8 +79,8 @@ export default function LoginWithEmailContainer() {
       >
         로그인
       </Button>
-      <Link to="/find-password">
-        <p className="flex justify-center mt-4">
+      <Link to="/find-password" className="mt-4 block">
+        <p className="flex justify-center">
           <span className="text-xs text-black cursor-pointer">비밀번호가 생각나지 않나요?</span>
         </p>
       </Link>

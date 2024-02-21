@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient, queryKeys } from '../../store/reactQuery';
 import commentAPI from '../../services/comment';
 import likesAPI from '../../services/likes';
@@ -10,14 +10,19 @@ export const useMypagePostsQuery = () => {
   const { data: postsList } = useQuery({
     queryKey: [queryKeys.mypagePost],
     queryFn: postsAPI.getAllPostsByMe,
-    useErrorBoundary: false,
-    select: (data) => ({ list: data.data.posts, totalCount: data.data.posts.length }),
+    throwOnError: false,
+    select: (data) => data.data.posts,
   });
 
   const invalidateMatchQuery = () =>
     queryClient.invalidateQueries({
       queryKey: [queryKeys.mypagePost],
     });
+
+  const addPost = useMutation({
+    mutationFn: postsAPI.addOne,
+    onSuccess: invalidateMatchQuery,
+  }).mutateAsync;
 
   const removePost = useMutation({
     mutationFn: postsAPI.removeOne,
@@ -29,7 +34,7 @@ export const useMypagePostsQuery = () => {
     onSuccess: invalidateMatchQuery,
   }).mutateAsync;
 
-  return { postsList, removePost, updatePost };
+  return { postsList, addPost, removePost, updatePost };
 };
 
 // 내 댓글
@@ -37,7 +42,7 @@ export const useMypageCommentQuery = () => {
   const { data: commentList } = useQuery({
     queryKey: [queryKeys.mypageComment],
     queryFn: commentAPI.getAllCommentsByMe,
-    useErrorBoundary: false,
+    throwOnError: false,
     select: (data) => ({ list: data.data.myComments, totalCount: data.data.myComments.length }),
   });
 
@@ -56,11 +61,10 @@ export const useMypageCommentQuery = () => {
 
 // 내 장소
 export const useMypageBookmarksQuery = () => {
-  const { data: bookmarksList } = useQuery({
+  const { data } = useQuery({
     queryKey: [queryKeys.mypageBookmarks],
     queryFn: bookmarkAPI.getAllBookmarksByMe,
-    useErrorBoundary: false,
-    select: (data) => ({ list: data.data.bookmarks, totalCount: data.data.bookmarks.length }),
+    throwOnError: false,
   });
 
   const invalidateMatchQuery = () =>
@@ -73,16 +77,15 @@ export const useMypageBookmarksQuery = () => {
     onSuccess: invalidateMatchQuery,
   }).mutateAsync;
 
-  return { bookmarksList, removeBookmarks };
+  return { bookmarkedSchedules: data?.bookmarkedSchedules || [], removeBookmarks };
 };
 
 // 내 찜 목록
 export const useMypageLikesQuery = () => {
-  const { data: likesList } = useQuery({
+  const { data } = useQuery({
     queryKey: [queryKeys.mypageLikes],
     queryFn: likesAPI.getAllLikesByMe,
-    useErrorBoundary: false,
-    select: (data) => ({ list: data.data.likedPosts, totalCount: data.data.likedPosts.length }),
+    throwOnError: false,
   });
 
   const invalidateMatchQuery = () =>
@@ -95,5 +98,5 @@ export const useMypageLikesQuery = () => {
     onSuccess: invalidateMatchQuery,
   }).mutateAsync;
 
-  return { likesList, removeLikes };
+  return { likedPosts: data?.likedPosts || [], removeLikes };
 };

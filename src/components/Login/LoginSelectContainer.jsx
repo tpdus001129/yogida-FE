@@ -8,12 +8,12 @@ import { Link } from 'react-router-dom';
 export default function LoginSelectContainer() {
   return (
     <div className="w-mobile [&>:not(:first-child)]:mt-5 flex flex-col items-center py-10 px-6">
-      <Link to={`${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/kakao`} className="w-full">
+      <a href={`${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/kakao`} className="w-full">
         <Button type={'kakao'} size={'large'} text={'bold'}>
           <img src={kakao} className="box-content w-4 pr-2"></img>
           <span className="font-bold">카카오</span>로 로그인
         </Button>
-      </Link>
+      </a>
       <Link to="?type=email" className="w-full">
         <Button type={'default'} size={'large'} text={'bold'}>
           <IoMail className="box-content pr-2" />
