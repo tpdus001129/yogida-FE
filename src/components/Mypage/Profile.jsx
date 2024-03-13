@@ -138,7 +138,13 @@ export default function Profile({ setEditProfileMode }) {
       await authAPI
         .withdraw({ _id: userId })
         .then(() => {
-          openModal({ message: `탈퇴되었습니다.`, callback: () => navigate('/') });
+          openModal({
+            message: `탈퇴되었습니다.`,
+            callback: () => {
+              userReset();
+              navigate('/');
+            },
+          });
         })
         .catch((error) => {
           switch (error.response?.status) {

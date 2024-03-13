@@ -7,6 +7,8 @@ import Plus from '../../assets/Plus';
 import authAPI from '../../services/auth';
 import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '../../recoils/userAtom';
 import useNickname from '../../hooks/useNickname';
 import useModal from '../../hooks/useModal';
 
@@ -15,9 +17,10 @@ export default function Setup() {
   const location = useLocation();
 
   const { openModal } = useModal();
+  const setUser = useSetRecoilState(userState);
 
   const [image, setImage] = useState('');
-  const selectFile = useRef(null); // 파일 Input을 위한 ref
+  const selectFile = useRef(null); // 이미지 파일 Input을 위한 ref
 
   const { nickname, setNickname, isNicknameAvailable, checkNicknameMessage, handleCheckNickname } = useNickname();
 
@@ -44,6 +47,7 @@ export default function Setup() {
       payload = {
         email: location?.state.email,
         nickname,
+        profileImageSrc: image,
         password: location.state.password,
         type: 'email',
       };
@@ -59,11 +63,12 @@ export default function Setup() {
 
     const formDataOfUser = new FormData();
     formDataOfUser.append('payload', JSON.stringify(payload));
-    formDataOfUser.append('profile', image);
+    formDataOfUser.append('profile', selectFile.current.files[0]);
 
     await authAPI
       .signup(formDataOfUser)
       .then(() => {
+        setUser(payload);
         openModal({ message: `회원가입이 완료되었습니다.`, callback: () => navigate('/') });
       })
       .catch((error) => {
@@ -81,7 +86,9 @@ export default function Setup() {
   };
 
   const handleUpload = (event) => {
-    setImage(event.target.files[0]);
+    const fileInput = event.target.files[0];
+    const url = URL.createObjectURL(fileInput);
+    setImage(url);
   };
 
   return (
@@ -91,13 +98,7 @@ export default function Setup() {
         <div className="flex flex-col items-center justify-end">
           <div className={`w-36 h-36 relative`}>
             <img
-              src={
-                image === 'default'
-                  ? defaultProfileImage
-                  : typeof image === 'string'
-                    ? image
-                    : URL.createObjectURL(image)
-              }
+              src={image === 'default' ? defaultProfileImage : image || defaultProfileImage}
               className={`w-full h-full bg-cover rounded-full `}
             />
             <input type="file" className="invisible" ref={selectFile} onChange={handleUpload}></input>
