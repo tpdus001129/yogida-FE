@@ -180,54 +180,41 @@ export default function Schedule() {
       isPublic,
       reviewText,
     };
+
     const placeImages = schedules.map((item) => ({
       placeName: item.placeName,
       placeImageSrc: item.placeImageSrc,
     }));
+
     const formData = new FormData();
     formData.append('payload', JSON.stringify(payload));
     for (let i = 0; i < placeImages.length; i++) {
       if (placeImages[i].placeImageSrc instanceof File) {
         formData.append(`image`, placeImages[i].placeImageSrc, `${placeImages[i].placeName}`);
+      } else {
+        const imageFile = await fetch(placeImages[i].placeImageSrc).then((res) => res.blob());
+        formData.append('image', imageFile, `${placeImages[i].placeName}`);
       }
     }
 
-    if (!editMode) {
-      const result = await postsAPI.addOne(formData);
-      if (result?.status === 201) {
-        toast.success('게시글이 등록되었습니다.');
-        navigate(PATH.root);
-      }
+    if (!payload.startDate || !payload.title || !payload.destination || !payload.schedules.length) {
+      toast.error('누락된 항목이 있습니다.');
     } else {
-      const result = await postsAPI.updateOne(postId, formData);
-      if (result?.status === 200) {
-        toast.success('게시글이 수정되었습니다.');
-        navigate(PATH.root);
+      if (!editMode) {
+        const result = await postsAPI.addOne(formData);
+        if (result?.status === 201) {
+          toast.success('게시글이 등록되었습니다.');
+          navigate(PATH.root);
+        }
+      } else {
+        const result = await postsAPI.updateOne(postId, formData);
+        if (result?.status === 200) {
+          toast.success('게시글이 수정되었습니다.');
+          navigate(PATH.root);
+        }
       }
     }
   };
-
-  // const onTempSave = () => {
-  //   const payload = {
-  //     title,
-  //     destination,
-  //     startDate,
-  //     endDate,
-  //     tag,
-  //     schedules,
-  //     distances: calculateDistance(),
-  //     cost,
-  //     peopleCount,
-  //     isPublic,
-  //     reviewText,
-  //   };
-  //   localStorage.setItem('temp-schedule', JSON.stringify(payload));
-  //   toast.success('임시저장 되었습니다.');
-  // };
-
-  //여행지 검색
-  //장소 검색
-  //태그 선택
 
   return (
     <>
@@ -420,7 +407,7 @@ export default function Schedule() {
 
               <Course
                 editMode={editMode}
-                schedules={schedules} // 1차원 배열이여서 보여지는것과 수정할때가 이상해짐..
+                schedules={schedules}
                 selectDay={selectDay}
                 handleAddPlaceImgClick={handleAddPlaceImgClick}
                 handleAddScoreClick={handleAddScoreClick}
@@ -449,9 +436,6 @@ export default function Schedule() {
             )}
             {!editMode && (
               <>
-                {/* <Button type={'secondary'} onClick={onTempSave}>
-                  임시저장
-                </Button> */}
                 <Button type={'primary'} onClick={onSubmit}>
                   작성완료
                 </Button>
