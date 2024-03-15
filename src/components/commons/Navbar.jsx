@@ -28,7 +28,7 @@ export default function Navbar() {
   useEffect(() => {
     if (!user) {
       authAPI.verify().then((res) => {
-        setUser(res.data.user);
+        setUser(res.user); // 카카오 유저 정보
       });
     }
   }, [user, setUser]);
