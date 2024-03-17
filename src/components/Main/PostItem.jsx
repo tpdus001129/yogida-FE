@@ -19,7 +19,7 @@ export default function PostItem({ data, handleClickLike, likedList }) {
       {data?.map((item) => (
         <Link to={`/posts/${item._id}`} key={`post-${item._id}`}>
           <div>
-            <div className="pb-[20px]">
+            <div className="pb-[30px]">
               <div>
                 <div className="relative">
                   <button
@@ -53,7 +53,6 @@ export default function PostItem({ data, handleClickLike, likedList }) {
                 <Tag tags={item.tag} />
               </div>
               <span className="text-gray-1 mb-[4px]">일정 : {ScheduleDate(item.startDate, item.endDate)}</span>
-              <p className="text-gray-1">예산: {item.cost.toLocaleString()}원</p>
             </div>
           </div>
         </Link>

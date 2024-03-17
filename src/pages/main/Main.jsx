@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IoOptionsOutline, IoSearchOutline } from 'react-icons/io5';
 import Header from '../../components/Main/Header';
@@ -18,16 +18,15 @@ export default function Main() {
   const sortValue = queryParams.get('sort');
 
   // 유저가 좋아요 누른 데이터
-
   const { likedPosts, removeLikes, postLikes } = useLikeQuery();
-  const likedPostIds = likedPosts?.map((likedPost) => likedPost._id);
+  const likedPostIds = useMemo(() => likedPosts?.map((likedPost) => likedPost._id), [likedPosts]);
 
   useEffect(() => {
     postsAPI.getAllPosts({ tag: tagValue, sort: sortValue, city: cityValue }).then((Posts) => {
       const receivedData = Posts.data.posts;
       setData(receivedData);
     });
-  }, [location, cityValue, tagValue, sortValue]);
+  }, [location, cityValue, tagValue, sortValue, likedPostIds]);
 
   // 좋아요 post
   async function handleClickLike(e, userId, postId) {

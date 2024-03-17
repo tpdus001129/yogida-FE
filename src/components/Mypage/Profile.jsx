@@ -25,6 +25,7 @@ export default function Profile({ setEditProfileMode }) {
 
   const { openModal } = useModal();
   const [newNickname, setNewNickname] = useState('');
+  const [checkNickname, setCheckNickname] = useState(false);
 
   useLayoutEffect(() => {
     setNavbarHidden(true);
@@ -41,6 +42,10 @@ export default function Profile({ setEditProfileMode }) {
     }
   }, [nickname, profileImageSrc]);
 
+  useEffect(() => {
+    setCheckNickname(false);
+  }, [newNickname]);
+
   const handleChangeImage = async (e) => {
     if (!e.target.files) {
       return;
@@ -55,6 +60,7 @@ export default function Profile({ setEditProfileMode }) {
     await userAPI
       .checkNickname({ nickname: newNickname })
       .then(() => {
+        setCheckNickname(true);
         openModal({ message: `사용할 수 있는 닉네임입니다.` });
       })
       .catch((error) => {
@@ -80,31 +86,36 @@ export default function Profile({ setEditProfileMode }) {
     const formData = new FormData();
     formData.append('payload', JSON.stringify(payload));
     formData.append('profile', imgRef.current.files[0]);
-    await userAPI
-      .userInfoModify(formData)
-      .then((res) => {
-        const user = res.data.user;
-        if (nickname === newNickname || profileImg == profileImageSrc) {
-          openModal({ message: `수정된 정보가 없습니다.` });
-        }
-        if (nickname !== newNickname || profileImg !== profileImageSrc) {
-          openModal({
-            message: `회원 정보가 수정되었습니다.`,
-            callback: () => {
-              setEditProfileMode((prev) => !prev);
-              setUser(user);
-            },
-          });
-        }
-      })
-      .catch((error) => {
-        switch (error.response?.status) {
-          case 400: {
-            openModal({ message: `정보 수정을 실패하였습니다.` });
-            break;
+
+    if (nickname !== newNickname && checkNickname === false) {
+      openModal({ message: `닉네임 중복 검사를 먼저 해주세요.` });
+    } else {
+      await userAPI
+        .userInfoModify(formData)
+        .then((res) => {
+          const user = res.data.user;
+          if (nickname === newNickname || profileImg === profileImageSrc) {
+            openModal({ message: `수정된 정보가 없습니다.` });
           }
-        }
-      });
+          if (nickname !== newNickname || profileImg !== profileImageSrc) {
+            openModal({
+              message: `회원 정보가 수정되었습니다.`,
+              callback: () => {
+                setEditProfileMode((prev) => !prev);
+                setUser(user);
+              },
+            });
+          }
+        })
+        .catch((error) => {
+          switch (error.response?.status) {
+            case 400: {
+              openModal({ message: `정보 수정을 실패하였습니다.` });
+              break;
+            }
+          }
+        });
+    }
   };
 
   // 회원 탈퇴
@@ -138,7 +149,13 @@ export default function Profile({ setEditProfileMode }) {
       await authAPI
         .withdraw({ _id: userId })
         .then(() => {
-          openModal({ message: `탈퇴되었습니다.`, callback: () => navigate('/') });
+          openModal({
+            message: `탈퇴되었습니다.`,
+            callback: () => {
+              userReset();
+              navigate('/');
+            },
+          });
         })
         .catch((error) => {
           switch (error.response?.status) {
@@ -190,7 +207,7 @@ export default function Profile({ setEditProfileMode }) {
           </div>
         </label>
         <label htmlFor="nickname" className="text-[14px] font-bold flex items-center w-full justify-between">
-          <span className="w-[100px]">이름</span>
+          <span className="w-[100px]">닉네임</span>
           <div className="flex">
             <input
               type="nickname"
