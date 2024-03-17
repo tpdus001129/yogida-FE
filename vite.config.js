@@ -9,8 +9,8 @@ export default defineConfig({
     proxy: {
       // '/api/v1': 'http://localhost:5500',
       // '/images': 'http://localhost:5500',
-      '/api/v1': 'https://port-0-yogida-am952nlsyy2nly.sel5.cloudtype.app',
-      '/images': 'https://port-0-yogida-am952nlsyy2nly.sel5.cloudtype.app',
+      '/api/v1': 'https://port-0-yogida-be-am952nlsyy2nly.sel5.cloudtype.app',
+      '/images': 'https://port-0-yogida-be-am952nlsyy2nly.sel5.cloudtype.app',
     },
   },
 });

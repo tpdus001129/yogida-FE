@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/api/v1/:path(.*)",
-      "destination": "https://port-0-yogida-am952nlsyy2nly.sel5.cloudtype.app/api/v1/:path"
+      "destination": "https://port-0-yogida-be-am952nlsyy2nly.sel5.cloudtype.app/api/v1/:path"
     },
     {
       "source": "/images/:path(.*)",
-      "destination": "https://port-0-yogida-am952nlsyy2nly.sel5.cloudtype.app/images/:path"
+      "destination": "https://port-0-yogida-be-am952nlsyy2nly.sel5.cloudtype.app/images/:path"
     },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
