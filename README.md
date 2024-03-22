@@ -4,13 +4,22 @@
 
 ![1번](https://github.com/tpdus001129/yogida-fe/assets/113432040/1aba1767-a878-4652-bc17-07c234edce6b)
 
-#### ➡️ [http://kdt-sw-7-team08.elicecoding.com/](http://kdt-sw-7-team08.elicecoding.com/) ⬅️
+### ➡️ [https://yogida.vercel.app/](https://yogida.vercel.app/) ⬅️
 
 <br>
 
 **백엔드 주소**
 **[https://github.com/tpdus001129/yogida-be](https://github.com/tpdus001129/yogida-be)**
-<br><br>
+
+<br>
+
+```
+테스트 계정
+ID: test123@gmail.com
+PW: @test123
+```
+
+<br>
 
 ## 📒 프로젝트 소개
 
