@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IoOptionsOutline, IoSearchOutline } from 'react-icons/io5';
 import Header from '../../components/Main/Header';
@@ -6,6 +6,8 @@ import PostItem from '../../components/Main/PostItem';
 import postsAPI from '../../services/posts';
 import { PATH } from '../../constants/path';
 import { useLikeQuery } from './queries';
+import { userState } from '../../recoils/userAtom';
+import { useRecoilValue } from 'recoil';
 
 export default function Main() {
   const [data, setData] = useState([]);
@@ -20,13 +22,23 @@ export default function Main() {
   // 유저가 좋아요 누른 데이터
   const { likedPosts, removeLikes, postLikes } = useLikeQuery();
   const likedPostIds = useMemo(() => likedPosts?.map((likedPost) => likedPost._id), [likedPosts]);
+  const prevLikedPostIds = useRef(likedPostIds);
+  const user = useRecoilValue(userState);
 
   useEffect(() => {
     postsAPI.getAllPosts({ tag: tagValue, sort: sortValue, city: cityValue }).then((Posts) => {
       const receivedData = Posts.data.posts;
       setData(receivedData);
     });
-  }, [location, cityValue, tagValue, sortValue, likedPostIds]);
+  }, [location, cityValue, tagValue, sortValue]);
+
+  if (user && prevLikedPostIds.current !== likedPostIds) {
+    postsAPI.getAllPosts({ tag: tagValue, sort: sortValue, city: cityValue }).then((Posts) => {
+      const receivedData = Posts.data.posts;
+      setData(receivedData);
+    });
+    prevLikedPostIds.current = likedPostIds;
+  }
 
   // 좋아요 post
   async function handleClickLike(e, userId, postId) {
