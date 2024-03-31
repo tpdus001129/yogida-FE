@@ -192,7 +192,13 @@ export default function Schedule() {
       if (placeImages[i].placeImageSrc instanceof File) {
         formData.append(`image`, placeImages[i].placeImageSrc, `${placeImages[i].placeName}`);
       } else {
-        const imageFile = await fetch(placeImages[i].placeImageSrc).then((res) => res.blob());
+        // S3 도메인 주소 => Cloudfront 도메인 주소로 fetch 요청
+        const cloudFrontImageUrl = placeImages[i].placeImageSrc.replace(
+          'https://yogida.s3.ap-northeast-2.amazonaws.com/',
+          'https://dagtg6inszdsr.cloudfront.net/',
+        );
+        console.log(cloudFrontImageUrl);
+        const imageFile = await fetch(cloudFrontImageUrl).then((res) => res.blob());
         formData.append('image', imageFile, `${placeImages[i].placeName}`);
       }
     }

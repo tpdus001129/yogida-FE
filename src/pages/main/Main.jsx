@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IoOptionsOutline, IoSearchOutline } from 'react-icons/io5';
 import Header from '../../components/Main/Header';
@@ -6,8 +6,6 @@ import PostItem from '../../components/Main/PostItem';
 import postsAPI from '../../services/posts';
 import { PATH } from '../../constants/path';
 import { useLikeQuery } from './queries';
-import { userState } from '../../recoils/userAtom';
-import { useRecoilValue } from 'recoil';
 
 export default function Main() {
   const [data, setData] = useState([]);
@@ -21,9 +19,8 @@ export default function Main() {
 
   // 유저가 좋아요 누른 데이터
   const { likedPosts, removeLikes, postLikes } = useLikeQuery();
-  const likedPostIds = useMemo(() => likedPosts?.map((likedPost) => likedPost._id), [likedPosts]);
-  const prevLikedPostIds = useRef(likedPostIds);
-  const user = useRecoilValue(userState);
+  const likedPostIds = likedPosts?.map((likedPost) => likedPost._id);
+  const [optimisticLike, setOptimisticLike] = useState([]);
 
   useEffect(() => {
     postsAPI.getAllPosts({ tag: tagValue, sort: sortValue, city: cityValue }).then((Posts) => {
@@ -32,24 +29,42 @@ export default function Main() {
     });
   }, [location, cityValue, tagValue, sortValue]);
 
-  if (user && prevLikedPostIds.current !== likedPostIds) {
-    postsAPI.getAllPosts({ tag: tagValue, sort: sortValue, city: cityValue }).then((Posts) => {
-      const receivedData = Posts.data.posts;
-      setData(receivedData);
-    });
-    prevLikedPostIds.current = likedPostIds;
-  }
+  useEffect(() => {
+    if (likedPosts.length > 0) {
+      setOptimisticLike(likedPostIds);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [likedPosts]);
 
   // 좋아요 post
   async function handleClickLike(e, userId, postId) {
     e.stopPropagation();
     e.preventDefault();
 
-    const isLiked = likedPostIds.includes(postId);
-    if (isLiked) {
-      removeLikes([likedPostIds.find((item) => item === postId)]);
-    } else {
-      postLikes({ userId, postId });
+    const postIndex = data.findIndex((item) => item._id === postId);
+    if (postIndex !== -1) {
+      const clickedPost = data[postIndex];
+      const isLiked = likedPostIds.includes(postId);
+
+      // optimistic UI
+      const optimisticLikeCount = isLiked ? clickedPost.likeCount - 1 : clickedPost.likeCount + 1;
+      const optimisticData = [...data];
+      optimisticData[postIndex] = { ...clickedPost, likeCount: optimisticLikeCount };
+      setData(optimisticData);
+
+      if (isLiked) {
+        setOptimisticLike((prev) => prev.filter((id) => id !== postId));
+        removeLikes([likedPostIds.find((item) => item === postId)]).catch(() => {
+          setData(data); // catch 롤백
+          setOptimisticLike(likedPostIds);
+        });
+      } else {
+        setOptimisticLike((prev) => [...prev, postId]);
+        postLikes({ userId, postId }).catch(() => {
+          setData(data); // catch 롤백
+          setOptimisticLike(likedPostIds);
+        });
+      }
     }
   }
 
@@ -88,7 +103,7 @@ export default function Main() {
                     />
                   </button>
                 </div>
-                <PostItem data={data} filter={tagValue} handleClickLike={handleClickLike} likedList={likedPostIds} />
+                <PostItem data={data} filter={tagValue} handleClickLike={handleClickLike} likedList={optimisticLike} />
               </div>
             </div>
             <div className="w-full h-[64px]"></div>
