@@ -30,4 +30,5 @@ export const queryKeys = {
   comment: 'COMMENT',
   like: 'USER_LIKES',
   bookmark: 'USER_BOOKMARKS',
+  post: 'POST',
 };

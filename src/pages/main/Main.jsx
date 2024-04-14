@@ -6,6 +6,7 @@ import PostItem from '../../components/Main/PostItem';
 import postsAPI from '../../services/posts';
 import { PATH } from '../../constants/path';
 import { useLikeQuery } from './queries';
+import NotFound from '../../components/Search/NotFound';
 
 export default function Main() {
   const [data, setData] = useState([]);
@@ -16,6 +17,14 @@ export default function Main() {
   const cityValue = queryParams.get('city');
   const tagValue = queryParams.get('tag');
   const sortValue = queryParams.get('sort');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (data.length === 0) setData(null);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [data]);
 
   // 유저가 좋아요 누른 데이터
   const { likedPosts, removeLikes, postLikes } = useLikeQuery();
@@ -103,7 +112,16 @@ export default function Main() {
                     />
                   </button>
                 </div>
-                <PostItem data={data} filter={tagValue} handleClickLike={handleClickLike} likedList={optimisticLike} />
+                {data === null ? (
+                  <NotFound />
+                ) : (
+                  <PostItem
+                    data={data}
+                    filter={tagValue}
+                    handleClickLike={handleClickLike}
+                    likedList={optimisticLike}
+                  />
+                )}
               </div>
             </div>
             <div className="w-full h-[64px]"></div>
