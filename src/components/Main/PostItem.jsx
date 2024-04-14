@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 import { userState } from '../../recoils/userAtom';
 import { useRecoilValue } from 'recoil';
 import PropTypes from 'prop-types';
-import Notfound from '../Search/NotFound';
 import { IoChatbubbleOutline, IoHeartOutline, IoHeartSharp } from 'react-icons/io5';
+import { useMainPosts } from '../../pages/main/queries';
+import SkeletonUI from './SkeletonUI';
 
 import Tag from '../commons/Tag';
 import ImageSlide from './ImageSlide';
@@ -12,8 +13,10 @@ import { ScheduleDate } from '../../utils/ScheduleDate';
 
 export default function PostItem({ data, handleClickLike, likedList }) {
   const user = useRecoilValue(userState);
+  const { isLoading } = useMainPosts();
 
-  if (data?.length === 0) return <Notfound />;
+  if (isLoading || data?.length === 0) return <SkeletonUI />;
+
   return (
     <div>
       {data?.map((item) => (
