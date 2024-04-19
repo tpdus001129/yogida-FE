@@ -12,6 +12,7 @@ export const useMypagePostsQuery = () => {
     queryFn: postsAPI.getAllPostsByMe,
     throwOnError: false,
     select: (data) => data.data.posts,
+    suspense: true,
   });
 
   const invalidateMatchQuery = () =>
@@ -44,6 +45,7 @@ export const useMypageCommentQuery = () => {
     queryFn: commentAPI.getAllCommentsByMe,
     throwOnError: false,
     select: (data) => ({ list: data.data.myComments, totalCount: data.data.myComments.length }),
+    suspense: true,
   });
 
   const invalidateMatchQuery = () =>
@@ -65,6 +67,7 @@ export const useMypageBookmarksQuery = () => {
     queryKey: [queryKeys.mypageBookmarks],
     queryFn: bookmarkAPI.getAllBookmarksByMe,
     throwOnError: false,
+    suspense: true,
   });
 
   const invalidateMatchQuery = () =>
@@ -86,6 +89,7 @@ export const useMypageLikesQuery = () => {
     queryKey: [queryKeys.mypageLikes],
     queryFn: likesAPI.getAllLikesByMe,
     throwOnError: false,
+    suspense: true,
   });
 
   const invalidateMatchQuery = () =>

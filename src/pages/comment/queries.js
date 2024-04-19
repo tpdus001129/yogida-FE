@@ -9,6 +9,7 @@ export const useCommentsQuery = (postId) => {
     queryFn: () => commentAPI.getAllCommentByPost(postId),
     throwOnError: false,
     select: (data) => data.data.postComments,
+    suspense: true,
   });
 
   const invalidateMatchQuery = () =>

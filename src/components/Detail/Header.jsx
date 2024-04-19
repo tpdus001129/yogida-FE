@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
-
 import IconButton from './IconButton';
 import Tag from '../commons/Tag';
 import useDayCalculation from '../../hooks/useDayCalculation';
 import { ScheduleDate } from '../../utils/ScheduleDate';
 import { IoLockClosed } from 'react-icons/io5';
-// import { IoCreateOutline } from "react-icons/io5";
+import Loading from '../../pages/Loading';
 
 // 헤더 아이콘 버튼 타입
 const buttonType = true;
@@ -35,7 +34,10 @@ export default function Header({ headerData, postId }) {
   ];
 
   if (!headerData) return <p>loading...</p>;
-  return (
+
+  return costFormat === 'NaN' ? (
+    <Loading />
+  ) : (
     <div className={`w-full pb-[20px] bg-primary`}>
       <div className="flex justify-between items-center h-[70px] mx-[24px]">
         <IconButton iconName={'prev'} buttonType={buttonType} />
