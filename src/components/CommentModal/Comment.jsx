@@ -22,7 +22,8 @@ export default function Comment({
   reply,
 }) {
   // 유저 아이디
-  const userId = JSON.parse(localStorage.getItem('user')).info._id;
+  const userData = JSON.parse(localStorage.getItem('user') || '{}');
+  const userId = userData.info ? userData.info._id : null;
 
   // 수정/삭제 메뉴 모드
   const [commentMenuMode, setCommentMenMode] = useState(false);

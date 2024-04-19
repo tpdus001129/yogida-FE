@@ -29,7 +29,6 @@ function App() {
         <Route path={PATH.editSchedule} element={<Schedule />} />
         <Route path={PATH.findPassword} element={<FindPassword />} />
         <Route path={PATH.changePassword} element={<ChangePassword />} />
-        <Route path={PATH.map} element={<Map />} />
       </Route>
 
       <Route element={<Layout />}>
@@ -39,6 +38,7 @@ function App() {
       <Route path={PATH.login} element={<Login />} />
       <Route path={PATH.signUp} element={<Signup />} />
       <Route path={PATH.setup} element={<Setup />} />
+      <Route path={PATH.map} element={<Map />} />
       <Route path={PATH.notfound} element={<Notfound />} />
       <Route path={PATH.filter} element={<Filter />} />
       <Route path={PATH.search} element={<Search />} />
