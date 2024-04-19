@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../store/reactQuery';
 import likesAPI from '../../services/likes';
-import postAPI from '../../services/posts';
+import postsAPI from '../../services/posts';
 import { queryClient } from '../../store/reactQuery';
 import { isValidUser } from '../../utils/isValidUser';
 import { useRecoilValue } from 'recoil';
@@ -43,7 +43,7 @@ export const useLikeQuery = () => {
 export const useMainPosts = () => {
   const { isLoading } = useQuery({
     queryKey: [queryKeys.post],
-    queryFn: postAPI.getAllPosts,
+    queryFn: postsAPI.getAllPosts,
     throwOnError: false,
   });
 
