@@ -15,6 +15,7 @@ import postsAPI from '../../services/posts';
 import { useNavigate, useOutletContext } from 'react-router-dom/dist';
 import toast from 'react-hot-toast';
 import { PATH } from '../../constants/path';
+import { scrollToTop } from '../../utils/scrollToTop';
 
 export const ModalContext = createContext();
 
@@ -30,6 +31,7 @@ export default function Detail() {
 
   // API
   useEffect(() => {
+    scrollToTop();
     postsAPI.getPostById(postId).then((post) => {
       setData(post.data);
     });
